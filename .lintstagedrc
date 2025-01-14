@@ -1,0 +1,9 @@
+{
+  "*.{css,scss,less,md,html}": [
+    "yarn prettier --no-error-on-unmatched-pattern --write"
+  ],
+  "*.{js,jsx,ts,tsx}": [
+    "yarn prettier --no-error-on-unmatched-pattern --write",
+    "yarn eslint --fix --no-error-on-unmatched-pattern"
+  ]
+}
