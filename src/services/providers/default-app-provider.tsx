@@ -1,21 +1,25 @@
-import { PropsWithChildren } from 'react'
+import { lazy, PropsWithChildren } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { Toaster } from '@/components/ui/toaster'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import { AsyncConfirmationDialogProvider } from '@/components/async-confirmation-dialog'
 
+const AsyncConfirmationDialogProvider = lazy(() =>
+  import('@/components/async-confirmation-dialog').then((module) => ({
+    default: module.AsyncConfirmationDialogProvider,
+  }))
+)
 export function DefaultAppProvider({ children }: PropsWithChildren) {
   const queryClient = new QueryClient()
 
   return (
     <>
       <TooltipProvider delayDuration={300}>
-        <AsyncConfirmationDialogProvider>
-          <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <AsyncConfirmationDialogProvider>
             {children}
-          </QueryClientProvider>
-        </AsyncConfirmationDialogProvider>
+          </AsyncConfirmationDialogProvider>
+        </QueryClientProvider>
       </TooltipProvider>
       <Toaster />
     </>

@@ -1,8 +1,20 @@
+import { lazy, Suspense } from 'react'
+
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-import { ManagementInvoicesContent } from './invoices'
-import { ManagementMeiContent } from './management-mei'
 import { RefreshAllCards } from './refresh-all-cards'
+
+const ManagementMeiContent = lazy(() =>
+  import('./management-mei').then((module) => ({
+    default: module.ManagementMeiContent,
+  }))
+)
+
+const ManagementInvoicesContent = lazy(() =>
+  import('./invoices').then((module) => ({
+    default: module.ManagementInvoicesContent,
+  }))
+)
 
 export function TabsDashboard() {
   return (
@@ -27,8 +39,14 @@ export function TabsDashboard() {
         </div>
         <RefreshAllCards />
       </TabsList>
-      <ManagementMeiContent />
-      <ManagementInvoicesContent />
+
+      <Suspense fallback={<span>carregando...</span>}>
+        <ManagementMeiContent />
+      </Suspense>
+
+      <Suspense fallback={<span>carregando...</span>}>
+        <ManagementInvoicesContent />
+      </Suspense>
     </Tabs>
   )
 }
