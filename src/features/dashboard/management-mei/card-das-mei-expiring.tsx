@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Icons } from '@/components/icons'
+import { Icons } from '@/components/images/icons'
 
 import { DashboardCardHeader } from '../dashboard-card-header'
 import { useGetExpiringDasMei } from '../hooks/use-get-das-mei-expiring'

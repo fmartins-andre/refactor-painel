@@ -1,10 +1,13 @@
 'use client'
 
 import { type ReactNode } from 'react'
+import { getBrandDetails } from '@/utils/get-brand-details'
 import * as Portal from '@radix-ui/react-portal'
 import { motion } from 'framer-motion'
 
 import { cn } from '@/lib/utils'
+
+const brand = getBrandDetails()
 
 const RootStyle = ({ children }: { children: ReactNode }) => {
   return (
@@ -36,9 +39,9 @@ export default function Loading() {
         }}
       >
         <img
-          alt="Emitte icon"
+          alt={`${brand.name} logo`}
           height={49}
-          src="/emitte-logo-collapse.svg"
+          src={brand.logoPath.collapsed}
           width={49}
         ></img>
       </motion.div>

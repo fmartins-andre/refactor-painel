@@ -8,6 +8,7 @@ import {
 } from 'recharts'
 
 import { Skeleton } from '@/components/ui/skeleton'
+import NotFoundImage from '@/components/images/not-found'
 
 import type { TotalInvoicesPerYearOutput } from '../validations/total-invoices-per-year'
 
@@ -23,12 +24,7 @@ export function OverviewChart({ data, isLoading }: Props) {
         <Skeleton className="h-[400px]" />
       ) : data?.length === 0 || !data ? (
         <div className="flex w-full flex-col items-center justify-center gap-4 py-20">
-          <img
-            src="/data-not-found.svg"
-            alt="Loading"
-            width={380}
-            height={550}
-          />
+          <NotFoundImage width={400} />
           <span className="text-primary font-bold">Dados não encontrados</span>
         </div>
       ) : (

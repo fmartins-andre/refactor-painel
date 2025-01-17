@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card'
-import { Icons } from '@/components/icons/icons'
+import { Icons } from '@/components/images/icons'
 
 import { DashboardCardHeader } from '../dashboard-card-header'
 import { useGetChartTotalInvoices } from '../hooks/use-get-chart-total-invoices'

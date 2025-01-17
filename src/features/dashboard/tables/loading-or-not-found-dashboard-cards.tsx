@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react'
 
 import { Skeleton } from '@/components/ui/skeleton'
+import NotFoundImage from '@/components/images/not-found'
 
 type Props = PropsWithChildren<{
   isLoading?: boolean
@@ -18,12 +19,7 @@ export function LoadingOrNotFoundDashboardCards({
         <Skeleton className="h-[300px]" />
       ) : !hasData ? (
         <div className="flex w-full flex-col items-center justify-center gap-4">
-          <img
-            src="/data-not-found.svg"
-            alt="Loading"
-            width={340}
-            height={340}
-          />
+          <NotFoundImage width={400} />
           <span className="text-primary font-bold">Dados não encontrados</span>
         </div>
       ) : (

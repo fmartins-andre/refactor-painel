@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react'
 import { LinkProps } from '@tanstack/react-router'
 
-import { Icons } from '@/components/icons/icons'
+import { Icons } from '@/components/images/icons'
 
 export interface NavItem {
   title?: string

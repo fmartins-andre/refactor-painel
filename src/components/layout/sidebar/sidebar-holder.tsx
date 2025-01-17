@@ -1,3 +1,4 @@
+import { getBrandDetails } from '@/utils/get-brand-details'
 import { Link } from '@tanstack/react-router'
 
 import { cn } from '@/lib/utils'
@@ -8,6 +9,8 @@ import { useSidebar } from '@/components/ui/sidebar'
 import { InfoUserCard } from './info-user-card'
 import { SidebarNavItem } from './sidebar-config'
 import { SidebarMenu } from './sidebar-menu'
+
+const brand = getBrandDetails()
 
 type Props = {
   items: SidebarNavItem[]
@@ -25,12 +28,12 @@ export function SidebarHolder({ items }: Props) {
     >
       <div className="flex h-full flex-col items-center gap-8 py-4">
         <div className="w-full py-4">
-          <Link to={'/'} className="cursor-pointer">
+          <Link to={'/dashboard'} className="cursor-pointer">
             <img
-              alt="Emitte mais logo"
+              alt={`${brand.name} logo`}
               className={cn('mx-auto object-contain')}
               height={80}
-              src="/emitte-logo.svg"
+              src={brand.logoPath.default}
               width={180}
             />
           </Link>

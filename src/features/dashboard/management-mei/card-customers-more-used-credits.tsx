@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { CalendarDateRangePickerNoForm } from '@/components/date-picker/calendar-date-picker-range-noform'
-import { Icons } from '@/components/icons'
+import { Icons } from '@/components/images/icons'
 
 import { DashboardCardHeader } from '../dashboard-card-header'
 import { useGetCustomersMoreUsingCredit } from '../hooks/use-get-customers-more-used-credit'
