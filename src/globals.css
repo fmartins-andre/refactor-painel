@@ -5,139 +5,12 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 220 0% 100%;
-    --foreground: 0 0% 10%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary-s-lighter: 185 96% 90%;
-    --primary-lighter: 194 100% 76%;
-    --primary-light: 194 98% 51%;
-    --primary: 218.3 100% 32.6%;
-    --primary-dark: 218 100% 24%;
-    --primary-darker: 240 79% 19%;
-    --primary-foreground: 210 20% 98%;
-
-    --active-button: 282 100% 10%;
-    --active-button-foreground: 220 0% 100%;
-
-    --secondary-lighter: 156 100% 95%;
-    --secondary-light: 156 100% 40%;
-    --secondary: 156 100% 41%;
-    --secondary-dark: 156 100% 33%;
-    --secondary-darker: 156 100% 21%;
-    --secondary-foreground: 210 20% 98%;
-
-    --blue: 218 29% 61%;
-    --blue-foreground: 339 100% 50%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 354 100% 67%;
-    --destructive-foreground: 220 0% 100%;
-
-    --white: 0 0% 100%;
-    --light: 210 40% 96%;
-    --black: 214 24% 11%;
-    --bgAccent: 210 20% 98%;
-
-    --success: 160 96% 40%;
-    --warning: 50 100% 50%;
-    --info: 194 98% 51%;
-    --error: 354 100% 67%;
-    --danger: 354 100% 67%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 220 100% 24%;
-
-    --radius: 0.5rem;
-
-    --shadow: 0px 16px 32px rgba(145, 158, 171, 0.25),
-      0px 0px 2px rgba(145, 158, 171, 0.25);
-  }
-
-  .dark {
-    --background: 35 0% 16%;
-    --foreground: 210 0% 98%;
-
-    --card: 35 0% 16%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 180 2% 8%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 218 100% 32%;
-    --primary-foreground: 220 0% 100%;
-
-    --active-button: 282 100% 10%;
-    --active-button-foreground: 220 0% 100%;
-
-    --secondary: 282 100% 22%;
-    --secondary-foreground: 220 0% 100%;
-
-    --tertiary: 0 0% 98%;
-    --tertiary-foreground: 339 100% 50%;
-
-    --muted: 210 3% 13%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 210 3% 13%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --white: 220 0% 100%;
-    --black: 0 0% 7%;
-    --bgAccent: 210 3% 13%;
-
-    --success: 111 100% 43%;
-    --info: 203 100% 71%;
-    --warning: 31 94% 70%;
-    --alert: 47 100% 66%;
-    --error: 2 100% 63%;
-
-    --border: 203 0% 16%;
-    --input: 203 0% 16%;
-    --ring: 203 0% 16%;
-
-    --shadow: 0px 0px 2px 0px rgba(11, 13, 14, 0.24),
-      0px 16px 32px 0px rgba(11, 13, 14, 0.25);
-  }
-}
-
-@layer base {
-  :root {
-    --chart-1: 218.3 100% 32.6%;
-    --chart-2: 156 100% 41%;
-    --chart-3: 156 100% 41%;
-    --chart-4: 156 100% 21%;
-    --chart-5: 47 100% 66%;
-  }
-
-  .dark {
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-accent text-foreground;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
   }
@@ -148,35 +21,10 @@
 }
 
 @layer utilities {
-  .bg-login-image {
-    background-image: url('/login-image.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  .step {
-    counter-increment: step;
-  }
-
-  .step:before {
-    @apply absolute w-9 h-9 bg-muted rounded-full font-medium text-center text-base inline-flex items-center justify-center -indent-px border-4 border-background;
-    @apply ml-[-50px] mt-[-4px];
-    content: counter(step);
-  }
-
-  body {
-    @apply bg-accent flex h-dvh w-screen overflow-y-auto overflow-x-hidden font-sans antialiased;
-  }
 }
 
 @media (max-width: 640px) {
   .container {
     @apply px-4;
   }
-}
-
-/* fix intercom container error message over the app */
-#intercom-container {
-  width: 0;
-  height: 0;
 }
