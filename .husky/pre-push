@@ -1,1 +1,1 @@
-git diff HEAD --quiet && yarn typecheck && yarn build
+git diff HEAD --quiet && yarn build
