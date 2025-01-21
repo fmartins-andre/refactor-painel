@@ -10,7 +10,7 @@ import {
   onRejectedResponse,
 } from './interceptors/response-interceptor'
 
-const token = handleAccountantPanelApiLocalToken.get()
+const token = handleAccountantPanelApiLocalToken.get()?.token
 
 export const accountantPanelApiHttpClientInstance = axios.create({
   baseURL: import.meta.env.VITE_ACCOUNTANT_PANEL_API_URL,

@@ -8,11 +8,10 @@ import axios, {
 import { handleAccountantPanelApiLocalToken } from '../handle-local-token'
 
 export const onFulfilledResponse =
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  (apiInstance: AxiosInstance) =>
-    (response: AxiosResponse): Promise<AxiosResponse> => {
-      return Promise.resolve(response)
-    }
+  (_apiInstance: AxiosInstance) =>
+  (response: AxiosResponse): Promise<AxiosResponse> => {
+    return Promise.resolve(response)
+  }
 
 export const onRejectedResponse =
   (apiInstance: AxiosInstance) =>
@@ -25,7 +24,7 @@ export const onRejectedResponse =
       return Promise.reject(error)
     }
 
-    const currentToken = handleAccountantPanelApiLocalToken.get()
+    const currentToken = handleAccountantPanelApiLocalToken.get()?.token
 
     if (!currentToken?.length) {
       return Promise.reject(error)

@@ -2,36 +2,47 @@ import * as React from 'react'
 import { RouterContext } from '@/@types/route-context'
 import sleep from '@/utils/sleep'
 
-import { handleAccountantPanelApiLocalToken } from '../api/accountant-panel-api/http-client/handle-local-token'
+import {
+  AuthTokenAndData,
+  handleAccountantPanelApiLocalToken,
+} from '../api/accountant-panel-api/http-client/handle-local-token'
 
 export type AuthContext = RouterContext['auth']
 
 const AuthContext = React.createContext<AuthContext | null>(null)
 
 export function AuthProvider({ children }: React.PropsWithChildren) {
-  const [token, setToken] = React.useState<string | null>(
+  const [data, setData] = React.useState<AuthTokenAndData | null>(
     handleAccountantPanelApiLocalToken.get()
   )
-  const isAuthenticated = !!token
+  const isAuthenticated = !!data
 
   const logout = React.useCallback(async () => {
     handleAccountantPanelApiLocalToken.remove()
-    setToken(null)
+    setData(null)
     await sleep(100)
   }, [])
 
   const login = React.useCallback(async (token: string) => {
-    handleAccountantPanelApiLocalToken.set(token)
-    setToken(token)
+    const data = handleAccountantPanelApiLocalToken.set(token)
+    setData(data)
     await sleep(100)
   }, [])
 
   React.useLayoutEffect(() => {
-    setToken(handleAccountantPanelApiLocalToken.get())
+    setData(handleAccountantPanelApiLocalToken.get())
   }, [])
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        token: data?.token ?? null,
+        tokenData: data?.tokenData ?? null,
+        login,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
