@@ -1,3 +1,4 @@
+import { handleCommonAccountantPanelApiErrors } from '../../../errors/handle-errors'
 import { accountantPanelApiHttpClientInstance } from '../../../http-client/http-client'
 import {
   AutenticacaoObterTokenRequestPayload,
@@ -24,7 +25,7 @@ export async function autenticacaoObterToken(
 
     return validatedResponse
   } catch (error) {
-    console.error(error)
+    handleCommonAccountantPanelApiErrors(error)
 
     throw error
   }

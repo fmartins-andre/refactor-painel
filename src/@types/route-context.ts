@@ -1,3 +1,5 @@
+import { QueryClient } from '@tanstack/react-query'
+
 export interface AuthTokenData {
   emailUsuario: string
   usuarioId: string
@@ -5,6 +7,7 @@ export interface AuthTokenData {
 }
 
 export interface RouterContext {
+  queryClient: QueryClient
   auth: {
     isAuthenticated: boolean
     login: (token: string) => Promise<void>

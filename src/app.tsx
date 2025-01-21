@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 
 import { routeTree } from './routeTree.gen'
@@ -8,6 +9,7 @@ const router = createRouter({
   defaultPreload: 'intent',
   context: {
     auth: undefined!,
+    queryClient: undefined!,
   },
 })
 
@@ -19,11 +21,13 @@ declare module '@tanstack/react-router' {
 
 export function App() {
   const auth = useAuth()
+  const queryClient = useQueryClient()
 
   return (
     <RouterProvider
       router={router}
       context={{
+        queryClient,
         auth,
       }}
     />
