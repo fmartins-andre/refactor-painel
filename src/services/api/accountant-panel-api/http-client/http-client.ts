@@ -13,12 +13,12 @@ import {
 const token = handleAccountantPanelApiLocalToken.get()
 
 export const accountantPanelApiHttpClientInstance = axios.create({
-  baseURL: '',
+  baseURL: import.meta.env.VITE_ACCOUNTANT_PANEL_API_URL,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    'X-Api-Key': '',
-    'X-Aplicacao-Id': '',
+    'X-Api-Key': import.meta.env.VITE_ACCOUNTANT_PANEL_API_KEY,
+    'X-Aplicacao-Id': import.meta.env.VITE_ACCOUNTANT_PANEL_API_APP_ID,
     ...(token?.length ? { Authorization: `Bearer ${token}` } : {}),
   },
 })

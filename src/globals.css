@@ -9,14 +9,18 @@
     @apply border-border;
   }
 
+  html {
+    @apply w-full min-h-full h-full;
+  }
+
   body {
-    @apply bg-accent text-foreground;
+    @apply bg-accent text-foreground w-full min-h-full h-full;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
   }
 
   body > #app {
-    @apply w-full;
+    @apply w-full min-h-full h-full;
   }
 }
 

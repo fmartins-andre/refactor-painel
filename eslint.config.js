@@ -2,19 +2,12 @@ import pluginJs from '@eslint/js'
 import pluginRouter from '@tanstack/eslint-plugin-router'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import pluginReact from 'eslint-plugin-react'
+import pluginReactHooks from 'eslint-plugin-react-hooks'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
-  { ignores: ['src/routeTree.gen.ts'] },
-  {
-    languageOptions: {
-      ...pluginReact.configs.flat.recommended.languageOptions,
-      globals: { ...globals.browser, ...globals.node },
-    },
-  },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
@@ -22,6 +15,15 @@ export default [
   ...pluginRouter.configs['flat/recommended'],
   eslintConfigPrettier,
   {
+    files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
+    ignores: ['src/routeTree.gen.ts'],
+    languageOptions: {
+      ...pluginReact.configs.flat.recommended.languageOptions,
+      globals: { ...globals.browser, ...globals.node },
+    },
+    plugins: {
+      'react-hooks': pluginReactHooks,
+    },
     rules: {
       'react/prop-types': 'warn',
       'no-explicit-any': 'off',
@@ -36,6 +38,7 @@ export default [
           caughtErrorsIgnorePattern: '^_',
         },
       ],
+      ...pluginReactHooks.configs.recommended.rules,
     },
   },
 ]

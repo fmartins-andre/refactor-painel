@@ -1,5 +1,8 @@
 export interface RouterContext {
   auth: {
-    token: string
+    isAuthenticated: boolean
+    login: (token: string) => Promise<void>
+    logout: () => Promise<void>
+    token: string | null
   }
 }

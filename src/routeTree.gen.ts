@@ -18,6 +18,9 @@ import { Route as AuthenticatedRoutesNotasAvulsasIndexImport } from './routes/_a
 import { Route as AuthenticatedRoutesDashboardIndexImport } from './routes/_authenticated-routes/dashboard/index'
 import { Route as AuthenticatedRoutesClientesIndexImport } from './routes/_authenticated-routes/clientes/index'
 import { Route as AuthenticatedRoutesCertificadoIndexImport } from './routes/_authenticated-routes/certificado/index'
+import { Route as PublicRoutesAutenticacaoRecuperarSenhaImport } from './routes/_public-routes/_autenticacao/recuperar-senha'
+import { Route as PublicRoutesAutenticacaoLogoutImport } from './routes/_public-routes/_autenticacao/logout'
+import { Route as PublicRoutesAutenticacaoLoginImport } from './routes/_public-routes/_autenticacao/login'
 
 // Create/Update Routes
 
@@ -66,6 +69,27 @@ const AuthenticatedRoutesCertificadoIndexRoute =
     getParentRoute: () => AuthenticatedRoutesRouteRoute,
   } as any)
 
+const PublicRoutesAutenticacaoRecuperarSenhaRoute =
+  PublicRoutesAutenticacaoRecuperarSenhaImport.update({
+    id: '/_public-routes/_autenticacao/recuperar-senha',
+    path: '/recuperar-senha',
+    getParentRoute: () => rootRoute,
+  } as any)
+
+const PublicRoutesAutenticacaoLogoutRoute =
+  PublicRoutesAutenticacaoLogoutImport.update({
+    id: '/_public-routes/_autenticacao/logout',
+    path: '/logout',
+    getParentRoute: () => rootRoute,
+  } as any)
+
+const PublicRoutesAutenticacaoLoginRoute =
+  PublicRoutesAutenticacaoLoginImport.update({
+    id: '/_public-routes/_autenticacao/login',
+    path: '/login',
+    getParentRoute: () => rootRoute,
+  } as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -90,6 +114,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRoutesIndexImport
       parentRoute: typeof AuthenticatedRoutesRouteImport
+    }
+    '/_public-routes/_autenticacao/login': {
+      id: '/_public-routes/_autenticacao/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof PublicRoutesAutenticacaoLoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/_public-routes/_autenticacao/logout': {
+      id: '/_public-routes/_autenticacao/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof PublicRoutesAutenticacaoLogoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/_public-routes/_autenticacao/recuperar-senha': {
+      id: '/_public-routes/_autenticacao/recuperar-senha'
+      path: '/recuperar-senha'
+      fullPath: '/recuperar-senha'
+      preLoaderRoute: typeof PublicRoutesAutenticacaoRecuperarSenhaImport
+      parentRoute: typeof rootRoute
     }
     '/_authenticated-routes/certificado/': {
       id: '/_authenticated-routes/certificado/'
@@ -154,6 +199,9 @@ export interface FileRoutesByFullPath {
   '': typeof AuthenticatedRoutesRouteRouteWithChildren
   '/reports': typeof PublicRoutesReportsRoute
   '/': typeof AuthenticatedRoutesIndexRoute
+  '/login': typeof PublicRoutesAutenticacaoLoginRoute
+  '/logout': typeof PublicRoutesAutenticacaoLogoutRoute
+  '/recuperar-senha': typeof PublicRoutesAutenticacaoRecuperarSenhaRoute
   '/certificado': typeof AuthenticatedRoutesCertificadoIndexRoute
   '/clientes': typeof AuthenticatedRoutesClientesIndexRoute
   '/dashboard': typeof AuthenticatedRoutesDashboardIndexRoute
@@ -163,6 +211,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/reports': typeof PublicRoutesReportsRoute
   '/': typeof AuthenticatedRoutesIndexRoute
+  '/login': typeof PublicRoutesAutenticacaoLoginRoute
+  '/logout': typeof PublicRoutesAutenticacaoLogoutRoute
+  '/recuperar-senha': typeof PublicRoutesAutenticacaoRecuperarSenhaRoute
   '/certificado': typeof AuthenticatedRoutesCertificadoIndexRoute
   '/clientes': typeof AuthenticatedRoutesClientesIndexRoute
   '/dashboard': typeof AuthenticatedRoutesDashboardIndexRoute
@@ -174,6 +225,9 @@ export interface FileRoutesById {
   '/_authenticated-routes': typeof AuthenticatedRoutesRouteRouteWithChildren
   '/_public-routes/reports': typeof PublicRoutesReportsRoute
   '/_authenticated-routes/': typeof AuthenticatedRoutesIndexRoute
+  '/_public-routes/_autenticacao/login': typeof PublicRoutesAutenticacaoLoginRoute
+  '/_public-routes/_autenticacao/logout': typeof PublicRoutesAutenticacaoLogoutRoute
+  '/_public-routes/_autenticacao/recuperar-senha': typeof PublicRoutesAutenticacaoRecuperarSenhaRoute
   '/_authenticated-routes/certificado/': typeof AuthenticatedRoutesCertificadoIndexRoute
   '/_authenticated-routes/clientes/': typeof AuthenticatedRoutesClientesIndexRoute
   '/_authenticated-routes/dashboard/': typeof AuthenticatedRoutesDashboardIndexRoute
@@ -186,6 +240,9 @@ export interface FileRouteTypes {
     | ''
     | '/reports'
     | '/'
+    | '/login'
+    | '/logout'
+    | '/recuperar-senha'
     | '/certificado'
     | '/clientes'
     | '/dashboard'
@@ -194,6 +251,9 @@ export interface FileRouteTypes {
   to:
     | '/reports'
     | '/'
+    | '/login'
+    | '/logout'
+    | '/recuperar-senha'
     | '/certificado'
     | '/clientes'
     | '/dashboard'
@@ -203,6 +263,9 @@ export interface FileRouteTypes {
     | '/_authenticated-routes'
     | '/_public-routes/reports'
     | '/_authenticated-routes/'
+    | '/_public-routes/_autenticacao/login'
+    | '/_public-routes/_autenticacao/logout'
+    | '/_public-routes/_autenticacao/recuperar-senha'
     | '/_authenticated-routes/certificado/'
     | '/_authenticated-routes/clientes/'
     | '/_authenticated-routes/dashboard/'
@@ -213,11 +276,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRoutesRouteRoute: typeof AuthenticatedRoutesRouteRouteWithChildren
   PublicRoutesReportsRoute: typeof PublicRoutesReportsRoute
+  PublicRoutesAutenticacaoLoginRoute: typeof PublicRoutesAutenticacaoLoginRoute
+  PublicRoutesAutenticacaoLogoutRoute: typeof PublicRoutesAutenticacaoLogoutRoute
+  PublicRoutesAutenticacaoRecuperarSenhaRoute: typeof PublicRoutesAutenticacaoRecuperarSenhaRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoutesRouteRoute: AuthenticatedRoutesRouteRouteWithChildren,
   PublicRoutesReportsRoute: PublicRoutesReportsRoute,
+  PublicRoutesAutenticacaoLoginRoute: PublicRoutesAutenticacaoLoginRoute,
+  PublicRoutesAutenticacaoLogoutRoute: PublicRoutesAutenticacaoLogoutRoute,
+  PublicRoutesAutenticacaoRecuperarSenhaRoute:
+    PublicRoutesAutenticacaoRecuperarSenhaRoute,
 }
 
 export const routeTree = rootRoute
@@ -231,7 +301,10 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_authenticated-routes",
-        "/_public-routes/reports"
+        "/_public-routes/reports",
+        "/_public-routes/_autenticacao/login",
+        "/_public-routes/_autenticacao/logout",
+        "/_public-routes/_autenticacao/recuperar-senha"
       ]
     },
     "/_authenticated-routes": {
@@ -250,6 +323,15 @@ export const routeTree = rootRoute
     "/_authenticated-routes/": {
       "filePath": "_authenticated-routes/index.tsx",
       "parent": "/_authenticated-routes"
+    },
+    "/_public-routes/_autenticacao/login": {
+      "filePath": "_public-routes/_autenticacao/login.tsx"
+    },
+    "/_public-routes/_autenticacao/logout": {
+      "filePath": "_public-routes/_autenticacao/logout.tsx"
+    },
+    "/_public-routes/_autenticacao/recuperar-senha": {
+      "filePath": "_public-routes/_autenticacao/recuperar-senha.tsx"
     },
     "/_authenticated-routes/certificado/": {
       "filePath": "_authenticated-routes/certificado/index.tsx",

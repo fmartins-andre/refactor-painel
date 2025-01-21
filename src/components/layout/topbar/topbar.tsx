@@ -6,7 +6,7 @@ export function Topbar() {
   return (
     <header
       className={cn(
-        'bg-background fixed left-0 top-0 z-10 w-full py-0.5 md:pl-72 h-13'
+        'bg-background fixed left-0 top-0 z-10 w-full py-0.5 md:pl-72 h-13 shadow-sm'
       )}
     >
       <div className="flex w-full justify-between px-2">

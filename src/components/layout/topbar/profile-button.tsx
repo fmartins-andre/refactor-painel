@@ -11,6 +11,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
 
+import { SignOutButton } from './signout'
+
 interface Props {
   user: UserProfile | undefined
 }
@@ -46,7 +48,7 @@ export function ProfileButton({ user }: Props) {
             </p>
           </div>
           <Separator className="bg-muted w-full" />
-          <Link to="/" className="w-full px-4">
+          <Link to="/dashboard" className="w-full px-4">
             <Button
               className="flex w-full flex-row justify-start space-x-1 "
               variant="ghost"
@@ -70,7 +72,7 @@ export function ProfileButton({ user }: Props) {
             </Button>
           </Link>
           <Separator className="bg-muted w-full" />
-          {/* <SignOutButton /> */}
+          <SignOutButton />
           <Separator />
           <div className="flex w-full flex-col items-center justify-center gap-3 p-4">
             <a
