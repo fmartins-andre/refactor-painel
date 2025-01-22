@@ -30,24 +30,30 @@ export const onRejectedResponse =
       return Promise.reject(error)
     }
 
-    type OriginalRequest = typeof error.config & { _retry: boolean }
+    type OriginalRequest = typeof error.config & { _retry: number }
     const originalRequest = error.config as OriginalRequest
+    if (originalRequest._retry == null) originalRequest._retry = 0
 
-    if (originalRequest?._retry) {
+    if (originalRequest._retry >= 2) {
+      originalRequest._retry = 0
+      handleAccountantPanelApiLocalToken.remove()
+      window.location.reload()
       return Promise.reject(error)
     }
 
-    originalRequest._retry = true // Mark the request as retried to avoid infinite loops.
+    originalRequest._retry++
 
     try {
-      const response = await axios.post('https://your.auth.server/refresh', {
-        refreshToken: currentToken,
-      })
+      const response = await apiInstance.post<{ token: string }>(
+        '/v1/Autenticacao/AtualizarToken',
+        { token: currentToken }
+      )
       const { token } = response.data
 
       handleAccountantPanelApiLocalToken.set(token)
 
-      apiInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      apiInstance.defaults.headers.common.Authorization = `Bearer ${token}`
+      originalRequest.headers.Authorization = `Bearer ${token}`
 
       return apiInstance(originalRequest) // Retry the original request with the new access token.
     } catch (refreshError) {

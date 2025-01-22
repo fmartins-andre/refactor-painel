@@ -1,14 +1,19 @@
 import { AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 
+import { handleAccountantPanelApiLocalToken } from '../handle-local-token'
 import { onRejectedResponse } from './response-interceptor'
 
 export const onFulfilledRequest =
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (apiInstance: AxiosInstance) =>
-    (
-      response: InternalAxiosRequestConfig
-    ): Promise<InternalAxiosRequestConfig> => {
-      return Promise.resolve(response)
+  (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
+    const currentToken = handleAccountantPanelApiLocalToken.get()?.token
+
+    if (currentToken) {
+      apiInstance.defaults.headers.common.Authorization = `Bearer ${currentToken}`
+      config.headers.Authorization = `Bearer ${currentToken}`
     }
+
+    return Promise.resolve(config)
+  }
 
 export const onRejectedRequest = onRejectedResponse
