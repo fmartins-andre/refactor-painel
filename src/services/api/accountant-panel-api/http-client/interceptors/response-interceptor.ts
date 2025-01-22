@@ -20,45 +20,68 @@ export const onRejectedResponse =
       return Promise.reject(error)
     }
 
+    // se for qualquer erro diferente do 401, segue a rejeição normal
     if (error.response?.status !== HttpStatusCode.Unauthorized) {
       return Promise.reject(error)
     }
 
-    const currentToken = handleAccountantPanelApiLocalToken.get()?.token
+    const currentStoredToken = handleAccountantPanelApiLocalToken.get()?.token
 
-    if (!currentToken?.length) {
-      return Promise.reject(error)
-    }
-
-    type OriginalRequest = typeof error.config & { _retry: number }
-    const originalRequest = error.config as OriginalRequest
-    if (originalRequest._retry == null) originalRequest._retry = 0
-
-    if (originalRequest._retry >= 2) {
-      originalRequest._retry = 0
+    // se é erro 401 e não tem token na aplicação, então desloga
+    if (!currentStoredToken?.length) {
       handleAccountantPanelApiLocalToken.remove()
       window.location.reload()
       return Promise.reject(error)
     }
 
+    // separa o request original para uso posterior, adicionado do parâmetro _retry
+    type OriginalRequest = typeof error.config & { _retry: number }
+    const originalRequest = error.config as OriginalRequest
+    if (originalRequest._retry == null) originalRequest._retry = 0
+
+    // se a mesma requisição foi tentada 2 vezes e continua em 401, então desloga
+    if (originalRequest._retry >= 2) {
+      handleAccountantPanelApiLocalToken.remove()
+      window.location.reload()
+      return Promise.reject(error)
+    }
+
+    // incrementa as tentativas de atualização do token
     originalRequest._retry++
 
     try {
-      const response = await apiInstance.post<{ token: string }>(
+      // tenta a revalidação do token
+      // ATENÇÃO: não usar a instância existente. Chamar com instância nova/avulsa do axios
+      const response = await axios.post<{ token: string } | undefined>(
         '/v1/Autenticacao/AtualizarToken',
-        { token: currentToken }
+        { token: currentStoredToken },
+        {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'X-Api-Key': import.meta.env.VITE_ACCOUNTANT_PANEL_API_KEY,
+            'X-Aplicacao-Id': import.meta.env.VITE_ACCOUNTANT_PANEL_API_APP_ID,
+          },
+        }
       )
+
+      if (!response?.data?.token?.length) throw Error('Token Inválido')
+
       const { token } = response.data
 
+      // armazenar o token. no interceptador de request, vai precisar dele atualizado
       handleAccountantPanelApiLocalToken.set(token)
 
       apiInstance.defaults.headers.common.Authorization = `Bearer ${token}`
       originalRequest.headers.Authorization = `Bearer ${token}`
 
-      return apiInstance(originalRequest) // Retry the original request with the new access token.
+      // tenta novamente a requisição original com o novo token
+      return apiInstance(originalRequest)
     } catch (refreshError) {
+      // se a aquisição do token der erro, então desloga
       console.error('Token refresh failed:', refreshError)
       handleAccountantPanelApiLocalToken.remove()
-      return Promise.reject(refreshError)
+      window.location.reload()
+      return Promise.reject(error)
     }
   }
