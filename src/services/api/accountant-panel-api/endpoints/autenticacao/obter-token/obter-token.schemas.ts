@@ -9,12 +9,12 @@ export type AutenticacaoObterTokenRequestPayload = z.input<
   typeof autenticacaoObterTokenRequestPayloadSchema
 >
 
-export const autenticacaoObterTokenResponseSchema = z.object({
-  token: z.custom<string>(),
+export const autenticacaoObterTokenSchema = z.object({
+  token: z.string().jwt(),
   expiresIn: z.custom<number>(),
   refreshExpiresIn: z.custom<number>(),
 })
 
-export type AutenticacaoObterTokenResponse = z.output<
-  typeof autenticacaoObterTokenResponseSchema
+export type AutenticacaoObterToken = z.output<
+  typeof autenticacaoObterTokenSchema
 >

@@ -144,6 +144,7 @@ export default {
   },
   plugins: [
     require('tailwindcss-animate'),
+    require('tailwindcss-motion'),
     require('@tailwindcss/typography'),
     require('@tailwindcss/container-queries'),
     getTheme(),

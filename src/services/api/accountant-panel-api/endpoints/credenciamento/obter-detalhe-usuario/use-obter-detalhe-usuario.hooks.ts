@@ -5,8 +5,10 @@ import {
   useQueryClient,
 } from '@tanstack/react-query'
 
-import { UsuarioViewModel } from '../../../schemas'
-import { credenciamentoObterDetalheUsuario } from './obter-detalhe-usuario.endpoint'
+import {
+  credenciamentoObterDetalheUsuario,
+  CredenciamentoObterDetalheUsuarioResponse,
+} from './obter-detalhe-usuario.endpoint'
 
 const MINUTE = 1000 * 60
 
@@ -14,7 +16,8 @@ const MINUTE = 1000 * 60
 export const credenciamentoObterDetalheUsuarioClientOptions = () => {
   return tanstackQueryOptions({
     queryKey: ['credenciamento-obter-detalhe-usuario'],
-    queryFn: credenciamentoObterDetalheUsuario,
+    queryFn: async ({ signal }) =>
+      await credenciamentoObterDetalheUsuario(undefined, signal),
     staleTime: MINUTE * 2, // two minutes
   })
 }
@@ -28,13 +31,14 @@ export function useCredenciamentoObterDetalheUsuario() {
 export function useLazyCredenciamentoObterDetalheUsuario(): UseLazyCredenciamentoObterDetalheUsuarioReturn {
   const queryClient = useQueryClient()
 
-  const [state, setState] = useState<UseGetCustomerListState>({
+  const [state, setState] = useState<UseLazyQueryState>({
     isFetching: false,
   })
 
-  const data: UsuarioViewModel | undefined = queryClient.getQueryData(
-    credenciamentoObterDetalheUsuarioClientOptions().queryKey
-  )
+  const data: CredenciamentoObterDetalheUsuarioResponse =
+    queryClient.getQueryData(
+      credenciamentoObterDetalheUsuarioClientOptions().queryKey
+    )
 
   const trigger = useCallback(async () => {
     setState({ isFetching: true })
@@ -61,14 +65,14 @@ export function useLazyCredenciamentoObterDetalheUsuario(): UseLazyCredenciament
   )
 }
 
-type UseGetCustomerListState = {
+type UseLazyQueryState = {
   isFetching: boolean
 }
 
 type UseLazyCredenciamentoObterDetalheUsuarioReturn = [
-  () => Promise<UsuarioViewModel>,
+  () => Promise<CredenciamentoObterDetalheUsuarioResponse>,
   {
-    data: UsuarioViewModel | undefined
+    data: CredenciamentoObterDetalheUsuarioResponse
     isFetching: boolean
     isLoading: boolean
   },

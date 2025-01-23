@@ -9,7 +9,15 @@ export function ManagementInvoicesContent() {
   return (
     <TabsContent value="invoices">
       <div className="mt-2 flex flex-col gap-4">
-        <RenderInvoicesCard />
+        <RenderInvoicesCard
+          isLoading={false}
+          data={{
+            totalNotas: 0,
+            totalNotasCanceladas: 0,
+            totalNotasRejeitadas: 0,
+            totalNotasValidadas: 0,
+          }}
+        />
         <div className="my-2 flex w-full flex-col items-start gap-10 md:flex-row">
           <CardTotalInvoices />
           <CardLastInvoices />

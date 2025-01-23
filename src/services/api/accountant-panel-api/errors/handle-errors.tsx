@@ -8,6 +8,8 @@ import { CommonAccountantPanelApiError } from './common-error.types'
 export function handleCommonAccountantPanelApiErrors<
   TError extends CommonAccountantPanelApiError,
 >(error: unknown, fallbackErrorMessage?: string) {
+  console.error(error)
+
   if (isAxiosError(error)) {
     const axiosError = error as AxiosError<TError>
 
@@ -20,11 +22,20 @@ export function handleCommonAccountantPanelApiErrors<
       variant: 'destructive',
     })
   } else if (error instanceof ZodError) {
-    const [title, ...messages] = error.issues.map((err) => err.message)
+    const messages = error.issues.map((err) => err.message)
 
     toast({
-      title,
-      description: messages.join('. '),
+      title: 'Erro de validação de dados',
+      description: (
+        <>
+          {messages.map((message, index) => (
+            <p key={index}>{message}</p>
+          ))}
+          <p className="font-semibold underline">
+            Por favor, comunique esse erro ao suporte!
+          </p>
+        </>
+      ),
       variant: 'destructive',
     })
   } else {

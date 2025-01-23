@@ -1,3 +1,9 @@
+import {
+  visaoGeralCardTotalizacaoClientOptions,
+  visaoGeralCertificadosListarClientOptions,
+  visaoGeralDasListarClientOptions,
+} from '@/services/api/accountant-panel-api/endpoints/visao-geral'
+import { useQueryClient } from '@tanstack/react-query'
 import { RefreshCw } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -9,9 +15,20 @@ import {
 } from '@/components/ui/tooltip'
 
 export function RefreshAllCards() {
+  const queryClient = useQueryClient()
+
   async function handleRefreshAllCards() {
-    // TODO: corrigir isso
-    // await queryClient.invalidateQueries()
+    queryClient.invalidateQueries({
+      queryKey: visaoGeralCardTotalizacaoClientOptions().queryKey,
+    })
+
+    queryClient.invalidateQueries({
+      queryKey: visaoGeralCertificadosListarClientOptions({}).queryKey,
+    })
+
+    queryClient.invalidateQueries({
+      queryKey: visaoGeralDasListarClientOptions({}).queryKey,
+    })
   }
 
   return (

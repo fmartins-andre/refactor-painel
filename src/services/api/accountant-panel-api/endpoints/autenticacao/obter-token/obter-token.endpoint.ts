@@ -1,14 +1,17 @@
 import { handleCommonAccountantPanelApiErrors } from '../../../errors/handle-errors'
 import { accountantPanelApiHttpClientInstance } from '../../../http-client/http-client'
 import {
+  AutenticacaoObterToken,
   AutenticacaoObterTokenRequestPayload,
   autenticacaoObterTokenRequestPayloadSchema,
-  AutenticacaoObterTokenResponse,
-  autenticacaoObterTokenResponseSchema,
+  autenticacaoObterTokenSchema,
 } from './obter-token.schemas'
 
+export type AutenticacaoObterTokenResponse = AutenticacaoObterToken
+
 export async function autenticacaoObterToken(
-  payload: AutenticacaoObterTokenRequestPayload
+  payload: AutenticacaoObterTokenRequestPayload,
+  signal?: AbortSignal
 ): Promise<AutenticacaoObterTokenResponse> {
   try {
     const body = autenticacaoObterTokenRequestPayloadSchema.parse(payload)
@@ -16,12 +19,11 @@ export async function autenticacaoObterToken(
     const response =
       await accountantPanelApiHttpClientInstance.post<AutenticacaoObterTokenResponse>(
         '/v1/Autenticacao/ObterToken',
-        body
+        body,
+        { signal }
       )
 
-    const validatedResponse = autenticacaoObterTokenResponseSchema.parse(
-      response.data
-    )
+    const validatedResponse = autenticacaoObterTokenSchema.parse(response.data)
 
     return validatedResponse
   } catch (error) {

@@ -1,3 +1,9 @@
+import { GenericOptionField } from '@/@types/options-field'
+import {
+  StatusListaCertificadosVisaoGeralModelEnum,
+  useVisaoGeralCertificadosListar,
+} from '@/services/api/accountant-panel-api/endpoints/visao-geral'
+
 import { Card, CardContent } from '@/components/ui/card'
 import {
   Select,
@@ -10,32 +16,36 @@ import {
 import { Icons } from '@/components/images/icons'
 
 import { DashboardCardHeader } from '../dashboard-card-header'
-import { useGetExpiringCertificates } from '../hooks/use-get-expiring-certificates'
 import { ExpiringCertificatesList } from './expiring-certificates-list'
 import { useDashboard } from './hooks/use-dashboard'
 
 export function CardExpiringCertificates() {
   const { filterCertificateFromStatus, handleSetFilterCertificateFromStatus } =
     useDashboard()
-  const { data, isLoading, isFetching, dataUpdatedAt } =
-    useGetExpiringCertificates(filterCertificateFromStatus)
 
-  const selectOptions = [
-    { label: 'A Vencer', value: 'vencimento_proximo' },
-    { label: 'Vencido', value: 'vencidos' },
-  ]
+  const { data, isLoading, isFetching, dataUpdatedAt, refetch } =
+    useVisaoGeralCertificadosListar({ status: filterCertificateFromStatus })
+
+  const selectOptions: GenericOptionField<StatusListaCertificadosVisaoGeralModelEnum>[] =
+    [
+      {
+        label: 'A Vencer',
+        value: StatusListaCertificadosVisaoGeralModelEnum.PROXIMO_VENCIMENTO,
+      },
+      {
+        label: 'Vencido',
+        value: StatusListaCertificadosVisaoGeralModelEnum.VENCIDO,
+      },
+    ]
 
   async function handleRefreshCache() {
-    // await queryClient.invalidateQueries({
-    //   queryKey: ['expiring-certificates', filterCertificateFromStatus],
-    // })
+    await refetch()
   }
 
-  async function handleSetStatus(status: string) {
+  async function handleSetStatus(
+    status: StatusListaCertificadosVisaoGeralModelEnum
+  ) {
     handleSetFilterCertificateFromStatus(status)
-    // await queryClient.invalidateQueries({
-    //   queryKey: ['expiring-certificates', status],
-    // })
   }
 
   const SearchComponent = () => {

@@ -1,5 +1,8 @@
 import { z } from '@/lib/translated-zod'
 
+import { certificadoDigitalViewModelSchema } from '../certificado-digital-view-model'
+import { gestaoEstoqueViewModelSchema } from '../gestao-estoque-view-model '
+import { planoContadorViewModelSchema } from '../plano-view-model'
 import { TipoPessoaModelEnum } from '../shared'
 import { contadorConfiguracaoViewModelSchema } from './contador-configuracao-view-model.schema'
 import { contadorEnderecoViewModelSchema } from './contador-endereco-view-model.schema'
@@ -15,8 +18,11 @@ export const contadorViewModelSchema = z.object({
   nomeResponsavel: z.custom<string>(),
   telefone: z.custom<string>(),
   email: z.custom<string>(),
-  endereco: contadorEnderecoViewModelSchema,
-  configuracao: contadorConfiguracaoViewModelSchema,
+  endereco: contadorEnderecoViewModelSchema.nullable(),
+  certificadoDigital: certificadoDigitalViewModelSchema.nullable(),
+  plano: planoContadorViewModelSchema.nullable(),
+  configuracao: contadorConfiguracaoViewModelSchema.nullable(),
+  gestaoEstoque: gestaoEstoqueViewModelSchema.nullable(),
 })
 
 export type ContadorViewModel = z.output<typeof contadorViewModelSchema>

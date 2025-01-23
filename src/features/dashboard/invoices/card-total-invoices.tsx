@@ -2,21 +2,9 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Icons } from '@/components/images/icons'
 
 import { DashboardCardHeader } from '../dashboard-card-header'
-import { useGetChartTotalInvoices } from '../hooks/use-get-chart-total-invoices'
-import { useGetInvoicesCards } from '../hooks/use-get-invoices-cards'
 import { OverviewChart } from './overview-chart'
 
 export function CardTotalInvoices() {
-  const { data, isLoading, isFetching, dataUpdatedAt } =
-    useGetChartTotalInvoices()
-
-  const { data: totalInvoices } = useGetInvoicesCards()
-
-  const totalValidatedInvoices = totalInvoices?.invoices.find(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (item: any) => item.status === 'A'
-  )
-
   async function handleRefreshCache() {
     // await queryClient.invalidateQueries({
     //   queryKey: ['total-invoices-per-year'],
@@ -29,16 +17,14 @@ export function CardTotalInvoices() {
         title="Total de notas emitidas"
         tooltipText="Neste card você acompanha o quantitativo anual de notas fiscais emitidas, categorizadas por tipo."
         icon={<Icons.overview className="size-5" />}
-        updatedAt={dataUpdatedAt}
+        updatedAt={0}
         refetch={handleRefreshCache}
       >
         <div className="flex w-full items-center justify-between py-2">
           <div className="flex flex-col">
             <div className="flex flex-row items-center gap-1">
               <span className="font-bold">Total:</span>
-              <span className="font-bold">
-                {totalValidatedInvoices?.total ?? 0}
-              </span>
+              <span className="font-bold">{0}</span>
             </div>
             <span className="text-xs font-light">Notas validadas</span>
           </div>
@@ -67,7 +53,7 @@ export function CardTotalInvoices() {
         </div>
       </DashboardCardHeader>
       <CardContent className="pl-2">
-        <OverviewChart data={data} isLoading={isLoading || isFetching} />
+        <OverviewChart data={undefined} isLoading={false} />
       </CardContent>
     </Card>
   )

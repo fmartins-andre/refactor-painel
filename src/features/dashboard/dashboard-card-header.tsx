@@ -47,21 +47,6 @@ export function DashboardCardHeader({
             {formatUpdatedAtDashboard(updatedAt)}
           </span>
           {searchComponent && <>{searchComponent}</>}
-          {/* <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="bg-[#F1F5F9] shadow-sm"
-                  size="icon"
-                  onClick={refetch}
-                >
-                  <RefreshCw className="size-4 text-[#778fb9]" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Atualizar</TooltipContent>
-            </Tooltip>
-          </TooltipProvider> */}
         </div>
       </CardTitle>
       <>{children && <>{children}</>}</>
@@ -71,6 +56,6 @@ export function DashboardCardHeader({
 
 function formatUpdatedAtDashboard(updatedAt?: number) {
   return updatedAt
-    ? `Atualizado em ${new Date(updatedAt).toLocaleString()}`
+    ? `Atualizado em ${new Date(updatedAt).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}`
     : ''
 }

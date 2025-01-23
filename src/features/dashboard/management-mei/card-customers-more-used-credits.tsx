@@ -8,7 +8,6 @@ import { CalendarDateRangePickerNoForm } from '@/components/date-picker/calendar
 import { Icons } from '@/components/images/icons'
 
 import { DashboardCardHeader } from '../dashboard-card-header'
-import { useGetCustomersMoreUsingCredit } from '../hooks/use-get-customers-more-used-credit'
 import { CustomersMoreUsingCredit } from '../tables/customers-more-using-credit'
 
 export function CardCustomersMoreUsedCredits() {
@@ -38,13 +37,6 @@ export function CardCustomersMoreUsedCredits() {
     }
   }
 
-  const { data, isLoading, isFetching, dataUpdatedAt } =
-    useGetCustomersMoreUsingCredit({
-      searchFilter,
-      initialDateFilter,
-      finallyDateFilter,
-    })
-
   async function handleRefreshCache() {
     // await queryClient.invalidateQueries({
     //   queryKey: ['more-using-credit'],
@@ -67,7 +59,7 @@ export function CardCustomersMoreUsedCredits() {
         title="Clientes que Mais Utilizaram os Créditos da Assinatura"
         tooltipText="Este painel exibe o número de notas fiscais que cada cliente utilizou dentro do período da sua assinatura."
         refetch={handleRefreshCache}
-        updatedAt={dataUpdatedAt}
+        updatedAt={0}
         icon={<Icons.overview className="size-5" />}
         searchComponent={<SearchDateComponent />}
       />
@@ -81,10 +73,7 @@ export function CardCustomersMoreUsedCredits() {
           />
         </div>
 
-        <CustomersMoreUsingCredit
-          isLoading={isLoading || isFetching}
-          data={data}
-        />
+        <CustomersMoreUsingCredit isLoading={false} data={undefined} />
       </CardContent>
     </Card>
   )

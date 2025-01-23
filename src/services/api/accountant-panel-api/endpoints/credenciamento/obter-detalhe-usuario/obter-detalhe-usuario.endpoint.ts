@@ -2,11 +2,19 @@ import { handleCommonAccountantPanelApiErrors } from '../../../errors/handle-err
 import { accountantPanelApiHttpClientInstance } from '../../../http-client/http-client'
 import { UsuarioViewModel, usuarioViewModelSchema } from '../../../schemas'
 
-export async function credenciamentoObterDetalheUsuario(): Promise<UsuarioViewModel> {
+export type CredenciamentoObterDetalheUsuarioResponse =
+  | UsuarioViewModel
+  | undefined
+
+export async function credenciamentoObterDetalheUsuario(
+  params: undefined,
+  signal?: AbortSignal
+): Promise<CredenciamentoObterDetalheUsuarioResponse> {
   try {
     const response =
-      await accountantPanelApiHttpClientInstance.get<UsuarioViewModel>(
-        '/v1/Credenciamento/ObterDetalheUsuario'
+      await accountantPanelApiHttpClientInstance.get<CredenciamentoObterDetalheUsuarioResponse>(
+        '/v1/Credenciamento/ObterDetalheUsuario',
+        { signal }
       )
 
     const validatedResponse = usuarioViewModelSchema.parse(response.data)

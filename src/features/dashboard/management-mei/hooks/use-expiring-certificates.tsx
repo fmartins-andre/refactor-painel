@@ -1,3 +1,4 @@
+import { VisaoGeralCertificado } from '@/services/api/accountant-panel-api/endpoints/visao-geral'
 import { inputMask } from '@/utils/input-mask'
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { Link, useNavigate } from '@tanstack/react-router'
@@ -16,8 +17,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-
-import { ExpiringCertificatesListSchema } from '../../validations/expiring-certificates-list'
 
 const dateFormat = (value: string) => {
   const date = new Date(value)
@@ -43,24 +42,24 @@ export function useExpiringCertificates() {
     navigate({ to: `clientes/${empresaId}/${inscricaoId}` })
   }
 
-  const tableColumns: ColumnDef<ExpiringCertificatesListSchema>[] = [
+  const tableColumns: ColumnDef<VisaoGeralCertificado>[] = [
     {
-      accessorKey: 'cnpjCpf',
+      accessorKey: 'documentoCliente',
       header: 'CNPJ / Razão social',
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
             <Avatar>
               <AvatarFallback>
-                {row.original.razaoSocial.charAt(0)}
+                {row.original.nomeCliente.charAt(0)}
               </AvatarFallback>
             </Avatar>
             <div className="flex w-full flex-col items-start">
               <span className="text-primary line-clamp-1 text-ellipsis break-all text-start font-medium">
-                {row.original.razaoSocial}
+                {row.original.nomeCliente}
               </span>
               <span className="line-clamp-1 text-ellipsis break-all text-start text-sm text-[#718EBF]">
-                {inputMask.cpfCnpj(row.original.cnpjCpf)}
+                {inputMask.cpfCnpj(row.original.documentoCliente)}
               </span>
             </div>
           </div>
@@ -68,20 +67,20 @@ export function useExpiringCertificates() {
       },
     },
     {
-      accessorKey: 'statusVencimentoCertificado',
+      accessorKey: 'status',
       header: 'Status',
       cell: ({ row }) => (
         <div className="flex items-center justify-center gap-2">
           <Badge
             variant={
-              validDate(new Date(row.original.dataVencimentoCertificado))
+              validDate(new Date(row.original.dataVencimento as Date))
                 ? 'tertiary'
                 : 'default'
             }
             className="w-24"
           >
             <span className="text-lg">&#8226;</span>
-            {validDate(new Date(row.original.dataVencimentoCertificado))
+            {validDate(new Date(row.original.dataVencimento as Date))
               ? 'Vencido'
               : 'A vencer'}
           </Badge>
@@ -89,11 +88,11 @@ export function useExpiringCertificates() {
       ),
     },
     {
-      accessorKey: 'dataVencimentoCertificado',
+      accessorKey: 'dataVencimento',
       header: 'Vencimento',
       cell: ({ row }) => (
         <span className="text-[#718EBF]">
-          {dateFormat(row.original.dataVencimentoCertificado)}
+          {row.original.dataVencimento?.toLocaleString('pt-BR') ?? '-'}
         </span>
       ),
     },
@@ -115,11 +114,13 @@ export function useExpiringCertificates() {
                 <Button
                   variant="ghost"
                   className="inline-flex items-center gap-2"
-                  onClick={() =>
-                    handleNavigateToCustomerDetail(
-                      row.original.empresaId,
-                      row.original.inscricaoId
-                    )
+                  onClick={
+                    () => {}
+                    // () =>
+                    // handleNavigateToCustomerDetail(
+                    //   row.original.empresaId,
+                    //   row.original.inscricaoId
+                    // )
                   }
                 >
                   <ExternalLink className="size-4" />
@@ -130,10 +131,10 @@ export function useExpiringCertificates() {
                 <Link
                   className="focus-visible:ring-ring hover:bg-accent hover:text-accent-foreground inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
                   to="/certificado"
-                  search={{
-                    empresaId: row.original.empresaId,
-                    inscricaoId: row.original.inscricaoId,
-                  }}
+                  // search={{
+                  //   empresaId: row.original.empresaId,
+                  //   inscricaoId: row.original.inscricaoId,
+                  // }}
                 >
                   <FileStack className="size-4" />
                   Renovar certificado

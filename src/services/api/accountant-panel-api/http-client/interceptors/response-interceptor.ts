@@ -20,8 +20,13 @@ export const onRejectedResponse =
       return Promise.reject(error)
     }
 
-    // se for qualquer erro diferente do 401, segue a rejeição normal
-    if (error.response?.status !== HttpStatusCode.Unauthorized) {
+    // rejeita errors que não pode ser resolvidos com a atualização do token
+    if (
+      // erro 401 será tratado a partir daqui. erros diferente são rejeitados
+      error.response?.status !== HttpStatusCode.Unauthorized &&
+      // erro de rede (possível CORS) será tratado aqui. erros diferente são rejeitados
+      error.code !== 'ERR_NETWORK'
+    ) {
       return Promise.reject(error)
     }
 

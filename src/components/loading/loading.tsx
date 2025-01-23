@@ -1,5 +1,3 @@
-'use client'
-
 import { type ReactNode } from 'react'
 import { getBrandDetails } from '@/utils/get-brand-details'
 import * as Portal from '@radix-ui/react-portal'

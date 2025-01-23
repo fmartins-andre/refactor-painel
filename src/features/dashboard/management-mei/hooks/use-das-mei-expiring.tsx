@@ -1,3 +1,7 @@
+import {
+  StatusListaDasMeiVisaoGeralModelEnum,
+  VisaoGeralDas,
+} from '@/services/api/accountant-panel-api/endpoints/visao-geral'
 import { inputMask } from '@/utils/input-mask'
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { useNavigate } from '@tanstack/react-router'
@@ -17,7 +21,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import { ExpiringDasMeiList } from '../../validations/expiring-das-mei-list'
 import { sendWhatsAppMessage } from './send-das-whats-app'
 
 const dateFormat = (value: string) => {
@@ -62,45 +65,47 @@ export function useDasMeiExpiring() {
     window.open(dasURL, '_blank')
   }
 
-  const tableColumns: ColumnDef<ExpiringDasMeiList>[] = [
+  const tableColumns: ColumnDef<VisaoGeralDas>[] = [
     {
-      accessorKey: 'cnpjCpf',
+      accessorKey: 'documentoCliente',
       header: 'CNPJ / Razão social',
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
           <Avatar>
             <AvatarFallback>
-              {row.original.razaoSocial.charAt(0)}
+              {row.original.nomeCliente.charAt(0)}
             </AvatarFallback>
           </Avatar>
           <div className="flex w-full flex-col items-start">
             <span className="text-primary line-clamp-1 text-ellipsis break-all text-start font-medium">
-              {row.original.razaoSocial}
+              {row.original.nomeCliente}
             </span>
             <span className="line-clamp-1 text-ellipsis break-all text-start text-sm text-[#718EBF]">
-              {inputMask.cpfCnpj(row.original.cnpjCpf)}
+              {inputMask.cpfCnpj(row.original.documentoCliente)}
             </span>
           </div>
         </div>
       ),
     },
     {
-      accessorKey: 'situacao',
+      accessorKey: 'status',
       header: 'Status',
       cell: ({ row }) => (
         <div className="flex items-center justify-center gap-2">
           <Badge
             variant={
-              row.original.situacao === 'Liquidado'
+              row.original.status ===
+              StatusListaDasMeiVisaoGeralModelEnum.VENCIDO
                 ? 'secondary'
-                : row.original.situacao === 'A Vencer'
+                : row.original.status ===
+                    StatusListaDasMeiVisaoGeralModelEnum.PROXIMO_VENCIMENTO
                   ? 'default'
                   : 'tertiary'
             }
             className="w-24"
           >
             <span className="text-lg">&#8226;</span>
-            {row.original.situacao}
+            {row.original.status}
           </Badge>
         </div>
       ),
@@ -110,9 +115,7 @@ export function useDasMeiExpiring() {
       header: 'Vencimento',
       cell: ({ row }) => (
         <span className="text-[#718EBF]">
-          {row.original.dataVencimento
-            ? dateFormat(row.original.dataVencimento)
-            : ' - '}
+          {row.original.dataVencimento?.toLocaleDateString('pt-BR') ?? ' - '}
         </span>
       ),
     },
@@ -134,11 +137,12 @@ export function useDasMeiExpiring() {
                 <Button
                   variant="ghost"
                   className="inline-flex items-center gap-2"
-                  onClick={() =>
-                    handleNavigateToCustomerDetail(
-                      row.original.empresaId,
-                      row.original.inscricaoId
-                    )
+                  onClick={
+                    () => {}
+                    // handleNavigateToCustomerDetail(
+                    //   row.original.empresaId,
+                    //   row.original.inscricaoId
+                    // )
                   }
                 >
                   <ExternalLink className="size-4" />
@@ -149,12 +153,13 @@ export function useDasMeiExpiring() {
                 <Button
                   variant="ghost"
                   className="inline-flex items-center gap-2"
-                  onClick={() =>
-                    handleDownloadDasMei({
-                      dasId: row.original.id,
-                      updatedAt: row.original.dataEdicao,
-                      dasURL: row.original.url ?? '',
-                    })
+                  onClick={
+                    () => {}
+                    // handleDownloadDasMei({
+                    //   dasId: row.original.id,
+                    //   updatedAt: row.original.dataEdicao,
+                    //   dasURL: row.original.url ?? '',
+                    // })
                   }
                 >
                   <Download className="size-4" />
@@ -163,15 +168,15 @@ export function useDasMeiExpiring() {
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Button
-                  disabled={!row.original.telefone}
+                  // disabled={!row.original.telefone}
                   variant="ghost"
                   className="inline-flex items-center gap-2"
                   onClick={() => {
-                    sendWhatsAppMessage({
-                      customerName: row.original.razaoSocial,
-                      customerWhatsAppNumber: row.original.telefone ?? '',
-                      urlDownloadDas: row.original.url ?? '',
-                    })
+                    // sendWhatsAppMessage({
+                    //   customerName: row.original.razaoSocial,
+                    //   customerWhatsAppNumber: row.original.telefone ?? '',
+                    //   urlDownloadDas: row.original.url ?? '',
+                    // })
                   }}
                 >
                   <Send className="size-4" />

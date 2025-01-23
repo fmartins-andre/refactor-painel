@@ -1,3 +1,9 @@
+import { GenericOptionField } from '@/@types/options-field'
+import {
+  StatusListaDasMeiVisaoGeralModelEnum,
+  useVisaoGeralDasListar,
+} from '@/services/api/accountant-panel-api/endpoints/visao-geral'
+
 import { Card, CardContent } from '@/components/ui/card'
 import {
   Select,
@@ -10,34 +16,31 @@ import {
 import { Icons } from '@/components/images/icons'
 
 import { DashboardCardHeader } from '../dashboard-card-header'
-import { useGetExpiringDasMei } from '../hooks/use-get-das-mei-expiring'
 import { DasMeiExpiringList } from './das-mei-expiring-list'
 import { useDashboard } from './hooks/use-dashboard'
 
-const selectOPtions = [
-  { label: 'A Vencer', value: 'A Vencer' },
-  { label: 'Vencido', value: 'Vencido' },
-]
+const selectOPtions: GenericOptionField<StatusListaDasMeiVisaoGeralModelEnum>[] =
+  [
+    {
+      label: 'A Vencer',
+      value: StatusListaDasMeiVisaoGeralModelEnum.PROXIMO_VENCIMENTO,
+    },
+    { label: 'Vencido', value: StatusListaDasMeiVisaoGeralModelEnum.VENCIDO },
+  ]
 
 export function CardDasMeiExpiring() {
   const { filterDasMeiFromStatus, handleSetFilterDasMeiFromStatus } =
     useDashboard()
 
-  const { data, isLoading, isFetching, dataUpdatedAt } = useGetExpiringDasMei(
-    filterDasMeiFromStatus
-  )
+  const { data, isLoading, isFetching, dataUpdatedAt, refetch } =
+    useVisaoGeralDasListar({ status: filterDasMeiFromStatus })
 
   async function handleRefreshCache() {
-    // await queryClient.invalidateQueries({
-    //   queryKey: ['total-expiring-das-mei', filterDasMeiFromStatus],
-    // })
+    await refetch()
   }
 
-  async function handleSetStatus(status: string) {
+  async function handleSetStatus(status: StatusListaDasMeiVisaoGeralModelEnum) {
     handleSetFilterDasMeiFromStatus(status)
-    // await queryClient.invalidateQueries({
-    //   queryKey: ['total-expiring-das-mei', status],
-    // })
   }
 
   const SearchComponent = () => {

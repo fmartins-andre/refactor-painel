@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { RouterContext } from '@/@types/route-context'
 import sleep from '@/utils/sleep'
+import { useQueryClient } from '@tanstack/react-query'
 
 import {
   AuthTokenAndData,
@@ -12,22 +13,29 @@ export type AuthContext = RouterContext['auth']
 const AuthContext = React.createContext<AuthContext | null>(null)
 
 export function AuthProvider({ children }: React.PropsWithChildren) {
+  const queryClient = useQueryClient()
+
   const [data, setData] = React.useState<AuthTokenAndData | null>(
     handleAccountantPanelApiLocalToken.get()
   )
   const isAuthenticated = !!data
 
-  const logout = React.useCallback(async () => {
+  const logout: AuthContext['logout'] = React.useCallback(async () => {
     handleAccountantPanelApiLocalToken.remove()
     setData(null)
     await sleep(100)
-  }, [])
+    await queryClient.cancelQueries()
+    queryClient.clear()
+  }, [queryClient])
 
-  const login = React.useCallback(async (token: string) => {
-    const data = handleAccountantPanelApiLocalToken.set(token)
-    setData(data)
-    await sleep(100)
-  }, [])
+  const login: AuthContext['login'] = React.useCallback(
+    async (token: string) => {
+      const data = handleAccountantPanelApiLocalToken.set(token)
+      setData(data)
+      await sleep(100)
+    },
+    []
+  )
 
   React.useLayoutEffect(() => {
     setData(handleAccountantPanelApiLocalToken.get())

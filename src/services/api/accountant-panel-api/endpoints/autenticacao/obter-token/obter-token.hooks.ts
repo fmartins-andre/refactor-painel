@@ -1,10 +1,10 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 
-import { autenticacaoObterToken } from './obter-token.endpoint'
 import {
-  AutenticacaoObterTokenRequestPayload,
+  autenticacaoObterToken,
   AutenticacaoObterTokenResponse,
-} from './obter-token.schemas'
+} from './obter-token.endpoint'
+import { AutenticacaoObterTokenRequestPayload } from './obter-token.schemas'
 
 export type UseAutenticacaoObterToken = Pick<
   UseMutationOptions<

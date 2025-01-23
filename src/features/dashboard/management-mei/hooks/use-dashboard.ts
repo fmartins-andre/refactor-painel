@@ -1,18 +1,30 @@
+import {
+  StatusListaCertificadosVisaoGeralModelEnum,
+  StatusListaDasMeiVisaoGeralModelEnum,
+} from '@/services/api/accountant-panel-api/endpoints/visao-geral'
 import { create } from 'zustand'
 
 interface UseDashBoardProps {
-  filterDasMeiFromStatus: string
-  handleSetFilterDasMeiFromStatus: (status: string) => void
-  filterCertificateFromStatus: string
-  handleSetFilterCertificateFromStatus: (status: string) => void
+  filterDasMeiFromStatus: StatusListaDasMeiVisaoGeralModelEnum
+  handleSetFilterDasMeiFromStatus: (
+    status: StatusListaDasMeiVisaoGeralModelEnum
+  ) => void
+  filterCertificateFromStatus: StatusListaCertificadosVisaoGeralModelEnum
+  handleSetFilterCertificateFromStatus: (
+    status: StatusListaCertificadosVisaoGeralModelEnum
+  ) => void
 }
 
 export const useDashboard = create<UseDashBoardProps>((set) => ({
-  filterDasMeiFromStatus: 'A Vencer',
-  handleSetFilterDasMeiFromStatus: (status: string) =>
-    set({ filterDasMeiFromStatus: status }),
+  filterDasMeiFromStatus:
+    StatusListaDasMeiVisaoGeralModelEnum.PROXIMO_VENCIMENTO,
+  handleSetFilterDasMeiFromStatus: (
+    status: StatusListaDasMeiVisaoGeralModelEnum
+  ) => set({ filterDasMeiFromStatus: status }),
 
-  filterCertificateFromStatus: 'vencidos',
-  handleSetFilterCertificateFromStatus: (status: string) =>
-    set({ filterCertificateFromStatus: status }),
+  filterCertificateFromStatus:
+    StatusListaCertificadosVisaoGeralModelEnum.VENCIDO,
+  handleSetFilterCertificateFromStatus: (
+    status: StatusListaCertificadosVisaoGeralModelEnum
+  ) => set({ filterCertificateFromStatus: status }),
 }))
