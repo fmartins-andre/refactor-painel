@@ -58,7 +58,7 @@ export const onRejectedResponse =
       // tenta a revalidação do token
       // ATENÇÃO: não usar a instância existente. Chamar com instância nova/avulsa do axios
       const response = await axios.post<{ token: string } | undefined>(
-        '/v1/Autenticacao/AtualizarToken',
+        `${import.meta.env.VITE_ACCOUNTANT_PANEL_API_URL}/v1/Autenticacao/AtualizarToken`,
         { token: currentStoredToken },
         {
           headers: {
