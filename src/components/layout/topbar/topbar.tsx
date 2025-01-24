@@ -1,8 +1,13 @@
+import { useCredenciamentoObterDetalheUsuario } from '@/services/api/accountant-panel-api/endpoints/credenciamento'
+
 import { cn } from '@/lib/utils'
 
 import { ProfileButton } from './profile-button'
 
 export function Topbar() {
+  const { data: detalheUsuarioData, isLoading: isLoadingDetalheUsuario } =
+    useCredenciamentoObterDetalheUsuario()
+
   return (
     <header
       className={cn(
@@ -11,16 +16,19 @@ export function Topbar() {
     >
       <div className="flex w-full justify-between px-2">
         <div className="flex w-full items-center justify-center lg:justify-start xl:justify-start 2xl:justify-start">
-          <span className="text-muted-foreground ml-14 text-sm">
-            <>
-              Olá, <span className="font-bold sm:pt-0.5">{'usuario'}</span>
+          {!isLoadingDetalheUsuario && (
+            <span className="text-muted-foreground ml-14 text-sm inline-flex items-baseline">
+              Olá,{' '}
+              <span className="font-bold pl-1 sm:pt-0.5 max-w-[18ch] sm:max-w-[30ch] lg:max-w-[55ch] line-clamp-1 break-all">
+                {detalheUsuarioData?.nome ?? 'usuario'}
+              </span>
               !👋
-            </>
-          </span>
+            </span>
+          )}
         </div>
         <div className="flex items-center px-3 py-1">
           <nav className="flex items-center gap-2">
-            <ProfileButton user={undefined} />
+            <ProfileButton user={detalheUsuarioData} />
           </nav>
         </div>
       </div>

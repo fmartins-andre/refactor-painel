@@ -1,4 +1,3 @@
-import type { UserProfile } from '@/@types/user-profile'
 import { Link } from '@tanstack/react-router'
 import { FileTextIcon, HomeIcon, Navigation } from 'lucide-react'
 
@@ -10,41 +9,51 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
+import { TextSkeleton } from '@/components/text-skeleton'
 
 import { SignOutButton } from './signout'
 
 interface Props {
-  user: UserProfile | undefined
+  isLoading?: boolean
+  user?: {
+    nome: string
+    email: string
+  }
 }
 
-export function ProfileButton({ user }: Props) {
-  const _user = user || ({} as UserProfile)
-  const userInitials = () => {
-    if (user) {
-      return user?.nomeUsuario[0]
-    }
-    return 'USU'
-  }
-
-  _user.nomeUsuario = 'placeholder'
-  _user.email = 'placeholder@teste.com.br'
+export function ProfileButton({ user, isLoading = false }: Props) {
+  const validUser: NonNullableFields<Props['user']> =
+    user ||
+    ({
+      nome: 'Usuário',
+      email: 'usuario@exemplo.com.br',
+    } satisfies NonNullableFields<Props['user']>)
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="mr-2 bg-none pl-1">
         <div className="flex flex-col justify-end space-x-2 bg-none">
           <Avatar>
-            <AvatarImage src={user?.infoParceiro?.logoLogin ?? undefined} />
-            <AvatarFallback>{userInitials()}</AvatarFallback>
+            <AvatarImage src={undefined} />
+            <AvatarFallback>{validUser.nome.at(0)}</AvatarFallback>
           </Avatar>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mr-5 mt-2 min-w-72 rounded-xl ">
         <div className="flex w-full flex-col items-start gap-1">
           <div className="flex flex-col items-start gap-1 p-4">
-            <p className="font-medium">{_user?.nomeUsuario}</p>
-            <p className="text-muted-foreground text-xs font-medium">
-              {_user?.email}
+            <p className="font-medium max-w-[23ch] text-wrap line-clamp-2">
+              {isLoading ? <TextSkeleton /> : validUser.nome}
+            </p>
+            <p className="text-muted-foreground text-xs font-medium max-w-[31ch] line-clamp-1 break-all">
+              {isLoading ? (
+                <span className="animate-pulse">
+                  carregando
+                  <TextSkeleton />
+                </span>
+              ) : (
+                validUser.email
+              )}
             </p>
           </div>
           <Separator className="bg-muted w-full" />
