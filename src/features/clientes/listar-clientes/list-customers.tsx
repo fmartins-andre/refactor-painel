@@ -1,16 +1,13 @@
-import { Pagination } from '@/@types/pagination'
+import { ClienteListarResponse } from '@/services/api/accountant-panel-api/endpoints/cliente'
 import { ScrollArea, Scrollbar } from '@radix-ui/react-scroll-area'
 
 import { DataTable } from '@/components/data-table'
 
 import { useAccountantCustomers } from './use-accountant-customers'
-import {
-  CustomerListSchemaInput,
-  customersListSchema,
-} from './validations/customer-list'
+import { customersListSchema } from './validations/customer-list'
 
 interface Props {
-  customers: Pagination<CustomerListSchemaInput> | undefined
+  customers: ClienteListarResponse
 }
 
 export function ListCustomers({ customers }: Props) {

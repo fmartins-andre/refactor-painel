@@ -1,5 +1,5 @@
 import { z } from '@/lib/translated-zod'
-import { zodTransformApiDate } from '@/lib/zod-transform-api-date'
+import { zodTransformFromIsoToDate } from '@/lib/zod-transform-api-date'
 
 export enum StatusListaCertificadosVisaoGeralModelEnum {
   PROXIMO_VENCIMENTO = 'ProximoVencimento',
@@ -18,7 +18,7 @@ export const visaoGeralCertificadoSchema = z.object({
   documentoCliente: z.custom<string>(),
   nomeCliente: z.custom<string>(),
   status: z.custom<StatusListaCertificadosVisaoGeralModelEnum>(),
-  dataVencimento: z.custom<string>().transform(zodTransformApiDate),
+  dataVencimento: z.custom<string>().transform(zodTransformFromIsoToDate),
 })
 
 export type VisaoGeralCertificado = z.output<typeof visaoGeralCertificadoSchema>

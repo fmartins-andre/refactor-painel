@@ -1,5 +1,5 @@
 import { z } from '@/lib/translated-zod'
-import { zodTransformApiDate } from '@/lib/zod-transform-api-date'
+import { zodTransformFromIsoToDate } from '@/lib/zod-transform-api-date'
 
 import { faturaPlanoViewModelSchema } from './fatura-plano-view-model.schema'
 import {
@@ -24,8 +24,8 @@ export const planoContadorViewModelSchema = z.object({
   permiteCobranca: z.coerce.boolean(),
   permiteEmissor: z.coerce.boolean(),
   valor: z.coerce.number(),
-  inicioVigencia: z.custom<string>().transform(zodTransformApiDate),
-  finalVigencia: z.custom<string>().transform(zodTransformApiDate),
+  inicioVigencia: z.custom<string>().transform(zodTransformFromIsoToDate),
+  finalVigencia: z.custom<string>().transform(zodTransformFromIsoToDate),
   quantidadeParcelas: z.coerce.boolean(),
   diaProcessamentoRecorrencia: z.coerce.boolean(),
   referenciaAssinatura: z.custom<string>(),

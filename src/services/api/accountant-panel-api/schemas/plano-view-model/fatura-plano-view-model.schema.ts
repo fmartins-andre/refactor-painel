@@ -1,5 +1,5 @@
 import { z } from '@/lib/translated-zod'
-import { zodTransformApiDate } from '@/lib/zod-transform-api-date'
+import { zodTransformFromIsoToDate } from '@/lib/zod-transform-api-date'
 
 import {
   StatusCobrancaFaturaPlanoModelEnum,
@@ -11,8 +11,8 @@ export const faturaPlanoViewModelSchema = z.object({
   totalParcelas: z.coerce.number(),
   descricao: z.custom<string>(),
   statusCobranca: z.custom<StatusCobrancaFaturaPlanoModelEnum>(),
-  vencimentoCobranca: z.custom<string>().transform(zodTransformApiDate),
-  ultimoStatusCobranca: z.custom<string>().transform(zodTransformApiDate),
+  vencimentoCobranca: z.custom<string>().transform(zodTransformFromIsoToDate),
+  ultimoStatusCobranca: z.custom<string>().transform(zodTransformFromIsoToDate),
   statusTributacao: z.custom<StatusTributacaoFaturaPlanoModelEnum>(),
 })
 

@@ -2,7 +2,7 @@ import { UfBrasilEnum } from '@/@types/system-wide-enums'
 
 import { z } from '@/lib/translated-zod'
 
-export const contadorEnderecoViewModelSchema = z.object({
+export const enderecoViewModelSchema = z.object({
   logradouro: z.custom<string>(),
   numero: z.custom<string>(),
   bairro: z.custom<string>(),
@@ -12,6 +12,4 @@ export const contadorEnderecoViewModelSchema = z.object({
   cep: z.custom<string>(),
 })
 
-export type ContadorEnderecoViewModel = z.output<
-  typeof contadorEnderecoViewModelSchema
->
+export type EnderecoViewModel = z.output<typeof enderecoViewModelSchema>

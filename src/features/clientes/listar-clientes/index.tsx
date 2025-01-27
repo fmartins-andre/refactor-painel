@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef } from 'react'
-import { Pagination } from '@/@types/pagination'
+import { useClienteListar } from '@/services/api/accountant-panel-api/endpoints/cliente'
 import {
   FileDownIcon,
   InfoIcon,
@@ -23,7 +23,6 @@ import { CustomersFiltersSelected } from './customers-filters-selected'
 import { useFetchCustomers } from './helpers/use-fetch-values-from-api'
 import { SearchCustomers } from './search-customers'
 import { useAccountantCustomers } from './use-accountant-customers'
-import { CustomerListSchemaInput } from './validations/customer-list'
 
 const CustomerDialog = lazy(() =>
   import('../customer-dialog').then((module) => ({
@@ -48,13 +47,14 @@ export function CustomerList() {
   const { toast } = useToast()
   const { appliedFilters } = useAccountantCustomers()
 
+  const {
+    data: clientes,
+    isLoading: isLoadingClientes,
+    refetch: refetchClientes,
+  } = useClienteListar()
+
   async function handleRefetchList() {
-    // await queryClient.invalidateQueries({
-    //   queryKey: ['customers-list', page, perPage],
-    // })
-    // await queryClient.invalidateQueries({
-    //   queryKey: getTotalCustomersCards().queryKey,
-    // })
+    await refetchClientes()
   }
 
   const customerDialogRef = useRef<CustomerDialogRef>(null)
@@ -142,9 +142,7 @@ export function CustomerList() {
             </div>
             <div className="w-full px-2">
               <Suspense fallback={<div>carregando...</div>}>
-                <ListCustomers
-                  customers={customers as Pagination<CustomerListSchemaInput>}
-                />
+                <ListCustomers customers={clientes} />
               </Suspense>
             </div>
           </CardContent>

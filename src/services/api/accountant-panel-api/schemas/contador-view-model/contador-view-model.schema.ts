@@ -1,11 +1,11 @@
 import { z } from '@/lib/translated-zod'
 
 import { certificadoDigitalViewModelSchema } from '../certificado-digital-view-model'
+import { enderecoViewModelSchema } from '../endereco-view-model'
 import { gestaoEstoqueViewModelSchema } from '../gestao-estoque-view-model '
 import { planoContadorViewModelSchema } from '../plano-view-model'
 import { TipoPessoaModelEnum } from '../shared'
 import { contadorConfiguracaoViewModelSchema } from './contador-configuracao-view-model.schema'
-import { contadorEnderecoViewModelSchema } from './contador-endereco-view-model.schema'
 import { StatusContadorModelEnum } from './contador-view-model.enum'
 
 export const contadorViewModelSchema = z.object({
@@ -18,7 +18,7 @@ export const contadorViewModelSchema = z.object({
   nomeResponsavel: z.custom<string>(),
   telefone: z.custom<string>(),
   email: z.custom<string>(),
-  endereco: contadorEnderecoViewModelSchema.nullable(),
+  endereco: enderecoViewModelSchema.nullable(),
   certificadoDigital: certificadoDigitalViewModelSchema.nullable(),
   plano: planoContadorViewModelSchema.nullable(),
   configuracao: contadorConfiguracaoViewModelSchema.nullable(),
