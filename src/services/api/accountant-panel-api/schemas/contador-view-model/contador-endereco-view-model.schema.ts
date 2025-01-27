@@ -1,6 +1,6 @@
-import { z } from '@/lib/translated-zod'
+import { UfBrasilEnum } from '@/@types/system-wide-enums'
 
-import { UfModelEnum } from '../shared'
+import { z } from '@/lib/translated-zod'
 
 export const contadorEnderecoViewModelSchema = z.object({
   logradouro: z.custom<string>(),
@@ -8,7 +8,7 @@ export const contadorEnderecoViewModelSchema = z.object({
   bairro: z.custom<string>(),
   complemento: z.custom<string>(),
   cidade: z.custom<string>(),
-  uf: z.custom<UfModelEnum>(),
+  uf: z.custom<UfBrasilEnum>(),
   cep: z.custom<string>(),
 })
 

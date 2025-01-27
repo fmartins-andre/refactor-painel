@@ -3,22 +3,33 @@ import { ZodError } from 'zod'
 
 import { toast } from '@/components/hooks/use-toast'
 
-import { CommonAccountantPanelApiError } from './common-error.types'
+import { CommonCnpjWsApiError } from './common-error.types'
 
-export function handleCommonAccountantPanelApiErrors<
-  TError extends CommonAccountantPanelApiError,
+export function handleCommonCnpjWsApiErrors<
+  TError extends CommonCnpjWsApiError,
 >(error: unknown, fallbackErrorMessage?: string) {
-  console.error('error accountant panel api:\n', error)
+  console.error('error cnpjws api:\n', error)
 
   if (isAxiosError(error)) {
     const axiosError = error as AxiosError<TError>
 
+    const description = axiosError.response?.data?.detalhes
+    const validations = axiosError.response?.data?.validacao
+
     toast({
       title:
-        axiosError.response?.data?.title ??
+        axiosError.response?.data.titulo ??
         fallbackErrorMessage ??
         'Erro na solicitação ao servidor.',
-      description: axiosError.response?.data?.detail,
+      description: (
+        <>
+          {Boolean(description?.length) && (
+            <p className="font-semibold underline">{description}</p>
+          )}
+
+          {validations?.map((message, index) => <p key={index}>{message}</p>)}
+        </>
+      ),
       variant: 'destructive',
     })
   } else if (error instanceof ZodError) {

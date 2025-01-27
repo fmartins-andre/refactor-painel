@@ -1,24 +1,23 @@
-import { AxiosError, isAxiosError } from 'axios'
+import { AxiosError, HttpStatusCode, isAxiosError } from 'axios'
 import { ZodError } from 'zod'
 
 import { toast } from '@/components/hooks/use-toast'
 
-import { CommonAccountantPanelApiError } from './common-error.types'
+import { CommonViaCepApi400Error } from './common-error.types'
 
-export function handleCommonAccountantPanelApiErrors<
-  TError extends CommonAccountantPanelApiError,
->(error: unknown, fallbackErrorMessage?: string) {
-  console.error('error accountant panel api:\n', error)
+export function handleCommonCnpjWsApiErrors(error: unknown) {
+  console.error('error cnpjws api:\n', error)
 
-  if (isAxiosError(error)) {
-    const axiosError = error as AxiosError<TError>
+  if (
+    isAxiosError(error) &&
+    error.response?.status === HttpStatusCode.BadRequest
+  ) {
+    const axiosError = error as AxiosError<CommonViaCepApi400Error>
 
     toast({
-      title:
-        axiosError.response?.data?.title ??
-        fallbackErrorMessage ??
-        'Erro na solicitação ao servidor.',
-      description: axiosError.response?.data?.detail,
+      title: axiosError.response?.data.erro
+        ? 'CEP não encontrado!'
+        : 'Erro ao buscar CEP.',
       variant: 'destructive',
     })
   } else if (error instanceof ZodError) {
