@@ -1,0 +1,60 @@
+import { useLazyCnpjWsDadosEmpresa } from '@/services/api/third-party/cnpj-ws/endpoints/cnpj'
+import { inputMask } from '@/utils/input-mask'
+import {
+  UseFormGetFieldState,
+  UseFormResetField,
+  UseFormSetValue,
+} from 'react-hook-form'
+
+import { useHandleCustomerFormState } from '../../../helpers/use-customer-form-state'
+import { CustomerFormStep01Input } from '../customer-form-step-01.schema'
+
+export type UseFormStep01HandleCustomerDataByCnpj = {
+  getFieldState: UseFormGetFieldState<CustomerFormStep01Input>
+  resetField: UseFormResetField<CustomerFormStep01Input>
+  setValue: UseFormSetValue<CustomerFormStep01Input>
+}
+
+export function useFormStep01HandleCustomerDataByCnpj({
+  getFieldState,
+  resetField,
+  setValue,
+}: UseFormStep01HandleCustomerDataByCnpj) {
+  const { updateCustomerPayload } = useHandleCustomerFormState()
+
+  const [fetchCnpjData, { isLoading: isFetchingCnpjData }] =
+    useLazyCnpjWsDadosEmpresa()
+
+  const getCustomerDataHandler = async (cnpj: string) => {
+    const { isDirty } = getFieldState('cnpjCpf')
+    if (!isDirty) return
+
+    resetField('cnpjCpf', { defaultValue: inputMask.cpfCnpj(cnpj) })
+
+    const data = await fetchCnpjData({ cnpj })
+
+    if (data) {
+      setValue('razaoSocial', data.razao_social ?? '')
+      setValue('email', data.estabelecimento.email ?? '')
+      setValue(
+        'telefoneWhatsapp',
+        inputMask.phone(
+          data.estabelecimento.ddd1.concat(data.estabelecimento.telefone1)
+        )
+      )
+
+      updateCustomerPayload({
+        cep: inputMask.cep(data.estabelecimento.cep ?? ''),
+        numero: data.estabelecimento.numero ?? '',
+        logradouro: data.estabelecimento.logradouro.replace(/\s{2,}/g, ' '),
+        complemento: data.estabelecimento.complemento.replace(/\s{2,}/g, ' '),
+        cidadeId: String(data.estabelecimento.cidade.ibge_id),
+        bairro: data.estabelecimento.bairro.replace(/\s{2,}/g, ' '),
+        uf: data.estabelecimento.estado.sigla,
+        paisId: data.estabelecimento.pais.id,
+      })
+    }
+  }
+
+  return { isFetchingCnpjData, getCustomerDataHandler }
+}
