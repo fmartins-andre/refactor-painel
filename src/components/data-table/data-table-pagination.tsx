@@ -17,16 +17,9 @@ import {
 
 import { useDataTableContext } from './data-table-provider'
 
-interface DataTablePaginationProps {
-  handlePageSize: (pageSize: number) => void
-  handlePage: (page: number) => void
-}
-
-export function DataTablePagination({
-  handlePage,
-  handlePageSize,
-}: DataTablePaginationProps) {
-  const { manualPagination, table } = useDataTableContext()
+export function DataTablePagination() {
+  const { manualPagination, table, handlePage, handlePageSize } =
+    useDataTableContext()
 
   const lastPageIndex = table.getPageCount()
   const firstPageIndex = 1
@@ -47,7 +40,7 @@ export function DataTablePagination({
         return table.setPageIndex(pageIndex - 1)
       }
 
-      handlePage(pageIndex)
+      handlePage?.(pageIndex)
     },
     [manualPagination, table, handlePage]
   )
@@ -58,7 +51,7 @@ export function DataTablePagination({
         return table.setPageSize(pageSize)
       }
 
-      handlePageSize(pageSize)
+      handlePageSize?.(pageSize)
     },
     [manualPagination, handlePageSize, table]
   )

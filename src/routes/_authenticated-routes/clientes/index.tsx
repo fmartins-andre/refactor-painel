@@ -1,20 +1,12 @@
-import { lazy, Suspense } from 'react'
+import { clienteListarClientOptions } from '@/services/api/accountant-panel-api/endpoints/cliente'
+import { clientesListarPageSearchParamsSchema } from '@/services/route-validations/clientes'
 import { createFileRoute } from '@tanstack/react-router'
-
-const CustomerList = lazy(() =>
-  import('@/features/clientes/listar-clientes').then((module) => ({
-    default: module.CustomerList,
-  }))
-)
+import { zodValidator } from '@tanstack/zod-adapter'
 
 export const Route = createFileRoute('/_authenticated-routes/clientes/')({
-  component: RouteComponent,
+  validateSearch: zodValidator(clientesListarPageSearchParamsSchema),
+  loaderDeps: ({ search }) => ({ search }),
+  loader: ({ context, deps }) => {
+    context.queryClient.ensureQueryData(clienteListarClientOptions(deps.search))
+  },
 })
-
-function RouteComponent() {
-  return (
-    <Suspense fallback={<div>carregando...</div>}>
-      <CustomerList />
-    </Suspense>
-  )
-}

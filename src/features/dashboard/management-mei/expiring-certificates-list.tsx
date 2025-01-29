@@ -22,7 +22,7 @@ export function ExpiringCertificatesList({ data, isLoading }: Props) {
       <DataTable.Root
         columns={tableColumns}
         data={data ?? []}
-        limit={data?.length ?? 1000}
+        pageSize={data?.length ?? 1000}
         // limit={data?.per_page ?? 1000}
         // page={data?.current_page ?? 1}
         // total={data?.total ?? 0}

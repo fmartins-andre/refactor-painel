@@ -8,6 +8,11 @@ import { CommonViaCepApi400Error } from './common-error.types'
 export function handleCommonCnpjWsApiErrors(error: unknown) {
   console.error('error cnpjws api:\n', error)
 
+  if (isAxiosError(error) && error.code === 'ERR_CANCELED') {
+    // do nothing
+    return
+  }
+
   if (
     isAxiosError(error) &&
     error.response?.status === HttpStatusCode.BadRequest
@@ -20,7 +25,11 @@ export function handleCommonCnpjWsApiErrors(error: unknown) {
         : 'Erro ao buscar CEP.',
       variant: 'destructive',
     })
-  } else if (error instanceof ZodError) {
+
+    return
+  }
+
+  if (error instanceof ZodError) {
     const messages = error.issues.map((err) => err.message)
 
     toast({
@@ -37,12 +46,14 @@ export function handleCommonCnpjWsApiErrors(error: unknown) {
       ),
       variant: 'destructive',
     })
-  } else {
-    const _error = error as Error
-    toast({
-      title: 'Erro inesperado...',
-      description: _error.message || 'Tente novamente mais tarde!',
-      variant: 'destructive',
-    })
+
+    return
   }
+
+  const _error = error as Error
+  toast({
+    title: 'Erro inesperado...',
+    description: _error.message || 'Tente novamente mais tarde!',
+    variant: 'destructive',
+  })
 }

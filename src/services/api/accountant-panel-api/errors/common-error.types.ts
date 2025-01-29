@@ -4,4 +4,5 @@ export interface CommonAccountantPanelApiError {
   status: number
   detail: string
   instance: string
+  [key: string]: unknown
 }

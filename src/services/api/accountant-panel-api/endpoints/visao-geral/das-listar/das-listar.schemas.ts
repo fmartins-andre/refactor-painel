@@ -1,5 +1,5 @@
 import { z } from '@/lib/translated-zod'
-import { zodTransformFromIsoToDate } from '@/lib/zod-transform-api-date'
+import { zodTransformFromIsoToDate } from '@/lib/zod-transforms'
 
 export enum StatusListaDasMeiVisaoGeralModelEnum {
   PROXIMO_VENCIMENTO = 'ProximoVencimento',

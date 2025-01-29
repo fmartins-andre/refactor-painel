@@ -22,7 +22,7 @@ export function InvoicesFromCustomer({ data, isLoading }: Props) {
       <DataTable.Root
         columns={columns}
         data={data?.data ?? []}
-        limit={data?.per_page ?? 10}
+        pageSize={data?.per_page ?? 10}
         page={data?.current_page ?? 1}
         total={data?.total ?? 0}
       >

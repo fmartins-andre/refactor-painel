@@ -80,6 +80,7 @@
     "@tanstack/react-router": "^1.95.5",
     "@tanstack/react-table": "^8.20.6",
     "@tanstack/router-devtools": "^1.95.5",
+    "@tanstack/zod-adapter": "^1.97.25",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

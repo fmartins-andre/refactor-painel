@@ -1,7 +1,7 @@
 import { validateCNPJ } from 'validations-br'
 
 import { z } from '@/lib/translated-zod'
-import { zodTransformFromIsoToDate } from '@/lib/zod-transform-api-date'
+import { zodTransformFromIsoToDate } from '@/lib/zod-transforms'
 
 export const cnpjWsDadosEmpresaRequestParamsSchema = z.object({
   cnpj: z.string().transform((arg, ctx): string => {

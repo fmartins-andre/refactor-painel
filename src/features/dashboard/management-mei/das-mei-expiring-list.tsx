@@ -22,7 +22,7 @@ export function DasMeiExpiringList({ isLoading, data }: Props) {
       <DataTable.Root
         columns={tableColumns}
         data={data ?? []}
-        limit={data?.length ?? 999}
+        pageSize={data?.length ?? 999}
         // page={data?.current_page ?? 1}
         // total={data?.total ?? 0}
       >

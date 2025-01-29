@@ -10,6 +10,11 @@ export function handleCommonCnpjWsApiErrors<
 >(error: unknown, fallbackErrorMessage?: string) {
   console.error('error cnpjws api:\n', error)
 
+  if (isAxiosError(error) && error.code === 'ERR_CANCELED') {
+    // do nothing
+    return
+  }
+
   if (isAxiosError(error)) {
     const axiosError = error as AxiosError<TError>
 
@@ -32,7 +37,11 @@ export function handleCommonCnpjWsApiErrors<
       ),
       variant: 'destructive',
     })
-  } else if (error instanceof ZodError) {
+
+    return
+  }
+
+  if (error instanceof ZodError) {
     const messages = error.issues.map((err) => err.message)
 
     toast({
@@ -49,12 +58,14 @@ export function handleCommonCnpjWsApiErrors<
       ),
       variant: 'destructive',
     })
-  } else {
-    const _error = error as Error
-    toast({
-      title: 'Erro inesperado...',
-      description: _error.message || 'Tente novamente mais tarde!',
-      variant: 'destructive',
-    })
+
+    return
   }
+
+  const _error = error as Error
+  toast({
+    title: 'Erro inesperado...',
+    description: _error.message || 'Tente novamente mais tarde!',
+    variant: 'destructive',
+  })
 }

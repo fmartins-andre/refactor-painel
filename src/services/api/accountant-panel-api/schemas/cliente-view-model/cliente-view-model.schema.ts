@@ -1,5 +1,5 @@
 import { z } from '@/lib/translated-zod'
-import { zodTransformFromIsoToDate } from '@/lib/zod-transform-api-date'
+import { zodTransformFromIsoToDate } from '@/lib/zod-transforms'
 
 import { certificadoDigitalViewModelSchema } from '../certificado-digital-view-model'
 import { enderecoViewModelSchema } from '../endereco-view-model'
@@ -14,9 +14,9 @@ export const clienteViewModelSchema = z.object({
   tipoPessoa: z.custom<TipoPessoaModelEnum>(),
   documento: z.custom<string>(),
   nomeRazaoSocial: z.custom<string>(),
-  nomeFantasia: z.custom<string>(),
-  telefone: z.custom<string>(),
-  email: z.custom<string>(),
+  nomeFantasia: z.custom<string>().nullable(),
+  telefone: z.custom<string>().nullable(),
+  email: z.custom<string>().nullable(),
   endereco: enderecoViewModelSchema.nullable(),
   pessoaJuridica: clientePessoaJuridicaViewModelSchema.nullable(),
   certificadoDigital: certificadoDigitalViewModelSchema.nullable(),

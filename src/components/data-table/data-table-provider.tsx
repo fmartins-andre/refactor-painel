@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useLayoutEffect,
   useState,
   type ReactNode,
 } from 'react'
@@ -19,8 +20,10 @@ import {
 interface DataTableContextProps<TData> {
   table: TableType<TData>
   manualPagination: boolean
-  limit: number
+  pageSize: number
   isLoading?: boolean
+  handlePageSize?: (pageSize: number) => void
+  handlePage?: (page: number) => void
 }
 
 type DataTableProviderProps<TData, TValue> = {
@@ -29,9 +32,11 @@ type DataTableProviderProps<TData, TValue> = {
   columnsVisibility?: VisibilityState
   total?: number
   page?: number
-  limit: number
+  pageSize: number
   children: ReactNode
   isLoading?: boolean
+  handlePageSize?: (pageSize: number) => void
+  handlePage?: (page: number) => void
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,19 +49,25 @@ export function DataTableProvider<TData, TValue>({
   children,
   columns,
   data,
-  limit,
+  pageSize,
   page,
   columnsVisibility,
   total,
   isLoading = false,
+  handlePage,
+  handlePageSize,
 }: DataTableProviderProps<TData, TValue>) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const manualPagination = page !== undefined && total !== undefined
 
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+  const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: page ? page - 1 : 0,
-    pageSize: limit,
+    pageSize,
   })
+
+  useLayoutEffect(() => {
+    setPagination({ pageIndex: page ? page - 1 : 0, pageSize })
+  }, [page, pageSize])
 
   useEffect(() => {
     if (columnsVisibility) {
@@ -68,25 +79,31 @@ export function DataTableProvider<TData, TValue>({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    getPaginationRowModel: manualPagination
+      ? undefined
+      : getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     manualPagination,
     onColumnVisibilityChange: setColumnVisibility,
     onPaginationChange: setPagination,
     autoResetPageIndex: false,
-    pageCount: manualPagination ? Math.ceil(total / limit) : undefined,
+    pageCount: manualPagination ? Math.ceil(total / pageSize) : undefined,
     state: {
       columnVisibility,
-      pagination: {
-        pageIndex,
-        pageSize,
-      },
+      pagination,
     },
   })
 
   return (
     <DataTableContext.Provider
-      value={{ limit, manualPagination, table, isLoading }}
+      value={{
+        handlePage,
+        handlePageSize,
+        pageSize,
+        manualPagination,
+        table,
+        isLoading,
+      }}
     >
       {children}
     </DataTableContext.Provider>

@@ -20,7 +20,7 @@ export function CustomersMoreUsingCredit({ data, isLoading }: Props) {
       <DataTable.Root
         columns={columns}
         data={data ?? []}
-        limit={1000}
+        pageSize={1000}
         page={1}
         total={data?.length ?? 0}
       >

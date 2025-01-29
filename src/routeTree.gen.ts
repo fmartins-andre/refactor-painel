@@ -13,7 +13,6 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthenticatedRoutesRouteImport } from './routes/_authenticated-routes/route'
 import { Route as AuthenticatedRoutesIndexImport } from './routes/_authenticated-routes/index'
-import { Route as PublicRoutesReportsImport } from './routes/_public-routes/reports'
 import { Route as PublicRoutesAutenticacaoRouteImport } from './routes/_public-routes/_autenticacao/route'
 import { Route as AuthenticatedRoutesNotasAvulsasIndexImport } from './routes/_authenticated-routes/notas-avulsas/index'
 import { Route as AuthenticatedRoutesDashboardIndexImport } from './routes/_authenticated-routes/dashboard/index'
@@ -28,18 +27,14 @@ import { Route as PublicRoutesAutenticacaoLoginImport } from './routes/_public-r
 const AuthenticatedRoutesRouteRoute = AuthenticatedRoutesRouteImport.update({
   id: '/_authenticated-routes',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/_authenticated-routes/route.lazy').then((d) => d.Route),
+)
 
 const AuthenticatedRoutesIndexRoute = AuthenticatedRoutesIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedRoutesRouteRoute,
-} as any)
-
-const PublicRoutesReportsRoute = PublicRoutesReportsImport.update({
-  id: '/_public-routes/reports',
-  path: '/reports',
-  getParentRoute: () => rootRoute,
 } as any)
 
 const PublicRoutesAutenticacaoRouteRoute =
@@ -60,14 +55,22 @@ const AuthenticatedRoutesDashboardIndexRoute =
     id: '/dashboard/',
     path: '/dashboard/',
     getParentRoute: () => AuthenticatedRoutesRouteRoute,
-  } as any)
+  } as any).lazy(() =>
+    import('./routes/_authenticated-routes/dashboard/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 const AuthenticatedRoutesClientesIndexRoute =
   AuthenticatedRoutesClientesIndexImport.update({
     id: '/clientes/',
     path: '/clientes/',
     getParentRoute: () => AuthenticatedRoutesRouteRoute,
-  } as any)
+  } as any).lazy(() =>
+    import('./routes/_authenticated-routes/clientes/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 const AuthenticatedRoutesCertificadoIndexRoute =
   AuthenticatedRoutesCertificadoIndexImport.update({
@@ -88,14 +91,22 @@ const PublicRoutesAutenticacaoLogoutRoute =
     id: '/logout',
     path: '/logout',
     getParentRoute: () => PublicRoutesAutenticacaoRouteRoute,
-  } as any)
+  } as any).lazy(() =>
+    import('./routes/_public-routes/_autenticacao/logout.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 const PublicRoutesAutenticacaoLoginRoute =
   PublicRoutesAutenticacaoLoginImport.update({
     id: '/login',
     path: '/login',
     getParentRoute: () => PublicRoutesAutenticacaoRouteRoute,
-  } as any)
+  } as any).lazy(() =>
+    import('./routes/_public-routes/_autenticacao/login.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 // Populate the FileRoutesByPath interface
 
@@ -113,13 +124,6 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof PublicRoutesAutenticacaoRouteImport
-      parentRoute: typeof rootRoute
-    }
-    '/_public-routes/reports': {
-      id: '/_public-routes/reports'
-      path: '/reports'
-      fullPath: '/reports'
-      preLoaderRoute: typeof PublicRoutesReportsImport
       parentRoute: typeof rootRoute
     }
     '/_authenticated-routes/': {
@@ -230,7 +234,6 @@ const PublicRoutesAutenticacaoRouteRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '': typeof PublicRoutesAutenticacaoRouteRouteWithChildren
-  '/reports': typeof PublicRoutesReportsRoute
   '/': typeof AuthenticatedRoutesIndexRoute
   '/login': typeof PublicRoutesAutenticacaoLoginRoute
   '/logout': typeof PublicRoutesAutenticacaoLogoutRoute
@@ -243,7 +246,6 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '': typeof PublicRoutesAutenticacaoRouteRouteWithChildren
-  '/reports': typeof PublicRoutesReportsRoute
   '/': typeof AuthenticatedRoutesIndexRoute
   '/login': typeof PublicRoutesAutenticacaoLoginRoute
   '/logout': typeof PublicRoutesAutenticacaoLogoutRoute
@@ -258,7 +260,6 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_authenticated-routes': typeof AuthenticatedRoutesRouteRouteWithChildren
   '/_public-routes/_autenticacao': typeof PublicRoutesAutenticacaoRouteRouteWithChildren
-  '/_public-routes/reports': typeof PublicRoutesReportsRoute
   '/_authenticated-routes/': typeof AuthenticatedRoutesIndexRoute
   '/_public-routes/_autenticacao/login': typeof PublicRoutesAutenticacaoLoginRoute
   '/_public-routes/_autenticacao/logout': typeof PublicRoutesAutenticacaoLogoutRoute
@@ -273,7 +274,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
-    | '/reports'
     | '/'
     | '/login'
     | '/logout'
@@ -285,7 +285,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
-    | '/reports'
     | '/'
     | '/login'
     | '/logout'
@@ -298,7 +297,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authenticated-routes'
     | '/_public-routes/_autenticacao'
-    | '/_public-routes/reports'
     | '/_authenticated-routes/'
     | '/_public-routes/_autenticacao/login'
     | '/_public-routes/_autenticacao/logout'
@@ -313,14 +311,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRoutesRouteRoute: typeof AuthenticatedRoutesRouteRouteWithChildren
   PublicRoutesAutenticacaoRouteRoute: typeof PublicRoutesAutenticacaoRouteRouteWithChildren
-  PublicRoutesReportsRoute: typeof PublicRoutesReportsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoutesRouteRoute: AuthenticatedRoutesRouteRouteWithChildren,
   PublicRoutesAutenticacaoRouteRoute:
     PublicRoutesAutenticacaoRouteRouteWithChildren,
-  PublicRoutesReportsRoute: PublicRoutesReportsRoute,
 }
 
 export const routeTree = rootRoute
@@ -334,8 +330,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_authenticated-routes",
-        "/_public-routes/_autenticacao",
-        "/_public-routes/reports"
+        "/_public-routes/_autenticacao"
       ]
     },
     "/_authenticated-routes": {
@@ -355,9 +350,6 @@ export const routeTree = rootRoute
         "/_public-routes/_autenticacao/logout",
         "/_public-routes/_autenticacao/recuperar-senha"
       ]
-    },
-    "/_public-routes/reports": {
-      "filePath": "_public-routes/reports.tsx"
     },
     "/_authenticated-routes/": {
       "filePath": "_authenticated-routes/index.tsx",

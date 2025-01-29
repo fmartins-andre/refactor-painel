@@ -1642,6 +1642,11 @@
   resolved "https://registry.yarnpkg.com/@tanstack/virtual-file-routes/-/virtual-file-routes-1.87.6.tgz#8244507c2d764f49472d5c3dcfd6e012cde4990f"
   integrity sha512-PTpeM8SHL7AJM0pJOacFvHribbUODS51qe9NsMqku4mogh6BWObY1EeVmeGnp9o3VngAEsf+rJMs2zqIVz3WFA==
 
+"@tanstack/zod-adapter@^1.97.25":
+  version "1.97.25"
+  resolved "https://registry.yarnpkg.com/@tanstack/zod-adapter/-/zod-adapter-1.97.25.tgz#bf878ab732483bd94a896d47d104c94d8ed96a8f"
+  integrity sha512-QafX5O7PcRLbt6jwzWYxG8/6HXaaEK5e0Ei8Fb1v++PS8fAfgNl3Bn76gQwEnMqXAO3r5/nNDM0I7taBpzyfHA==
+
 "@types/babel__core@^7.20.5":
   version "7.20.5"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.20.5.tgz#3df15f27ba85319caa07ba08d0721889bb39c017"

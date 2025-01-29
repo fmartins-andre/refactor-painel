@@ -26,7 +26,7 @@ export function DatePicker<TFieldValues extends FieldValues>({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger className="w-full">
+      <PopoverTrigger asChild className="w-full">
         <button
           aria-controls=""
           aria-expanded

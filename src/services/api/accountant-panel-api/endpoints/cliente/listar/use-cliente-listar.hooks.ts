@@ -13,7 +13,7 @@ export const clienteListarClientOptions = (
   params?: ClienteListarRequestPayload
 ) => {
   return tanstackQueryOptions({
-    queryKey: ['cliente-listar'],
+    queryKey: ['cliente-listar', params].filter(Boolean),
     queryFn: async ({ signal }) => await clienteListar(params, signal),
   })
 }
@@ -41,7 +41,7 @@ export function useLazyClienteListar(): UseLazyClienteListarReturn {
       setState({ isFetching: true, params })
 
       const response = await queryClient.fetchQuery(
-        clienteListarClientOptions()
+        clienteListarClientOptions(params)
       )
 
       setState((prev) => ({ ...prev, isFetching: false }))

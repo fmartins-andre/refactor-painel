@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 
-import { useGetTotalCustomersCards } from './helpers/use-get-total-customers.hook'
+import { useGetTotalCustomersCards } from '../helpers/use-get-total-customers.hook'
 import { useCustomersCards } from './user-customers-cards'
 
 export function ResumeCards() {
@@ -12,7 +12,7 @@ export function ResumeCards() {
 
   return (
     <>
-      <div className="grid-cols mb-1 mt-5 grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-4">
+      <div className="grid-cols grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-4">
         {cardsComponents.map((card, index) => (
           <div key={index} className={card.className}>
             <div

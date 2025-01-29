@@ -1,6 +1,6 @@
 import { Users } from 'lucide-react'
 
-import { TotalCustomersOutput } from './types/total-customers-output'
+import { TotalCustomersOutput } from '../types/total-customers-output'
 
 interface Props {
   customersTotals: TotalCustomersOutput[] | undefined

@@ -1,6 +1,7 @@
 export enum StatusClienteModelEnum {
-  INATIVO = 'Inativo',
   ATIVO = 'Ativo',
+  BLOQUEADO = 'Bloqueado',
+  INATIVO = 'Inativo',
 }
 
 export enum RegimeTributarioClienteModelEnum {

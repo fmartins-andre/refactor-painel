@@ -1,4 +1,7 @@
-import { DataTableAppliedFilters } from '@/@types/data-table-applied-filters'
+import {
+  ClienteListagemViewModel,
+  StatusClienteModelEnum,
+} from '@/services/api/accountant-panel-api/schemas/cliente-view-model'
 import { inputMask } from '@/utils/input-mask'
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { ColumnDef } from '@tanstack/react-table'
@@ -17,74 +20,19 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 
-import { CustomerListSchemaOutput } from './validations/customer-list'
-import { SearchCustomers } from './validations/search-customers'
-
-const dateFormat = (date: string) => {
-  return Intl.DateTimeFormat('pt-BR').format(new Date(date))
-}
+import { clienteStatusOptions } from '../constants'
 
 export function useAccountantCustomers() {
-  async function handleAccessEmitter(_companyId: number) {
-    // await api.get(`/login/emissor/${companyId}`).then(({ data }) => {
-    //   window.open(
-    //     `${process.env.NEXT_PUBLIC_EMISSOR_FRONT_URL}/login?${data}`,
-    //     '_blank'
-    //   )
-    // })
-  }
+  // async function handleAccessEmitter(_companyId: number) {
+  //   await api.get(`/login/emissor/${companyId}`).then(({ data }) => {
+  //     window.open(
+  //       `${process.env.NEXT_PUBLIC_EMISSOR_FRONT_URL}/login?${data}`,
+  //       '_blank'
+  //     )
+  //   })
+  // }
 
-  function switchRenderStatus(status: string) {
-    switch (status) {
-      case 'A':
-        return 'Ativo'
-      case 'B':
-        return 'Bloqueado'
-      case 'C':
-        return 'Cancelado'
-      case 'I':
-        return 'Inativo'
-      case 'D':
-        return 'Desativado'
-      default:
-        return status
-    }
-  }
-
-  const appliedFilters: DataTableAppliedFilters<SearchCustomers>[] = [
-    {
-      id: 'busca',
-      title: 'Busca',
-      // value: searchParams.get('busca') ?? '',
-      value: '',
-    },
-    {
-      id: 'status',
-      title: 'Status',
-      // value: searchParams.get('status') ?? '',
-      value: '',
-    },
-    {
-      id: 'regimeEspecialId',
-      title: 'Regime',
-      // value: searchParams.get('regimeEspecialId') ?? '',
-      value: '',
-    },
-    {
-      id: 'dataInicial',
-      title: 'Data inicial',
-      // value: searchParams.get('dataInicial') ?? '',
-      value: '',
-    },
-    {
-      id: 'dataFinal',
-      title: 'Data final',
-      // value: searchParams.get('dataFinal') ?? '',
-      value: '',
-    },
-  ]
-
-  const tableColumns: ColumnDef<CustomerListSchemaOutput>[] = [
+  const tableColumns: ColumnDef<ClienteListagemViewModel>[] = [
     {
       accessorKey: 'cnpjCpf',
       header: ({ column }) => (
@@ -96,18 +44,18 @@ export function useAccountantCustomers() {
       ),
       cell: ({ row }) => {
         return (
-          <div className="flex max-w-72 items-center gap-2 md:w-[300px]">
+          <div className="flex max-w-80 items-center gap-2">
             <Avatar>
               <AvatarFallback>
-                {row.original.razaoSocial.charAt(0)}
+                {row.original.nomeRazaoSocial.charAt(0)}
               </AvatarFallback>
             </Avatar>
-            <div className="flex w-full flex-col items-start">
+            <div className="flex w-full flex-col max-w-80">
               <span className="text-primary line-clamp-1 text-ellipsis break-all text-start font-medium">
-                {row.original.razaoSocial}
+                {row.original.nomeRazaoSocial}
               </span>
               <span className="line-clamp-1 text-ellipsis break-all text-start text-sm text-[#718EBF]">
-                {inputMask.cpfCnpj(row.original.cnpjCpf)}
+                {inputMask.cpfCnpj(row.original.documento)}
               </span>
             </div>
           </div>
@@ -123,15 +71,17 @@ export function useAccountantCustomers() {
         <div className="flex items-center justify-center gap-2">
           <Badge
             variant={
-              row.original.status === 'A'
+              row.original.status === StatusClienteModelEnum.ATIVO
                 ? 'default'
-                : row.original.status === 'B'
+                : row.original.status === StatusClienteModelEnum.BLOQUEADO
                   ? 'secondary'
                   : 'tertiary'
             }
             className="w-28"
           >
-            {switchRenderStatus(row.original.status)}
+            {clienteStatusOptions.find(
+              (opt) => opt.value === row.original.status
+            )?.label ?? row.original.status}
           </Badge>
         </div>
       ),
@@ -145,10 +95,10 @@ export function useAccountantCustomers() {
           className="flex px-0"
         />
       ),
-      cell: ({ row }) => (
+      cell: () => (
         <div className="flex w-full">
           <span className="text-left text-sm text-[#718EBF]">
-            {row.original.regimeEspecialDescricao?.toUpperCase()}
+            {'api não envia'}
           </span>
         </div>
       ),
@@ -160,12 +110,13 @@ export function useAccountantCustomers() {
           Vencimento Certificado
         </div>
       ),
-      cell: ({ row }) => (
+      cell: () => (
         <div className="flex w-full max-w-32 justify-center">
           <span className="text-medium font-sans">
-            {row.original.dataVencimentoCertificado
+            {/* {row.original.
               ? dateFormat(row.original.dataVencimentoCertificado)
-              : '-'}
+              : '-'} */}
+            api não envia
           </span>
         </div>
       ),
@@ -175,7 +126,7 @@ export function useAccountantCustomers() {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Ações" />
       ),
-      cell: ({ row }) => (
+      cell: () => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon">
@@ -205,7 +156,7 @@ export function useAccountantCustomers() {
                   variant="ghost"
                   className="w-full"
                   onClick={() => {
-                    handleAccessEmitter(row.original.empresaId)
+                    // handleAccessEmitter(row.original.empresaId)
                   }}
                 >
                   Emissor
@@ -219,8 +170,6 @@ export function useAccountantCustomers() {
   ]
 
   return {
-    appliedFilters,
     tableColumns,
-    isLoadingEmitter: false,
   }
 }
