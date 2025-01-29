@@ -1,5 +1,6 @@
 import { flexRender } from '@tanstack/react-table'
 
+import { cn } from '@/lib/utils'
 import {
   Table,
   TableBody,
@@ -10,14 +11,20 @@ import {
 } from '@/components/ui/table'
 
 import { useDataTableContext } from './data-table-provider'
+import { DataTableSkeleton } from './data-table-skeleton'
 
 export function DataTableMain() {
-  const { table } = useDataTableContext()
+  const { table, isLoading } = useDataTableContext()
   const columns = table.getAllColumns()
 
   return (
-    <>
-      <Table>
+    <div className="w-full min-h-56">
+      <DataTableSkeleton
+        rows={3}
+        className={cn(!isLoading && 'hidden', 'motion-preset-fade-md')}
+      />
+
+      <Table className={cn(isLoading && 'hidden', 'motion-preset-fade-md')}>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -63,6 +70,6 @@ export function DataTableMain() {
           )}
         </TableBody>
       </Table>
-    </>
+    </div>
   )
 }

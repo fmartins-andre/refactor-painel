@@ -15,10 +15,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
+import { Skeleton } from '../ui/skeleton'
 import { useDataTableContext } from './data-table-provider'
 
 export function DataTablePagination() {
-  const { manualPagination, table, handlePage, handlePageSize } =
+  const { manualPagination, table, handlePage, handlePageSize, isLoading } =
     useDataTableContext()
 
   const lastPageIndex = table.getPageCount()
@@ -56,7 +57,9 @@ export function DataTablePagination() {
     [manualPagination, handlePageSize, table]
   )
 
-  return (
+  return isLoading ? (
+    <Skeleton className="h-8 w-full" />
+  ) : (
     <div className="flex flex-col-reverse items-center justify-between gap-4 px-2 md:flex-row">
       <div className="flex items-center space-x-2">
         <p className="text-sm font-medium">Linhas por pagina</p>

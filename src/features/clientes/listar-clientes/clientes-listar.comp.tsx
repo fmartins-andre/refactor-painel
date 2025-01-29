@@ -1,5 +1,9 @@
 import { lazy, Suspense, useRef } from 'react'
-import { useClienteListar } from '@/services/api/accountant-panel-api/endpoints/cliente'
+import {
+  clienteListarClientOptions,
+  useClienteListar,
+} from '@/services/api/accountant-panel-api/endpoints/cliente'
+import { useQueryClient } from '@tanstack/react-query'
 import { RefreshCcw, UserPlusIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -27,16 +31,17 @@ const ResumeCards = lazy(() =>
 )
 
 export function CustomerList() {
+  const queryClient = useQueryClient()
   const { filters, setFilters } = useHandleClientesListarFilters()
 
-  const {
-    data: clientes,
-    isLoading: isLoadingClientes,
-    refetch: refetchClientes,
-  } = useClienteListar(filters)
+  const { data: clientes, isLoading: isLoadingClientes } =
+    useClienteListar(filters)
 
   async function handleRefetchList() {
-    await refetchClientes()
+    // apaga o cache para forçar o isLoading
+    await queryClient.resetQueries({
+      queryKey: clienteListarClientOptions(filters).queryKey,
+    })
   }
 
   const customerDialogRef = useRef<CustomerDialogRef>(null)
