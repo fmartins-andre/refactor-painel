@@ -19,6 +19,10 @@ import { LocalLoginFormSchema, localLoginSchema } from './local-login.schema'
 export function LocalLoginForm() {
   const form = useForm<LocalLoginFormSchema>({
     resolver: zodResolver(localLoginSchema),
+    defaultValues: {
+      email: '',
+      senha: '',
+    },
   })
 
   const navigate = useNavigate()
