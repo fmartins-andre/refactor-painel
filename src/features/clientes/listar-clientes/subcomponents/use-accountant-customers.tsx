@@ -18,9 +18,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
 
-import { clienteStatusOptions } from '../constants'
+import {
+  clienteRegimeTributarioOptions,
+  clienteStatusOptions,
+} from '../constants'
 
 export function useAccountantCustomers() {
   // async function handleAccessEmitter(_companyId: number) {
@@ -35,13 +37,7 @@ export function useAccountantCustomers() {
   const tableColumns: ColumnDef<ClienteListagemViewModel>[] = [
     {
       accessorKey: 'cnpjCpf',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title="CNPJ / Razão social"
-          className="flex"
-        />
-      ),
+      header: () => <div className="flex">CNPJ/Razão Social</div>,
       cell: ({ row }) => {
         return (
           <div className="flex max-w-80 items-center gap-2">
@@ -54,7 +50,7 @@ export function useAccountantCustomers() {
               <span className="text-primary line-clamp-1 text-ellipsis break-all text-start font-medium">
                 {row.original.nomeRazaoSocial}
               </span>
-              <span className="line-clamp-1 text-ellipsis break-all text-start text-sm text-[#718EBF]">
+              <span className="line-clamp-1 text-ellipsis break-all text-start text-sm text-muted-foreground">
                 {inputMask.cpfCnpj(row.original.documento)}
               </span>
             </div>
@@ -64,9 +60,7 @@ export function useAccountantCustomers() {
     },
     {
       accessorKey: 'status',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Status" />
-      ),
+      header: () => <div>Status</div>,
       cell: ({ row }) => (
         <div className="flex items-center justify-center gap-2">
           <Badge
@@ -88,20 +82,21 @@ export function useAccountantCustomers() {
     },
     {
       accessorKey: 'regimeEspecialDescricao',
-      header: ({ column }) => (
-        <DataTableColumnHeader
-          column={column}
-          title="Regime"
-          className="flex px-0"
-        />
-      ),
-      cell: () => (
-        <div className="flex w-full">
-          <span className="text-left text-sm text-[#718EBF]">
-            {'api não envia'}
-          </span>
-        </div>
-      ),
+      header: () => <div className="flex max-w-48">Regime</div>,
+      cell: ({ row }) => {
+        const value =
+          clienteRegimeTributarioOptions.find(
+            (opt) => opt.value === row.original.regimeTributario
+          )?.label || row.original.regimeTributario
+
+        return (
+          <div className="flex max-w-48">
+            <span className="text-left text-sm text-muted-foreground w-full line-clamp-2">
+              {value || '-'}
+            </span>
+          </div>
+        )
+      },
     },
     {
       accessorKey: 'dataVencimentoCertificado',
@@ -110,21 +105,20 @@ export function useAccountantCustomers() {
           Vencimento Certificado
         </div>
       ),
-      cell: () => (
+      cell: ({ row }) => (
         <div className="flex w-full max-w-32 justify-center">
           <span className="text-medium font-sans">
-            {/* {row.original.
-              ? dateFormat(row.original.dataVencimentoCertificado)
-              : '-'} */}
-            api não envia
+            {row.original.dataValidadeCertificado?.toLocaleDateString(
+              'pt-BR'
+            ) || '-'}
           </span>
         </div>
       ),
     },
     {
       accessorKey: 'actions',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Ações" />
+      header: () => (
+        <div className="flex w-full max-w-32 justify-center">Ações</div>
       ),
       cell: () => (
         <DropdownMenu>
