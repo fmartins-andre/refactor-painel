@@ -81,9 +81,7 @@ export function CustomerList() {
       isLoading={isLoadingClientes}
       handlePage={(page) => setFilters({ page })}
       handlePageSize={(pageSize) => setFilters({ perPage: pageSize })}
-      handleRowClick={(data) => {
-        console.log(data)
-      }}
+      handleRowClick={navigateToCustomerDetailsActionHandler}
     >
       <ClientesListarFiltersFormProvider className="flex w-full flex-col gap-8 pt-5">
         <div className="flex w-full flex-col justify-center gap-2 md:flex-row md:justify-between">
