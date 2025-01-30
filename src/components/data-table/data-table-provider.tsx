@@ -24,6 +24,7 @@ interface DataTableContextProps<TData> {
   isLoading?: boolean
   handlePageSize?: (pageSize: number) => void
   handlePage?: (page: number) => void
+  handleRowClick?: (rowData: TData) => void
 }
 
 type DataTableProviderProps<TData, TValue> = {
@@ -37,6 +38,7 @@ type DataTableProviderProps<TData, TValue> = {
   isLoading?: boolean
   handlePageSize?: (pageSize: number) => void
   handlePage?: (page: number) => void
+  handleRowClick?: (rowData: TData) => void
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,6 +58,7 @@ export function DataTableProvider<TData, TValue>({
   isLoading = false,
   handlePage,
   handlePageSize,
+  handleRowClick,
 }: DataTableProviderProps<TData, TValue>) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const manualPagination = page !== undefined && total !== undefined
@@ -99,6 +102,7 @@ export function DataTableProvider<TData, TValue>({
       value={{
         handlePage,
         handlePageSize,
+        handleRowClick,
         pageSize,
         manualPagination,
         table,

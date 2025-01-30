@@ -14,8 +14,10 @@ import { useDataTableContext } from './data-table-provider'
 import { DataTableSkeleton } from './data-table-skeleton'
 
 export function DataTableMain() {
-  const { table, isLoading } = useDataTableContext()
+  const { table, isLoading, handleRowClick } = useDataTableContext()
   const columns = table.getAllColumns()
+
+  const hasOnClickHandler = Boolean(handleRowClick)
 
   return (
     <div className="w-full min-h-56">
@@ -50,9 +52,21 @@ export function DataTableMain() {
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
+                onClick={
+                  hasOnClickHandler && row.original
+                    ? (e) => {
+                        e.stopPropagation()
+                        handleRowClick?.(row.original)
+                      }
+                    : undefined
+                }
                 data-state={row.getIsSelected() ? 'selected' : null}
                 key={row.id}
-                className="text-foreground hover:bg-accent py-4 transition-colors duration-200 ease-in-out"
+                className={cn(
+                  'text-foreground hover:bg-accent/40 py-4 transition-colors duration-200 ease-in-out',
+                  hasOnClickHandler &&
+                    'cursor-pointer active:bg-primary-s-lighter/40'
+                )}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell className="text-center font-sans" key={cell.id}>
