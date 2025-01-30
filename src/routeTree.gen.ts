@@ -21,6 +21,7 @@ import { Route as AuthenticatedRoutesCertificadoIndexImport } from './routes/_au
 import { Route as PublicRoutesAutenticacaoRecuperarSenhaImport } from './routes/_public-routes/_autenticacao/recuperar-senha'
 import { Route as PublicRoutesAutenticacaoLogoutImport } from './routes/_public-routes/_autenticacao/logout'
 import { Route as PublicRoutesAutenticacaoLoginImport } from './routes/_public-routes/_autenticacao/login'
+import { Route as AuthenticatedRoutesClientesClienteIdImport } from './routes/_authenticated-routes/clientes/$clienteId'
 
 // Create/Update Routes
 
@@ -108,6 +109,13 @@ const PublicRoutesAutenticacaoLoginRoute =
     ),
   )
 
+const AuthenticatedRoutesClientesClienteIdRoute =
+  AuthenticatedRoutesClientesClienteIdImport.update({
+    id: '/clientes/$clienteId',
+    path: '/clientes/$clienteId',
+    getParentRoute: () => AuthenticatedRoutesRouteRoute,
+  } as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -131,6 +139,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRoutesIndexImport
+      parentRoute: typeof AuthenticatedRoutesRouteImport
+    }
+    '/_authenticated-routes/clientes/$clienteId': {
+      id: '/_authenticated-routes/clientes/$clienteId'
+      path: '/clientes/$clienteId'
+      fullPath: '/clientes/$clienteId'
+      preLoaderRoute: typeof AuthenticatedRoutesClientesClienteIdImport
       parentRoute: typeof AuthenticatedRoutesRouteImport
     }
     '/_public-routes/_autenticacao/login': {
@@ -189,6 +204,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRoutesRouteRouteChildren {
   AuthenticatedRoutesIndexRoute: typeof AuthenticatedRoutesIndexRoute
+  AuthenticatedRoutesClientesClienteIdRoute: typeof AuthenticatedRoutesClientesClienteIdRoute
   AuthenticatedRoutesCertificadoIndexRoute: typeof AuthenticatedRoutesCertificadoIndexRoute
   AuthenticatedRoutesClientesIndexRoute: typeof AuthenticatedRoutesClientesIndexRoute
   AuthenticatedRoutesDashboardIndexRoute: typeof AuthenticatedRoutesDashboardIndexRoute
@@ -198,6 +214,8 @@ interface AuthenticatedRoutesRouteRouteChildren {
 const AuthenticatedRoutesRouteRouteChildren: AuthenticatedRoutesRouteRouteChildren =
   {
     AuthenticatedRoutesIndexRoute: AuthenticatedRoutesIndexRoute,
+    AuthenticatedRoutesClientesClienteIdRoute:
+      AuthenticatedRoutesClientesClienteIdRoute,
     AuthenticatedRoutesCertificadoIndexRoute:
       AuthenticatedRoutesCertificadoIndexRoute,
     AuthenticatedRoutesClientesIndexRoute:
@@ -235,6 +253,7 @@ const PublicRoutesAutenticacaoRouteRouteWithChildren =
 export interface FileRoutesByFullPath {
   '': typeof PublicRoutesAutenticacaoRouteRouteWithChildren
   '/': typeof AuthenticatedRoutesIndexRoute
+  '/clientes/$clienteId': typeof AuthenticatedRoutesClientesClienteIdRoute
   '/login': typeof PublicRoutesAutenticacaoLoginRoute
   '/logout': typeof PublicRoutesAutenticacaoLogoutRoute
   '/recuperar-senha': typeof PublicRoutesAutenticacaoRecuperarSenhaRoute
@@ -247,6 +266,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '': typeof PublicRoutesAutenticacaoRouteRouteWithChildren
   '/': typeof AuthenticatedRoutesIndexRoute
+  '/clientes/$clienteId': typeof AuthenticatedRoutesClientesClienteIdRoute
   '/login': typeof PublicRoutesAutenticacaoLoginRoute
   '/logout': typeof PublicRoutesAutenticacaoLogoutRoute
   '/recuperar-senha': typeof PublicRoutesAutenticacaoRecuperarSenhaRoute
@@ -261,6 +281,7 @@ export interface FileRoutesById {
   '/_authenticated-routes': typeof AuthenticatedRoutesRouteRouteWithChildren
   '/_public-routes/_autenticacao': typeof PublicRoutesAutenticacaoRouteRouteWithChildren
   '/_authenticated-routes/': typeof AuthenticatedRoutesIndexRoute
+  '/_authenticated-routes/clientes/$clienteId': typeof AuthenticatedRoutesClientesClienteIdRoute
   '/_public-routes/_autenticacao/login': typeof PublicRoutesAutenticacaoLoginRoute
   '/_public-routes/_autenticacao/logout': typeof PublicRoutesAutenticacaoLogoutRoute
   '/_public-routes/_autenticacao/recuperar-senha': typeof PublicRoutesAutenticacaoRecuperarSenhaRoute
@@ -275,6 +296,7 @@ export interface FileRouteTypes {
   fullPaths:
     | ''
     | '/'
+    | '/clientes/$clienteId'
     | '/login'
     | '/logout'
     | '/recuperar-senha'
@@ -286,6 +308,7 @@ export interface FileRouteTypes {
   to:
     | ''
     | '/'
+    | '/clientes/$clienteId'
     | '/login'
     | '/logout'
     | '/recuperar-senha'
@@ -298,6 +321,7 @@ export interface FileRouteTypes {
     | '/_authenticated-routes'
     | '/_public-routes/_autenticacao'
     | '/_authenticated-routes/'
+    | '/_authenticated-routes/clientes/$clienteId'
     | '/_public-routes/_autenticacao/login'
     | '/_public-routes/_autenticacao/logout'
     | '/_public-routes/_autenticacao/recuperar-senha'
@@ -337,6 +361,7 @@ export const routeTree = rootRoute
       "filePath": "_authenticated-routes/route.tsx",
       "children": [
         "/_authenticated-routes/",
+        "/_authenticated-routes/clientes/$clienteId",
         "/_authenticated-routes/certificado/",
         "/_authenticated-routes/clientes/",
         "/_authenticated-routes/dashboard/",
@@ -353,6 +378,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated-routes/": {
       "filePath": "_authenticated-routes/index.tsx",
+      "parent": "/_authenticated-routes"
+    },
+    "/_authenticated-routes/clientes/$clienteId": {
+      "filePath": "_authenticated-routes/clientes/$clienteId.tsx",
       "parent": "/_authenticated-routes"
     },
     "/_public-routes/_autenticacao/login": {

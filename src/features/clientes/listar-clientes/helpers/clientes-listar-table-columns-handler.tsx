@@ -23,17 +23,17 @@ import {
   clienteRegimeTributarioOptions,
   clienteStatusOptions,
 } from '../constants'
+import { ClientesListarTableActionHandler } from './table-actions/table-actions.types'
 
-export function useAccountantCustomers() {
-  // async function handleAccessEmitter(_companyId: number) {
-  //   await api.get(`/login/emissor/${companyId}`).then(({ data }) => {
-  //     window.open(
-  //       `${process.env.NEXT_PUBLIC_EMISSOR_FRONT_URL}/login?${data}`,
-  //       '_blank'
-  //     )
-  //   })
-  // }
+type Props = {
+  navigateToCustomerDetailsActionHandler: ClientesListarTableActionHandler
+  navigateToEmissorActionHandler: ClientesListarTableActionHandler
+}
 
+export function generateListarClientesTableColumns({
+  navigateToCustomerDetailsActionHandler,
+  navigateToEmissorActionHandler,
+}: Props) {
   const tableColumns: ColumnDef<ClienteListagemViewModel>[] = [
     {
       accessorKey: 'cnpjCpf',
@@ -120,7 +120,7 @@ export function useAccountantCustomers() {
       header: () => (
         <div className="flex w-full max-w-32 justify-center">Ações</div>
       ),
-      cell: () => (
+      cell: ({ row }) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon">
@@ -135,12 +135,10 @@ export function useAccountantCustomers() {
                 <Button
                   variant="ghost"
                   className="w-full"
-                  onClick={
-                    () => {}
-                    // router.push(
-                    //   `clientes/${row.original.empresaId}/${row.original.inscricaoId}`
-                    // )
-                  }
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigateToCustomerDetailsActionHandler(row.original)
+                  }}
                 >
                   Detalhes
                 </Button>
@@ -149,8 +147,9 @@ export function useAccountantCustomers() {
                 <Button
                   variant="ghost"
                   className="w-full"
-                  onClick={() => {
-                    // handleAccessEmitter(row.original.empresaId)
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigateToEmissorActionHandler(row.original)
                   }}
                 >
                   Emissor

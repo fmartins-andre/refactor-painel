@@ -4,7 +4,7 @@ import { DateTime } from 'luxon'
 import { z } from '@/lib/translated-zod'
 
 export const clientesListarFiltersFormSchema =
-  clienteListarRequestPayloadSchema.superRefine((arg, ctx) => {
+  clienteListarRequestPayloadSchema.transform((arg, ctx) => {
     if (
       arg.dataCriacaoFinal &&
       arg.dataCriacaoInicial &&
@@ -16,7 +16,14 @@ export const clientesListarFiltersFormSchema =
         message: 'Data final deve ser posterior à data inicial',
         path: ['dataCriacaoFinal'],
       })
+
+      return z.NEVER
     }
+
+    // reset a página sempre que houver mudança nos filtros
+    arg.page = 1
+
+    return arg
   })
 
 export type ClientesListarFiltersFormInput = z.input<

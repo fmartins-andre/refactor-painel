@@ -1,7 +1,9 @@
 import { lazy, Suspense, useRef } from 'react'
 import {
   clienteListarClientOptions,
+  clienteTotalizarListagemClientOptions,
   useClienteListar,
+  useClienteTotalizarListagem,
 } from '@/services/api/accountant-panel-api/endpoints/cliente'
 import { useQueryClient } from '@tanstack/react-query'
 import { RefreshCcw, UserPlusIcon } from 'lucide-react'
@@ -12,11 +14,13 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { DataTable } from '@/components/data-table'
 
 import { CustomerDialogRef } from '../customer-dialog'
+import { generateListarClientesTableColumns } from './helpers/clientes-listar-table-columns-handler'
+import { useNavigateToCustomerDetailsTableActionHandler } from './helpers/table-actions/use-navigate-to-customer-details-table-action-handler.hook'
+import { useNavigateToEmissorTableActionHandler } from './helpers/table-actions/use-navigate-to-emissor-table-action-handler.hook'
 import { useHandleClientesListarFilters } from './helpers/use-handle-clientes-listar-filter-params.hook'
 import { ClientesListarFiltersFormProvider } from './subcomponents/filters'
 import { ClientesListarFiltersActive } from './subcomponents/filters/cliente-listar-filters-active.comp'
 import { ClientesListarFiltersSearchBarSection } from './subcomponents/filters/sections/search-bar.comp'
-import { useAccountantCustomers } from './subcomponents/use-accountant-customers'
 
 const CustomerDialog = lazy(() =>
   import('../customer-dialog').then((module) => ({
@@ -37,10 +41,16 @@ export function CustomerList() {
   const { data: clientes, isLoading: isLoadingClientes } =
     useClienteListar(filters)
 
+  const { data: totalClientes, isLoading: isLoadingTotalClientes } =
+    useClienteTotalizarListagem(filters)
+
   async function handleRefetchList() {
     // apaga o cache para forçar o isLoading
-    await queryClient.resetQueries({
+    queryClient.resetQueries({
       queryKey: clienteListarClientOptions(filters).queryKey,
+    })
+    queryClient.resetQueries({
+      queryKey: clienteTotalizarListagemClientOptions(filters).queryKey,
     })
   }
 
@@ -50,7 +60,16 @@ export function CustomerList() {
     customerDialogRef.current?.open?.()
   }
 
-  const { tableColumns } = useAccountantCustomers()
+  const navigateToCustomerDetailsActionHandler =
+    useNavigateToCustomerDetailsTableActionHandler()
+
+  const navigateToEmissorActionHandler =
+    useNavigateToEmissorTableActionHandler()
+
+  const { tableColumns } = generateListarClientesTableColumns({
+    navigateToCustomerDetailsActionHandler,
+    navigateToEmissorActionHandler,
+  })
 
   return (
     <DataTable.Root
@@ -62,6 +81,9 @@ export function CustomerList() {
       isLoading={isLoadingClientes}
       handlePage={(page) => setFilters({ page })}
       handlePageSize={(pageSize) => setFilters({ perPage: pageSize })}
+      handleRowClick={(data) => {
+        console.log(data)
+      }}
     >
       <ClientesListarFiltersFormProvider className="flex w-full flex-col gap-8 pt-5">
         <div className="flex w-full flex-col justify-center gap-2 md:flex-row md:justify-between">
@@ -78,7 +100,10 @@ export function CustomerList() {
         </div>
 
         <Suspense fallback={<div>carregando...</div>}>
-          <ResumeCards />
+          <ResumeCards
+            data={totalClientes}
+            isLoading={isLoadingTotalClientes}
+          />
         </Suspense>
 
         <Card className="w-full">
