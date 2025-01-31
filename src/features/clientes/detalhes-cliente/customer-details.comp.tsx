@@ -1,9 +1,11 @@
+import { PropsWithChildren } from 'react'
+
 import { CustomerDataCard } from './subcomponents/customer-data-card.comp'
-import { CustomerDetailsDataTables } from './subcomponents/data-tables.comp'
+import { CustomerDetailsFeatures } from './subcomponents/features.comp'
 import { CustomerDetailsHeader } from './subcomponents/header'
 import { StateTaxIdCard } from './subcomponents/state-tax-id-card.comp'
 
-export function CustomerDetails() {
+export function CustomerDetails({ children }: PropsWithChildren) {
   return (
     <div className="flex flex-col gap-8">
       <CustomerDetailsHeader />
@@ -16,7 +18,7 @@ export function CustomerDetails() {
         </aside>
 
         <main className="flex grow">
-          <CustomerDetailsDataTables />
+          <CustomerDetailsFeatures>{children}</CustomerDetailsFeatures>
         </main>
       </div>
     </div>
