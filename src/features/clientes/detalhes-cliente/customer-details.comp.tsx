@@ -1,6 +1,6 @@
 import { CustomerDataCard } from './subcomponents/customer-data-card.comp'
 import { CustomerDetailsDataTables } from './subcomponents/data-tables.comp'
-import { CustomerDetailsHeader } from './subcomponents/header.comp'
+import { CustomerDetailsHeader } from './subcomponents/header'
 import { StateTaxIdCard } from './subcomponents/state-tax-id-card.comp'
 
 export function CustomerDetails() {
@@ -8,14 +8,14 @@ export function CustomerDetails() {
     <div className="flex flex-col gap-8">
       <CustomerDetailsHeader />
 
-      <div className="flex gap-8 w-full flex-wrap">
-        <aside className="flex flex-col gap-8 grow grow-1 min-w-[400px] basis-1/12">
+      <div className="flex gap-8 w-full flex-col lg:flex-row lg:flex-wrap ">
+        <aside className="flex flex-col xl:w-96 gap-8 w-full">
           <StateTaxIdCard />
 
           <CustomerDataCard />
         </aside>
 
-        <main className="flex grow grow-3 min-w-[600px] basis-5/12">
+        <main className="flex grow">
           <CustomerDetailsDataTables />
         </main>
       </div>
