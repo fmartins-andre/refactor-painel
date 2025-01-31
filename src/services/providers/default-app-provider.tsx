@@ -1,10 +1,20 @@
-import { lazy, PropsWithChildren } from 'react'
+import { lazy, PropsWithChildren, Suspense } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { Toaster } from '@/components/ui/toaster'
 import { TooltipProvider } from '@/components/ui/tooltip'
 
 import { AuthProvider } from './auth-provider'
+
+const IS_PROD = process.env.NODE_ENV === 'production'
+
+const ReactQueryDevtools = IS_PROD
+  ? () => null // Render nothing in production
+  : lazy(() =>
+      import('@tanstack/react-query-devtools').then((module) => ({
+        default: module.ReactQueryDevtools,
+      }))
+    )
 
 const AsyncConfirmationDialogProvider = lazy(() =>
   import('@/components/async-confirmation-dialog').then((module) => ({
@@ -21,6 +31,14 @@ export function DefaultAppProvider({ children }: PropsWithChildren) {
           <AsyncConfirmationDialogProvider>
             <AuthProvider>{children}</AuthProvider>
           </AsyncConfirmationDialogProvider>
+
+          <Suspense>
+            <ReactQueryDevtools
+              initialIsOpen={false}
+              position="bottom"
+              buttonPosition="bottom-left"
+            />
+          </Suspense>
         </QueryClientProvider>
       </TooltipProvider>
       <Toaster />
