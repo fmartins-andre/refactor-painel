@@ -11,8 +11,8 @@ export function ManagementMeiContent() {
     useVisaoGeralCardTotalizacao()
 
   return (
-    <TabsContent value="mei">
-      <div className="mt-2 flex flex-col gap-4">
+    <TabsContent className="mt-0" value="mei">
+      <div className="flex flex-col gap-8">
         <RenderManagementMeiCards
           isLoading={isFetchingCardTotalizacao}
           data={{
@@ -22,7 +22,7 @@ export function ManagementMeiContent() {
             totalDasVencidos: cardTotalizcaoData?.totalDasVencidos ?? 0,
           }}
         />
-        <div className="grid-cols grid w-full gap-8 py-2 xl:grid-cols-2">
+        <div className="flex w-full flex-col items-start gap-8 md:flex-row">
           <CardExpiringCertificates />
           <CardDasMeiExpiring />
         </div>

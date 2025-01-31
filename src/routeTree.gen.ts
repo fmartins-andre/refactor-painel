@@ -114,7 +114,11 @@ const AuthenticatedRoutesClientesClienteIdRoute =
     id: '/clientes/$clienteId',
     path: '/clientes/$clienteId',
     getParentRoute: () => AuthenticatedRoutesRouteRoute,
-  } as any)
+  } as any).lazy(() =>
+    import('./routes/_authenticated-routes/clientes/$clienteId.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 // Populate the FileRoutesByPath interface
 

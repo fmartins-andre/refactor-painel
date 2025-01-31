@@ -7,8 +7,8 @@ import { RenderInvoicesCard } from './render-invoices-card'
 
 export function ManagementInvoicesContent() {
   return (
-    <TabsContent value="invoices">
-      <div className="mt-2 flex flex-col gap-4">
+    <TabsContent className="mt-0" value="invoices">
+      <div className="flex flex-col gap-8">
         <RenderInvoicesCard
           isLoading={false}
           data={{
@@ -18,7 +18,7 @@ export function ManagementInvoicesContent() {
             totalNotasValidadas: 0,
           }}
         />
-        <div className="my-2 flex w-full flex-col items-start gap-10 md:flex-row">
+        <div className="flex w-full flex-col items-start gap-8 md:flex-row">
           <CardTotalInvoices />
           <CardLastInvoices />
         </div>

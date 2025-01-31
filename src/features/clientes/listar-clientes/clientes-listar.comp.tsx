@@ -83,7 +83,7 @@ export function CustomerList() {
       handlePageSize={(pageSize) => setFilters({ perPage: pageSize })}
       handleRowClick={navigateToCustomerDetailsActionHandler}
     >
-      <ClientesListarFiltersFormProvider className="flex w-full flex-col gap-8 pt-5">
+      <ClientesListarFiltersFormProvider className="flex flex-col gap-8">
         <div className="flex w-full flex-col justify-center gap-2 md:flex-row md:justify-between">
           <span className="text-2xl font-bold">Meus Clientes</span>
           <Button
