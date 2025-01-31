@@ -22,7 +22,7 @@ import {
 import {
   clienteRegimeTributarioOptions,
   clienteStatusOptions,
-} from '../constants'
+} from '../../constants'
 import { ClientesListarTableActionHandler } from './table-actions/table-actions.types'
 
 type Props = {

@@ -14,7 +14,7 @@ import {
 import {
   clienteRegimeTributarioOptions,
   clienteStatusOptions,
-} from '../../constants'
+} from '../../../constants'
 import { useHandleClientesListarFilters } from '../../helpers/use-handle-clientes-listar-filter-params.hook'
 import {
   ClientesListarFiltersDrawer,
