@@ -42,6 +42,11 @@ export const clienteViewModelSchema = z.object({
 
   utilizaEmissor: z.coerce.boolean(),
   statusSincronizacaoEmissor: z.custom<StatusIntegracaoModelEnum>(),
+  dataSincronizacaoEmissor: z
+    .custom<string>()
+    .transform(zodTransformFromIsoToDate)
+    .nullable(),
+
   modulosEmissor: modulosEmissorInputModelSchema.nullable(),
 })
 
