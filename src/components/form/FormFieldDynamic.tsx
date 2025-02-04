@@ -1,29 +1,12 @@
-import { useLayoutEffect, useState } from 'react'
-import { type FormFields, type SelectOptions } from '@/@types/form-field'
+import { type FormFields } from '@/@types/form-field'
 import { inputMask } from '@/utils/input-mask'
-import { removeAccents, removeNonCharOrNum } from '@/utils/string-methods'
 import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons'
-import { CheckIcon, ChevronDown, XCircle } from 'lucide-react'
 import { FieldValues, type ControllerRenderProps } from 'react-hook-form'
 
 import { cn } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
 import { FormControl, FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
   Select,
@@ -37,6 +20,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 
+import { ComboboxSingleField } from './subcomponents/combobox-single.comp'
+import { ComboboxField } from './subcomponents/combobox.comp'
 import { DatePicker } from './subcomponents/date-picker.comp'
 
 interface Props<TFieldValues extends FieldValues = FieldValues> {
@@ -48,16 +33,6 @@ export function FormFieldDynamic<TFieldValues extends FieldValues>({
   field,
   slot,
 }: Props<TFieldValues>) {
-  const [multipleOptionSelected, setMultipleOptionSelected] = useState<
-    SelectOptions[]
-  >([])
-
-  useLayoutEffect(() => {
-    if (slot.type === 'combobox' && slot.multiple) {
-      setMultipleOptionSelected(field.value ?? [])
-    }
-  }, [field.value, slot])
-
   switch (slot.type) {
     case 'tel':
       return (
@@ -194,224 +169,13 @@ export function FormFieldDynamic<TFieldValues extends FieldValues>({
           ))}
         </RadioGroup>
       )
+
     case 'combobox':
-      return (
-        <Popover>
-          <PopoverTrigger asChild>
-            <button
-              disabled={slot.disabled}
-              aria-controls=""
-              aria-expanded
-              className={cn(
-                'bg-muted ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex  min-h-10 w-full items-center justify-between rounded-md border-0 px-3 py-2 text-sm focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50',
-                slot.className
-              )}
-              role="combobox"
-            >
-              <div className="flex flex-wrap items-center gap-2">
-                {slot.multiple && (
-                  <>
-                    {multipleOptionSelected?.map(
-                      ({ label, value }: SelectOptions) => (
-                        <Badge
-                          className="dark:border-secondary dark:bg-secondary flex px-4 py-1"
-                          key={String(value)}
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
+      return <ComboboxField field={field} slot={slot} />
 
-                            setMultipleOptionSelected((prevState) => {
-                              const newState = [
-                                ...prevState.filter((o) => o.value !== value),
-                              ]
-
-                              field.onChange(newState)
-                              return newState
-                            })
-                          }}
-                        >
-                          {label}
-                          <XCircle className="size-3" />
-                        </Badge>
-                      )
-                    )}
-
-                    {slot.placeholder && multipleOptionSelected.length < 1 && (
-                      <span>{`${slot.placeholder}`}</span>
-                    )}
-                  </>
-                )}
-
-                {!slot.multiple && (
-                  <div>
-                    <div
-                      className={cn(
-                        multipleOptionSelected ? 'hidden' : 'py-1',
-                        'flex items-center'
-                      )}
-                      key={field.value}
-                    >
-                      <span
-                        className={cn(
-                          !field.value?.label?.length && 'text-muted-foreground'
-                        )}
-                      >
-                        {field.value?.label ?? slot.placeholderKey}
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <ChevronDown className="size-4" />
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className={cn('min-w-[350px]', slot.contentSize)}>
-            <Command
-              filter={(value, search) => {
-                const _value = removeNonCharOrNum(
-                  removeAccents(value)
-                ).toLowerCase()
-
-                const terms = removeNonCharOrNum(removeAccents(search))
-                  .toLowerCase()
-                  .split(/\s/)
-
-                const hasTerm = terms.every((term) => _value.includes(term))
-
-                return hasTerm ? 1 : 0
-              }}
-            >
-              <CommandInput
-                className="dark:bg-gray900 bg-white"
-                onValueChange={(search: string) =>
-                  'onInputChange' in slot && slot.onInputChange
-                    ? slot.onInputChange(search)
-                    : null
-                }
-                placeholder={slot.placeholderKey}
-              />
-              <CommandList>
-                <CommandEmpty>
-                  {slot.loading ? (
-                    <Skeleton className="h-8" />
-                  ) : (
-                    <span>Não encontrado</span>
-                  )}
-                </CommandEmpty>
-                <CommandGroup>
-                  {slot.options.map((option, index) => (
-                    <CommandItem
-                      className="flex w-full gap-2"
-                      key={index}
-                      onSelect={() => {
-                        if (slot.multiple) {
-                          setMultipleOptionSelected((prevState) => {
-                            const optionAlreadySelected = prevState.find(
-                              (v) => v.value === option.value
-                            )
-
-                            const newState = optionAlreadySelected
-                              ? [
-                                  ...prevState.filter(
-                                    (o) =>
-                                      o.value !== optionAlreadySelected.value
-                                  ),
-                                ]
-                              : [...prevState, option]
-
-                            field.onChange(newState)
-                            return newState
-                          })
-                        } else {
-                          field.onChange(option)
-                          return option
-                        }
-                      }}
-                      value={String(option.label)}
-                    >
-                      {option.label}
-                      {multipleOptionSelected
-                        .map((opt) => opt.value)
-                        .includes(option.value) && (
-                        <CheckIcon className="mb-0.5" size={15} />
-                      )}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-      )
     case 'combobox-single-value':
-      return (
-        <Popover>
-          <PopoverTrigger asChild>
-            <button
-              disabled={slot.disabled}
-              aria-controls=""
-              aria-expanded
-              className={cn(
-                'bg-muted ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex  min-h-10 w-full items-center justify-between rounded-md border-0 px-3 py-2 text-sm focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-50',
-                slot.className
-              )}
-              role="combobox"
-            >
-              <div className="flex flex-wrap items-center gap-2">
-                <div>
-                  <div className={cn('flex items-center')} key={field.value}>
-                    <span
-                      className={cn(!field.value && 'text-muted-foreground')}
-                    >
-                      {slot.options.find((opt) => opt.value === field.value)
-                        ?.label ??
-                        (field.value || slot.placeholderKey)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <ChevronDown className="size-4" />
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className={cn('min-w-[350px]', slot.contentSize)}>
-            <Command>
-              <CommandInput
-                className="dark:bg-gray900 bg-white"
-                onValueChange={(search: string) =>
-                  'onInputChange' in slot && slot.onInputChange
-                    ? slot.onInputChange(search)
-                    : null
-                }
-                placeholder={slot.placeholderKey}
-              />
-              <CommandList>
-                <CommandEmpty>
-                  {slot.loading ? (
-                    <Skeleton className="h-8" />
-                  ) : (
-                    <span>Não encontrado</span>
-                  )}
-                </CommandEmpty>
-                <CommandGroup>
-                  {slot.options.map((option, index) => (
-                    <CommandItem
-                      className="flex w-full gap-2"
-                      key={index}
-                      onSelect={() => {
-                        field.onChange(option.value)
-                        slot.postChangeCall?.(option.value.toString())
-                      }}
-                      value={String(option.label)}
-                    >
-                      {option.label}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-      )
+      return <ComboboxSingleField field={field} slot={slot} />
+
     case 'select':
       return slot?.isLoading ? (
         <Skeleton className="h-8" />

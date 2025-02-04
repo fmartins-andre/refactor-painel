@@ -34,7 +34,7 @@ export function DataTableSkeletonRow() {
       <div className="inline-flex p-4 w-full max-w-80">
         <div className="inline-flex gap-4 grow items-center">
           <Skeleton className="size-12 rounded-full" />
-          <div className="inline-flex flex-col grow gap-1">
+          <div className="inline-flex flex-colgrow gap-1">
             <Skeleton className="h-4 inline-flex w-full" />
             <Skeleton className="h-4 inline-flex w-5/6" />
           </div>

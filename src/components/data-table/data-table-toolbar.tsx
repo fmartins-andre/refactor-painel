@@ -8,7 +8,7 @@ export function DataTableToolbar({ className, ...rest }: Props) {
   return (
     <div
       className={cn(
-        'mb-4 flex w-full justify-between gap-4 md:justify-end',
+        'flex w-full justify-between gap-4 md:justify-end',
         className
       )}
       {...rest}

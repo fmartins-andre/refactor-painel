@@ -6,7 +6,6 @@ import type {
 import { Content as PopoverContent } from '@radix-ui/react-popover'
 import { FieldPath, FieldValues } from 'react-hook-form'
 
- 
 export type FormRadioOption = {
   value: string | number | boolean
   translateKey: string
@@ -39,7 +38,6 @@ export type FormFields<TFieldValues extends FieldValues> = {
         | 'cnpj_cpf'
         | 'cpf'
         | 'expiring-date'
-        | 'card-number'
       maxLength?: number
       onBlur?: FocusEventHandler<HTMLInputElement>
     }
@@ -113,6 +111,7 @@ export type FormFields<TFieldValues extends FieldValues> = {
       options: SelectOptions[]
       contentSize?: string
       onInputChange?: (value: string) => void
+      onSelect?: (value?: SelectOptions) => void
     }
   | {
       translateKey?: string
@@ -125,6 +124,7 @@ export type FormFields<TFieldValues extends FieldValues> = {
       contentSize?: string
       onInputChange?: (value: string) => void
       postChangeCall?: (option: string) => void
+      onSelect?: (value?: SelectOptions) => void
     }
   | ({
       translateKey: string

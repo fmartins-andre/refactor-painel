@@ -16,7 +16,7 @@ export function RenderManagementMeiCards({
   data,
 }: RenderManagementMeiCardsProps) {
   return (
-    <div className="grid-cols grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-4">
+    <div className="grid-cols-1 grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-4">
       <ResultsCards
         title={'Clientes monitorados'}
         icon={<FileTextIcon className="size-5 text-white" />}

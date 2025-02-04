@@ -26,14 +26,14 @@ export function DatePicker<TFieldValues extends FieldValues>({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild className="w-full">
+      <PopoverTrigger className="w-full" asChild>
         <button
           aria-controls=""
           aria-expanded
           type="button"
           disabled={slot.disabled}
           className={cn(
-            'border-input dark:bg-accent dark:border-gray700 ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex h-10 w-full items-center justify-start gap-2 whitespace-nowrap rounded-md bg-[#F1F5F9] px-3 py-2 text-sm  focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'
+            'border-input dark:bg-accent dark:border-gray700 ring-offset-background placeholder:text-muted-foreground focus:ring-ring bg-light flex h-10 w-full items-center justify-start gap-2 whitespace-nowrap rounded-md px-3 py-2 text-sm  focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1'
           )}
         >
           <CalendarIcon className="mr-2 size-4" />
@@ -49,11 +49,7 @@ export function DatePicker<TFieldValues extends FieldValues>({
           )}
         </button>
       </PopoverTrigger>
-      <PopoverContent
-        align={slot.align || 'start'}
-        side={slot.side || 'bottom'}
-        className="w-auto p-0"
-      >
+      <PopoverContent align="start" className="w-auto p-0">
         <Calendar
           captionLayout="dropdown-buttons"
           mode="single"

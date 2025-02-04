@@ -32,7 +32,7 @@ export function ProfileButton({ user, isLoading = false }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="mr-2 bg-none pl-1">
-        <div className="flex flex-col justify-end space-x-2 bg-none">
+        <div className="flex flex-coljustify-end space-x-2 bg-none">
           <Avatar>
             <AvatarImage src={undefined} />
             <AvatarFallback>{validUser.nome.at(0)}</AvatarFallback>

@@ -112,7 +112,7 @@ export const ClientesListarFiltersDrawer = forwardRef<
               </Drawer.Close>
             </div>
 
-            <div className="grid-cols grid gap-4 md:grid-cols-2">
+            <div className="grid-cols-1 grid gap-4 md:grid-cols-2">
               <RenderField<ClientesListarFiltersFormInput>
                 form={form}
                 slot={{
