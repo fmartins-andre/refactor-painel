@@ -5,7 +5,7 @@ import { Card, CardHeader } from '@/components/ui/card'
 import { useToast } from '@/components/hooks/use-toast'
 import { TextSkeleton } from '@/components/text-skeleton'
 
-import { useGetCurrentCustomerData } from '../../helpers/use-get-current-customer-data.hook'
+import { useGetCurrentCustomerData } from '../../../helpers/use-get-current-customer-data.hook'
 import { CustomerDetailsHeaderStatusSelect } from './header-status-select.comp'
 
 export function CustomerDetailsHeader() {

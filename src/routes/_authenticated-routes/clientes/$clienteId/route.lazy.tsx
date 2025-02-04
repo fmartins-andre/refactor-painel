@@ -1,4 +1,4 @@
-import { CustomerDetails } from '@/features/clientes/detalhes-cliente'
+import { CustomerDetails } from '@/features/clientes/detalhes-cliente/cliente-index'
 import { createLazyFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute(

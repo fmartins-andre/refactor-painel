@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-import { clienteStatusOptions } from '../../../constants'
+import { clienteStatusOptions } from '../../../../constants'
 
 type Props = {
   status: StatusClienteModelEnum | undefined

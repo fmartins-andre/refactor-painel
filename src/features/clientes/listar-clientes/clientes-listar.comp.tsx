@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { DataTable } from '@/components/data-table'
 
-import { CustomerDialogRef } from '../customer-dialog'
+import { CustomerDialogRef } from '../detalhes-cliente/subcomponents/customer-dialog'
 import { generateListarClientesTableColumns } from './helpers/clientes-listar-table-columns-handler'
 import { useNavigateToCustomerDetailsTableActionHandler } from './helpers/table-actions/use-navigate-to-customer-details-table-action-handler.hook'
 import { useNavigateToEmissorTableActionHandler } from './helpers/table-actions/use-navigate-to-emissor-table-action-handler.hook'
@@ -23,9 +23,11 @@ import { ClientesListarFiltersActive } from './subcomponents/filters/cliente-lis
 import { ClientesListarFiltersSearchBarSection } from './subcomponents/filters/sections/search-bar.comp'
 
 const CustomerDialog = lazy(() =>
-  import('../customer-dialog').then((module) => ({
-    default: module.CustomerDialog,
-  }))
+  import('../detalhes-cliente/subcomponents/customer-dialog').then(
+    (module) => ({
+      default: module.CustomerDialog,
+    })
+  )
 )
 
 const ResumeCards = lazy(() =>

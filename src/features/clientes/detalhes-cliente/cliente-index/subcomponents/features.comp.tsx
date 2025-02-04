@@ -8,7 +8,7 @@ import { FileBadgeIcon, FileBarChartIcon, FileDownIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 
-import { useGetCurrentCustomerData } from '../helpers/use-get-current-customer-data.hook'
+import { useGetCurrentCustomerData } from '../../helpers/use-get-current-customer-data.hook'
 
 export function CustomerDetailsFeatures({ children }: PropsWithChildren) {
   const pathname = useLocation({

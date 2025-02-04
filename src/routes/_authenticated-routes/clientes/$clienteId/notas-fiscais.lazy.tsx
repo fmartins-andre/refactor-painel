@@ -1,4 +1,4 @@
-import { CustomerDetailsInvoicesTable } from '@/features/clientes/cliente-notas-fiscias/customer-invoices.comp'
+import { CustomerDetailsInvoicesTable } from '@/features/clientes/detalhes-cliente/cliente-notas-fiscias'
 import { createLazyFileRoute } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute(

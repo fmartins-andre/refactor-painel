@@ -3,7 +3,7 @@ import { PropsWithChildren } from 'react'
 import { CustomerDataCard } from './subcomponents/customer-data-card.comp'
 import { CustomerDetailsFeatures } from './subcomponents/features.comp'
 import { CustomerDetailsHeader } from './subcomponents/header'
-import { StateTaxIdCard } from './subcomponents/state-tax-id-card.comp'
+import { StateTaxIdCard } from './subcomponents/state-tax-id-card'
 
 export function CustomerDetails({ children }: PropsWithChildren) {
   return (
