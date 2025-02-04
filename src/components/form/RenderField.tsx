@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { PropsWithChildren } from 'react'
 import { type FormFields } from '@/@types/form-field'
+import { Loader2Icon } from 'lucide-react'
 import { type FieldValues, type UseFormReturn } from 'react-hook-form'
 
 import { cn } from '@/lib/utils'
@@ -12,6 +13,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 
+import { Skeleton } from '../ui/skeleton'
 import { FormFieldDynamic } from './FormFieldDynamic'
 
 type RenderFieldProps<
@@ -61,10 +63,27 @@ export function RenderField<
               </FormLabel>
             )}
             <FormControl>
-              <div className="flex gap-2">
-                <FormFieldDynamic<TFieldValues> field={field} slot={slot} />
-                {children}
-              </div>
+              <>
+                <Skeleton
+                  className={cn(
+                    'h-10 text-sm items-center px-4 text-muted-foreground gap-2',
+                    !slot?.isLoading ? 'hidden' : 'inline-flex'
+                  )}
+                >
+                  <Loader2Icon className="animate-spin" />
+                  <span className="line-clamp-1">carregando...</span>
+                </Skeleton>
+
+                <div
+                  className={cn(
+                    'gap-2',
+                    slot?.isLoading ? 'hidden' : 'inline-flex'
+                  )}
+                >
+                  <FormFieldDynamic<TFieldValues> field={field} slot={slot} />
+                  {children}
+                </div>
+              </>
             </FormControl>
             {'message' in slot && (
               <span className="text-blue font-font-semibold text-xs">

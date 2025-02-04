@@ -23,12 +23,12 @@ export type FormFields<TFieldValues extends FieldValues> = {
   optional?: boolean
   message?: string
   required?: boolean
+  isLoading?: boolean
 } & (
   | {
       translateKey: string
       className?: string
       placeholderKey: string
-      isLoading?: boolean
       type?:
         | 'text'
         | 'tel'
@@ -45,7 +45,7 @@ export type FormFields<TFieldValues extends FieldValues> = {
       translateKey: string
       className?: string
       placeholderKey: string
-      isLoading?: boolean
+
       type: 'currency'
       prefix?: string
       onBlur?: FocusEventHandler<HTMLInputElement>
@@ -54,7 +54,6 @@ export type FormFields<TFieldValues extends FieldValues> = {
       translateKey: string
       className?: string
       placeholderKey: string
-      isLoading?: boolean
       type: 'password'
       toggleShowPassword?: () => void
       showPassword?: boolean
@@ -97,7 +96,6 @@ export type FormFields<TFieldValues extends FieldValues> = {
       className?: string
       type: 'select'
       options: SelectOptions[]
-      isLoading?: boolean
       placeHolder?: string
     }
   | {
