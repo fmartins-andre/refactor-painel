@@ -7,7 +7,7 @@ export const viaCepApiLocalidadeDetalhesRequestParamsSchema = z.object({
   cep: z.string().transform((arg, ctx): string => {
     const cleanedValue = arg.replace(/\D/g, '')
 
-    if (validateCep(cleanedValue)) {
+    if (!validateCep(cleanedValue)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'CEP inválido',

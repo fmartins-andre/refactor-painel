@@ -44,15 +44,19 @@ export function useLazyClienteTotalizarListagem(): UseLazyClienteTotalizarListag
 
   const trigger = useCallback(
     async (params?: ClienteTotalizarListagemRequestPayload) => {
-      setState({ isFetching: true, params })
+      try {
+        setState({ isFetching: true, params })
 
-      const response = await queryClient.fetchQuery(
-        clienteTotalizarListagemClientOptions(params)
-      )
+        const response = await queryClient.fetchQuery(
+          clienteTotalizarListagemClientOptions(params)
+        )
 
-      setState((prev) => ({ ...prev, isFetching: false }))
-
-      return response
+        return response
+      } catch (_) {
+        // precisa fazer nada
+      } finally {
+        setState((prev) => ({ ...prev, isFetching: false }))
+      }
     },
     [queryClient]
   )

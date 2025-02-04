@@ -48,15 +48,19 @@ export function useLazyVisaoGeralCertificadosListar(): UseLazyVisaoGeralCertific
   )
 
   const trigger = useCallback(async () => {
-    setState((prev) => ({ ...prev, isFetching: true }))
+    try {
+      setState((prev) => ({ ...prev, isFetching: true }))
 
-    const response = await queryClient.fetchQuery(
-      visaoGeralCertificadosListarClientOptions(state.params)
-    )
+      const response = await queryClient.fetchQuery(
+        visaoGeralCertificadosListarClientOptions(state.params)
+      )
 
-    setState((prev) => ({ ...prev, isFetching: false }))
-
-    return response
+      return response
+    } catch (_) {
+      // precisa fazer nada
+    } finally {
+      setState((prev) => ({ ...prev, isFetching: false }))
+    }
   }, [queryClient, state.params])
 
   return useMemo(

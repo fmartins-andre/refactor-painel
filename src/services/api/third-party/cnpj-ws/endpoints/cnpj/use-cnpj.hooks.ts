@@ -46,15 +46,21 @@ export function useLazyCnpjWsDadosEmpresa(): UseLazyCnpjWsDadosEmpresaReturn {
 
   const trigger = useCallback(
     async (params: CnpjWsDadosEmpresaRequestParams) => {
-      setState({ isFetching: true, params })
+      try {
+        setState({ isFetching: true, params })
 
-      const response = await queryClient.fetchQuery(
-        cnpjWsDadosEmpresaClientOptions(params)
-      )
+        const response = await queryClient.fetchQuery(
+          cnpjWsDadosEmpresaClientOptions(params)
+        )
 
-      setState((prev) => ({ ...prev, isFetching: false }))
+        setState((prev) => ({ ...prev, isFetching: false }))
 
-      return response
+        return response
+      } catch (_) {
+        // precisa fazer nada
+      } finally {
+        setState((prev) => ({ ...prev, isFetching: false }))
+      }
     },
     [queryClient]
   )
@@ -65,7 +71,7 @@ export function useLazyCnpjWsDadosEmpresa(): UseLazyCnpjWsDadosEmpresaReturn {
       {
         data,
         isFetching: state.isFetching,
-        isLoading: Boolean(state.isFetching && data),
+        isLoading: Boolean(state.isFetching && !data),
       },
     ],
     [data, state.isFetching, trigger]

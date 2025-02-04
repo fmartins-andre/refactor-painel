@@ -40,15 +40,19 @@ export function useLazyBrasilApiIbgeEstadosListar(): UseLazyBrasilApiIbgeEstados
   )
 
   const trigger = useCallback(async () => {
-    setState({ isFetching: true })
+    try {
+      setState({ isFetching: true })
 
-    const response = await queryClient.fetchQuery(
-      brasilApiIbgeEstadosListarClientOptions()
-    )
+      const response = await queryClient.fetchQuery(
+        brasilApiIbgeEstadosListarClientOptions()
+      )
 
-    setState((prev) => ({ ...prev, isFetching: false }))
-
-    return response
+      return response
+    } catch (_) {
+      // precisa fazer nada
+    } finally {
+      setState((prev) => ({ ...prev, isFetching: false }))
+    }
   }, [queryClient])
 
   return useMemo(
@@ -57,7 +61,7 @@ export function useLazyBrasilApiIbgeEstadosListar(): UseLazyBrasilApiIbgeEstados
       {
         data,
         isFetching: state.isFetching,
-        isLoading: Boolean(state.isFetching && data),
+        isLoading: Boolean(state.isFetching && !data),
       },
     ],
     [data, state.isFetching, trigger]

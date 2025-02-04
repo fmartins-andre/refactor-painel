@@ -38,15 +38,19 @@ export function useLazyDasMeiListar(): UseLazyDasMeiListarReturn {
 
   const trigger = useCallback(
     async (params?: DasMeiListarRequestPayload) => {
-      setState({ isFetching: true, params })
+      try {
+        setState({ isFetching: true, params })
 
-      const response = await queryClient.fetchQuery(
-        dasMeiListarClientOptions(params)
-      )
+        const response = await queryClient.fetchQuery(
+          dasMeiListarClientOptions(params)
+        )
 
-      setState((prev) => ({ ...prev, isFetching: false }))
-
-      return response
+        return response
+      } catch (_) {
+        // precisa fazer nada
+      } finally {
+        setState((prev) => ({ ...prev, isFetching: false }))
+      }
     },
     [queryClient]
   )

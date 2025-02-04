@@ -1,4 +1,4 @@
-import { AxiosError, isAxiosError } from 'axios'
+import { AxiosError, HttpStatusCode, isAxiosError } from 'axios'
 import { ZodError } from 'zod'
 
 import { toast } from '@/components/hooks/use-toast'
@@ -18,14 +18,21 @@ export function handleCommonCnpjWsApiErrors<
   if (isAxiosError(error)) {
     const axiosError = error as AxiosError<TError>
 
-    const description = axiosError.response?.data?.detalhes
-    const validations = axiosError.response?.data?.validacao
+    const isNotFound = error.response?.status === HttpStatusCode.NotFound
+
+    const description = isNotFound
+      ? 'O CNPJ informado pode não existir ou estar errado.'
+      : axiosError.response?.data?.detalhes
+    const validations = isNotFound
+      ? undefined
+      : axiosError.response?.data?.validacao
 
     toast({
-      title:
-        axiosError.response?.data.titulo ??
-        fallbackErrorMessage ??
-        'Erro na solicitação ao servidor.',
+      title: isNotFound
+        ? 'CNPJ não encontrado!'
+        : (axiosError.response?.data.titulo ??
+          fallbackErrorMessage ??
+          'Erro na solicitação ao servidor.'),
       description: (
         <>
           {Boolean(description?.length) && (

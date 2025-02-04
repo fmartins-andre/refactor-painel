@@ -38,15 +38,19 @@ export function useLazyClienteListar(): UseLazyClienteListarReturn {
 
   const trigger = useCallback(
     async (params?: ClienteListarRequestPayload) => {
-      setState({ isFetching: true, params })
+      try {
+        setState({ isFetching: true, params })
 
-      const response = await queryClient.fetchQuery(
-        clienteListarClientOptions(params)
-      )
+        const response = await queryClient.fetchQuery(
+          clienteListarClientOptions(params)
+        )
 
-      setState((prev) => ({ ...prev, isFetching: false }))
-
-      return response
+        return response
+      } catch (_) {
+        // precisa fazer nada
+      } finally {
+        setState((prev) => ({ ...prev, isFetching: false }))
+      }
     },
     [queryClient]
   )

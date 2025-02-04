@@ -9,7 +9,7 @@ export function zodTransformFromIsoToDate(
 ): Date | undefined {
   if (typeof arg !== 'string') return undefined
 
-  const timezonedDate = arg.includes('T') ? arg : `${arg}T:00:00:00Z`
+  const timezonedDate = arg.includes('T') ? arg : `${arg}T00:00:00.000Z`
 
   const validDateTime = DateTime.fromISO(timezonedDate)
 

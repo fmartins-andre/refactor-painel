@@ -40,15 +40,19 @@ export function useLazyVisaoGeralCardTotalizacao(): UseLazyVisaoGeralCardTotaliz
   )
 
   const trigger = useCallback(async () => {
-    setState({ isFetching: true })
+    try {
+      setState({ isFetching: true })
 
-    const response = await queryClient.fetchQuery(
-      visaoGeralCardTotalizacaoClientOptions()
-    )
+      const response = await queryClient.fetchQuery(
+        visaoGeralCardTotalizacaoClientOptions()
+      )
 
-    setState((prev) => ({ ...prev, isFetching: false }))
-
-    return response
+      return response
+    } catch (_) {
+      // precisa fazer nada
+    } finally {
+      setState((prev) => ({ ...prev, isFetching: false }))
+    }
   }, [queryClient])
 
   return useMemo(

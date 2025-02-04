@@ -7,7 +7,7 @@ export const cnpjWsDadosEmpresaRequestParamsSchema = z.object({
   cnpj: z.string().transform((arg, ctx): string => {
     const cleanedValue = arg.replace(/\D/g, '')
 
-    if (validateCNPJ(cleanedValue)) {
+    if (!validateCNPJ(cleanedValue)) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'CNPJ inválido',
@@ -103,7 +103,7 @@ const estabelecimentoSchema = z.object({
   tipo_logradouro: z.custom<string>(),
   logradouro: z.custom<string>(),
   numero: z.custom<string>(),
-  complemento: z.custom<string>(),
+  complemento: z.custom<string>().nullable(),
   bairro: z.custom<string>(),
   cep: z.custom<string>(),
   ddd1: z.custom<string>(),

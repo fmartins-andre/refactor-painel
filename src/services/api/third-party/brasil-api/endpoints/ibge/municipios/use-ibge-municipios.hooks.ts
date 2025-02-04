@@ -52,15 +52,19 @@ export function useLazyBrasilApiIbgeMunicipios(): UseLazyBrasilApiIbgeMunicipios
 
   const trigger = useCallback(
     async (params: BrasilApiIbgeMunicipiosListarRequestParams) => {
-      setState({ isFetching: true, params })
+      try {
+        setState({ isFetching: true, params })
 
-      const response = await queryClient.fetchQuery(
-        brasilApiIbgeMunicipiosClientOptions(params)
-      )
+        const response = await queryClient.fetchQuery(
+          brasilApiIbgeMunicipiosClientOptions(params)
+        )
 
-      setState((prev) => ({ ...prev, isFetching: false }))
-
-      return response
+        return response
+      } catch (_) {
+        // precisa fazer nada
+      } finally {
+        setState((prev) => ({ ...prev, isFetching: false }))
+      }
     },
     [queryClient]
   )
@@ -71,7 +75,7 @@ export function useLazyBrasilApiIbgeMunicipios(): UseLazyBrasilApiIbgeMunicipios
       {
         data,
         isFetching: state.isFetching,
-        isLoading: Boolean(state.isFetching && data),
+        isLoading: Boolean(state.isFetching && !data),
       },
     ],
     [data, state.isFetching, trigger]

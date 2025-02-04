@@ -47,15 +47,19 @@ export function useLazyClienteObterDetalhe(): UseLazyClienteObterDetalheReturn {
 
   const trigger = useCallback(
     async (params: ClienteObterDetalheRequestPayload) => {
-      setState({ isFetching: true, params })
+      try {
+        setState({ isFetching: true, params })
 
-      const response = await queryClient.fetchQuery(
-        clienteObterDetalheClientOptions(params)
-      )
+        const response = await queryClient.fetchQuery(
+          clienteObterDetalheClientOptions(params)
+        )
 
-      setState((prev) => ({ ...prev, isFetching: false }))
-
-      return response
+        return response
+      } catch (_) {
+        // precisa fazer nada
+      } finally {
+        setState((prev) => ({ ...prev, isFetching: false }))
+      }
     },
     [queryClient]
   )

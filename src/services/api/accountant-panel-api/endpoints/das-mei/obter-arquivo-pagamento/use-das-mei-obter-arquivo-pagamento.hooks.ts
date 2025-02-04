@@ -48,15 +48,19 @@ export function useLazyDasMeiObterArquivoPagamento(): UseLazyDasMeiObterArquivoP
 
   const trigger = useCallback(
     async (params: DasMeiObterArquivoPagamentoRequestPayload) => {
-      setState({ isFetching: true, params })
+      try {
+        setState({ isFetching: true, params })
 
-      const response = await queryClient.fetchQuery(
-        dasMeiObterArquivoPagamentoClientOptions(params)
-      )
+        const response = await queryClient.fetchQuery(
+          dasMeiObterArquivoPagamentoClientOptions(params)
+        )
 
-      setState((prev) => ({ ...prev, isFetching: false }))
-
-      return response
+        return response
+      } catch (_) {
+        // precisa fazer nada
+      } finally {
+        setState((prev) => ({ ...prev, isFetching: false }))
+      }
     },
     [queryClient]
   )
