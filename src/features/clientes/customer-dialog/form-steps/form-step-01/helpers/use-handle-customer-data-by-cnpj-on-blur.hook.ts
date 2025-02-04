@@ -42,16 +42,24 @@ export function useFormStep01HandleCustomerDataByCnpj({
           data.estabelecimento.ddd1.concat(data.estabelecimento.telefone1)
         )
       )
+      setValue('isMei', data.simples.mei.toLowerCase() === 'sim')
+      setValue('meiDataAbertura', data.simples.data_opcao_mei ?? null)
+      setValue(
+        'inscricaoEstadual',
+        data.estabelecimento.inscricoes_estaduais.find(
+          (ie) => ie.estado.sigla === data.estabelecimento.estado.sigla
+        )?.inscricao_estadual ?? null
+      )
 
       updateCustomerPayload({
         cep: inputMask.cep(data.estabelecimento.cep ?? ''),
         numero: data.estabelecimento.numero ?? '',
         logradouro: data.estabelecimento.logradouro.replace(/\s{2,}/g, ' '),
-        complemento: data.estabelecimento.complemento.replace(/\s{2,}/g, ' '),
+        complemento: data.estabelecimento.complemento?.replace(/\s{2,}/g, ' '),
         cidadeId: String(data.estabelecimento.cidade.ibge_id),
         bairro: data.estabelecimento.bairro.replace(/\s{2,}/g, ' '),
         uf: data.estabelecimento.estado.sigla,
-        paisId: data.estabelecimento.pais.id,
+        paisId: data.estabelecimento.pais.nome,
       })
     }
   }

@@ -53,7 +53,7 @@ export function CustomerFormStep01({
 
   useEffect(() => {
     if (!isMei) setValue('meiDataAbertura', null)
-  }, [])
+  }, [isMei, setValue])
 
   return (
     <div className={cn('grid w-full', className)} {...props}>
@@ -65,6 +65,7 @@ export function CustomerFormStep01({
                 form={form}
                 slot={{
                   name: 'tipoPessoa',
+                  disabled: isFetchingCnpjData,
                   required: true,
                   label: 'Tipo pessoa',
                   className: 'col-span-4',
@@ -78,6 +79,7 @@ export function CustomerFormStep01({
                 form={form}
                 slot={{
                   name: 'cnpjCpf',
+                  isLoading: isFetchingCnpjData,
                   required: true,
                   translateKey: `${isPJ ? 'CNPJ' : 'CPF'}`,
                   placeholderKey: `${isPJ ? 'Ex: 00.000.000/0000-00' : 'Ex: 000.000.000-00'}`,
@@ -93,6 +95,7 @@ export function CustomerFormStep01({
                 form={form}
                 slot={{
                   name: 'razaoSocial',
+                  isLoading: isFetchingCnpjData,
                   required: true,
                   translateKey: `${isPJ ? 'Razão social' : 'Nome'}`,
                   placeholderKey: 'Ex: Lorem Ipsum company',
@@ -105,6 +108,7 @@ export function CustomerFormStep01({
                 form={form}
                 slot={{
                   name: 'inscricaoEstadual',
+                  isLoading: isFetchingCnpjData,
                   optional: true,
                   translateKey: 'Inscrição Estadual',
                   placeholderKey: 'Ex: 00000000',
@@ -117,6 +121,7 @@ export function CustomerFormStep01({
                 form={form}
                 slot={{
                   name: 'inscricaoMunicipal',
+                  isLoading: isFetchingCnpjData,
                   optional: true,
                   translateKey: 'Inscrição Municipal',
                   placeholderKey: 'Ex: 00000',
@@ -131,6 +136,7 @@ export function CustomerFormStep01({
                 form={form}
                 slot={{
                   name: 'email',
+                  isLoading: isFetchingCnpjData,
                   required: true,
                   translateKey: 'Email',
                   placeholderKey: 'Ex: lorem.ipsum@lorem-company.com',
@@ -143,6 +149,7 @@ export function CustomerFormStep01({
                 form={form}
                 slot={{
                   name: 'telefoneWhatsapp',
+                  isLoading: isFetchingCnpjData,
                   required: true,
                   translateKey: 'Telefone',
                   placeholderKey: 'Ex: 62 99999-9999',
