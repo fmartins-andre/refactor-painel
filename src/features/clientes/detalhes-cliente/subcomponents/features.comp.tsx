@@ -1,4 +1,5 @@
 import { ComponentProps, forwardRef, PropsWithChildren } from 'react'
+import { StatusDasMeiModelEnum } from '@/services/api/accountant-panel-api/endpoints/das-mei'
 import { TipoPessoaModelEnum } from '@/services/api/accountant-panel-api/schemas'
 import { RegimeTributarioClienteModelEnum } from '@/services/api/accountant-panel-api/schemas/cliente-view-model'
 import { createLink, useLocation, useParams } from '@tanstack/react-router'
@@ -32,6 +33,7 @@ export function CustomerDetailsFeatures({ children }: PropsWithChildren) {
             data-state={
               pathname.includes('notas-fiscais') ? 'active' : undefined
             }
+            disabled={pathname.includes('notas-fiscais')}
           >
             <FileBarChartIcon className="size-4" />
             Notas Fiscais
@@ -42,6 +44,7 @@ export function CustomerDetailsFeatures({ children }: PropsWithChildren) {
             preload="intent"
             params={{ clienteId }}
             data-state={pathname.includes('xml') ? 'active' : undefined}
+            disabled={pathname.includes('xml')}
           >
             <FileDownIcon className="size-4" />
             Todos XMLs
@@ -56,7 +59,9 @@ export function CustomerDetailsFeatures({ children }: PropsWithChildren) {
               to="/clientes/$clienteId/das-mei"
               preload="intent"
               params={{ clienteId }}
+              search={{ status: [StatusDasMeiModelEnum.A_VENCER] }}
               data-state={pathname.includes('das-mei') ? 'active' : undefined}
+              disabled={pathname.includes('das-mei')}
             >
               <FileBadgeIcon className="size-4" />
               DAS MEI
