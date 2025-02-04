@@ -3,7 +3,12 @@ import { UfBrasilEnum } from '@/@types/system-wide-enums'
 import { z } from '@/lib/translated-zod'
 
 export const brasilApiIbgeMunicipiosListarRequestParamsSchema = z.object({
-  uf: z.string().refine((arg) => arg in UfBrasilEnum, 'UF inválida'),
+  uf: z
+    .string()
+    .refine(
+      (arg) => Object.values(UfBrasilEnum).includes(arg as UfBrasilEnum),
+      'UF inválida'
+    ),
 })
 
 export type BrasilApiIbgeMunicipiosListarRequestParams = z.input<
