@@ -1,4 +1,5 @@
 import { lazy, Suspense, useRef } from 'react'
+import { type CustomerDialogRef } from '@/features/clientes/customer-dialog'
 import { TooltipArrow } from '@radix-ui/react-tooltip'
 import { UserIcon, UserPenIcon } from 'lucide-react'
 
@@ -11,12 +12,11 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 
-import { type CustomerDialogRef } from '../../../subcomponents/customer-dialog'
 import { AccordionContentComponent } from './subcomponents/accordion-content-component'
 import { useCustomerDetailConfig } from './subcomponents/use-customer-detail-config'
 
 const CustomerDialog = lazy(() =>
-  import('../../../subcomponents/customer-dialog').then((module) => ({
+  import('@/features/clientes/customer-dialog').then((module) => ({
     default: module.CustomerDialog,
   }))
 )
