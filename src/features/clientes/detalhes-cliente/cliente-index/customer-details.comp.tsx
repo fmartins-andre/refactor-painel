@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
 
-import { CustomerDataCard } from './subcomponents/customer-data-card.comp'
+import { CustomerDataCard } from './subcomponents/customer-data-card'
 import { CustomerDetailsFeatures } from './subcomponents/features.comp'
 import { CustomerDetailsHeader } from './subcomponents/header'
 import { StateTaxIdCard } from './subcomponents/state-tax-id-card'
