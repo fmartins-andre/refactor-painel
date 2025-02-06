@@ -5,7 +5,7 @@ import {
   RegimeTributarioClienteModelEnum,
   StatusClienteModelEnum,
   TipoRegimeSubstituicaoModelEnum,
-} from '@/services/api/accountant-panel-api/schemas/cliente-view-model'
+} from '@/services/api/accountant-panel-api/schemas/cliente-models'
 import { fallback } from '@tanstack/zod-adapter'
 
 import { z } from '@/lib/translated-zod'

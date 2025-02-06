@@ -10,8 +10,7 @@ import {
 export type AutenticacaoObterTokenResponse = AutenticacaoObterToken
 
 export async function autenticacaoObterToken(
-  payload: AutenticacaoObterTokenRequestPayload,
-  signal?: AbortSignal
+  payload: AutenticacaoObterTokenRequestPayload
 ): Promise<AutenticacaoObterTokenResponse> {
   try {
     const body = autenticacaoObterTokenRequestPayloadSchema.parse(payload)
@@ -19,8 +18,7 @@ export async function autenticacaoObterToken(
     const response =
       await accountantPanelApiHttpClientInstance.post<AutenticacaoObterTokenResponse>(
         '/v1/Autenticacao/ObterToken',
-        body,
-        { signal }
+        body
       )
 
     const validatedResponse = autenticacaoObterTokenSchema.parse(response.data)

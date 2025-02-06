@@ -1,7 +1,7 @@
 import {
   ClienteListagemViewModel,
   StatusClienteModelEnum,
-} from '@/services/api/accountant-panel-api/schemas/cliente-view-model'
+} from '@/services/api/accountant-panel-api/schemas/cliente-models'
 import { inputMask } from '@/utils/input-mask'
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { ColumnDef } from '@tanstack/react-table'

@@ -1,9 +1,9 @@
+import { RegimeTributarioClienteModelEnum } from '@/services/api/accountant-panel-api/schemas/cliente-models'
 import { inputMask } from '@/utils/input-mask'
-import { parseISO } from 'date-fns'
 import { produce } from 'immer'
 
 import {
-  CustomerPayload,
+  CustomerFormStatePayload,
   useHandleCustomerFormState,
 } from '../../../helpers/use-customer-form-state'
 import { formDefaultValues } from '../constants'
@@ -18,7 +18,7 @@ export function useFormStep01Initializer() {
   return formInitialValues
 }
 
-function getFormValues(data: CustomerPayload | null) {
+function getFormValues(data: CustomerFormStatePayload | null) {
   const handler = produce((draft) => {
     if (!data) return formDefaultValues
 
@@ -26,36 +26,44 @@ function getFormValues(data: CustomerPayload | null) {
       draft.tipoPessoa = data.tipoPessoa
     }
 
-    if (data.cnpjCpf != null) {
-      draft.cnpjCpf = inputMask.cpfCnpj(data.cnpjCpf)
+    if (data.documento != null) {
+      draft.documento = inputMask.cpfCnpj(data.documento)
     }
 
-    if (data.razaoSocial != null) {
-      draft.razaoSocial = data.razaoSocial
+    if (data.nomeRazaoSocial != null) {
+      draft.nomeRazaoSocial = data.nomeRazaoSocial
     }
 
     if (data.email != null) {
       draft.email = data.email
     }
 
-    if (data.telefoneWhatsapp != null) {
-      draft.telefoneWhatsapp = inputMask.phone(data.telefoneWhatsapp)
+    if (data.telefone != null) {
+      draft.telefone = inputMask.phone(data.telefone)
     }
 
-    if (data.inscricaoEstadual != null) {
-      draft.inscricaoEstadual = data.inscricaoEstadual
-    }
+    if (data.pessoaJuridica) {
+      if (data.pessoaJuridica.inscricaoEstadual != null) {
+        draft.pessoaJuridica.inscricaoEstadual =
+          data.pessoaJuridica.inscricaoEstadual
+      }
 
-    if (data.inscricaoMunicipal != null) {
-      draft.inscricaoMunicipal = data.inscricaoMunicipal
-    }
+      if (data.pessoaJuridica.inscricaoMunicipal != null) {
+        draft.pessoaJuridica.inscricaoMunicipal =
+          data.pessoaJuridica.inscricaoMunicipal
+      }
 
-    if (data.isMei != null) {
-      draft.isMei = Boolean(data.isMei)
-    }
+      if (
+        data.pessoaJuridica.regimeTributario ===
+        RegimeTributarioClienteModelEnum.MEI
+      ) {
+        draft.pessoaJuridica.isMei = true
+      }
 
-    if (data.meiDataAbertura != null) {
-      draft.meiDataAbertura = parseISO(data.meiDataAbertura)
+      if (data.pessoaJuridica.dataAbertura != null) {
+        draft.pessoaJuridica.dataAbertura = data.pessoaJuridica
+          .dataAbertura as Date | null
+      }
     }
   }, formDefaultValues)
 

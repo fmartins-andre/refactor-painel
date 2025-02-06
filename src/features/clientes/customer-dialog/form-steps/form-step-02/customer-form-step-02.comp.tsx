@@ -1,5 +1,4 @@
 import { DetailedHTMLProps, HTMLAttributes, useMemo } from 'react'
-import { AccountantCustomerUpdatePayload } from '@/@types/accountant/accountant-customer'
 import {
   useBrasilApiIbgeEstadosListar,
   useBrasilApiIbgeMunicipios,
@@ -13,7 +12,10 @@ import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { RenderField } from '@/components/form/RenderField'
 
-import { useHandleCustomerFormState } from '../../helpers/use-customer-form-state'
+import {
+  CustomerFormStatePayload,
+  useHandleCustomerFormState,
+} from '../../helpers/use-customer-form-state'
 import {
   CustomerFormStep02Input,
   CustomerFormStep02Output,
@@ -28,9 +30,7 @@ type CustomerFormStep02Props = Omit<
   'children'
 > & {
   handleSaveCustomer?: (
-    customerPayload: Partial<
-      DeepNullable<AccountantCustomerUpdatePayload>
-    > | null
+    customerPayload: CustomerFormStatePayload
   ) => Promise<void>
 }
 
@@ -48,11 +48,11 @@ export function CustomerFormStep02({
 
   const { watch, resetField, getFieldState, setValue, handleSubmit } = form
 
-  const uf = watch('uf') ?? ''
+  const uf = watch('endereco.uf') ?? ''
 
   const { setPreviousStep } = useHandleCustomerFormState()
   const isUpdate = useHandleCustomerFormState((state) =>
-    Boolean(state.customerPayload?.empresaId)
+    Boolean(state.customerPayload.id)
   )
 
   const { submitHandler } = useFormStep02SubmitHandler({
@@ -109,27 +109,27 @@ export function CustomerFormStep02({
               <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
                 form={form}
                 slot={{
-                  name: 'cep',
+                  name: 'endereco.cep',
                   required: true,
                   translateKey: 'CEP',
                   placeholderKey: 'Ex: 00000-000',
                   type: 'zipcode',
                   className: 'col-span-3',
                   onBlur: (e) => getZipCode(e.target.value),
-                  disabled: isFetchingZipCodeData,
+                  disabled: isLoading,
                 }}
               />
 
               <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
                 form={form}
                 slot={{
-                  name: 'logradouro',
+                  name: 'endereco.logradouro',
                   required: true,
                   translateKey: 'Rua',
                   placeholderKey: 'Ex: Rua Lorem Ipsum',
                   type: 'text',
                   className: 'col-span-9',
-                  disabled: isFetchingZipCodeData,
+                  isLoading: isFetchingZipCodeData,
                 }}
               />
             </div>
@@ -138,39 +138,39 @@ export function CustomerFormStep02({
               <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
                 form={form}
                 slot={{
-                  name: 'numero',
+                  name: 'endereco.numero',
                   required: true,
                   translateKey: 'Número',
                   placeholderKey: 'Ex: 000',
                   type: 'text',
                   className: 'col-span-4',
-                  disabled: isFetchingZipCodeData,
+                  isLoading: isFetchingZipCodeData,
                 }}
               />
 
               <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
                 form={form}
                 slot={{
-                  name: 'complemento',
+                  name: 'endereco.complemento',
                   optional: true,
                   translateKey: 'Complemento',
                   placeholderKey: 'Ex: Casa, Apartamento, etc',
                   type: 'text',
                   className: 'col-span-4',
-                  disabled: isFetchingZipCodeData,
+                  isLoading: isFetchingZipCodeData,
                 }}
               />
 
               <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
                 form={form}
                 slot={{
-                  name: 'bairro',
+                  name: 'endereco.bairro',
                   required: true,
                   translateKey: 'Bairro',
                   placeholderKey: 'Ex: Setor central',
                   type: 'text',
                   className: 'col-span-4',
-                  disabled: isFetchingZipCodeData,
+                  isLoading: isFetchingZipCodeData,
                 }}
               />
             </div>
@@ -179,20 +179,7 @@ export function CustomerFormStep02({
               <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
                 form={form}
                 slot={{
-                  name: 'pais',
-                  optional: true,
-                  translateKey: 'País',
-                  placeholderKey: 'Ex: Brasil',
-                  type: 'text',
-                  className: 'col-span-4',
-                  disabled: isFetchingZipCodeData,
-                }}
-              />
-
-              <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
-                form={form}
-                slot={{
-                  name: 'uf',
+                  name: 'endereco.uf',
                   required: true,
                   translateKey: 'Estado',
                   placeholderKey: 'Estado',
@@ -200,14 +187,14 @@ export function CustomerFormStep02({
                   options: brazilianStatesOptions,
                   className: 'col-span-4',
                   loading: isLoadingStates,
-                  disabled: isFetchingZipCodeData || isLoadingStates,
+                  isLoading: isFetchingZipCodeData || isLoadingStates,
                 }}
               />
 
               <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
                 form={form}
                 slot={{
-                  name: 'cidadeId',
+                  name: 'endereco.cidade',
                   required: true,
                   translateKey: 'Cidade',
                   placeholderKey: 'Cidade',
@@ -215,10 +202,8 @@ export function CustomerFormStep02({
                   options: brazilianCitiesByStateOptions,
                   className: 'col-span-4',
                   loading: isLoadingCities,
-                  disabled:
-                    !brazilianCitiesByStateOptions.length ||
-                    isFetchingZipCodeData ||
-                    isLoadingCities,
+                  disabled: !brazilianCitiesByStateOptions.length,
+                  isLoading: isFetchingZipCodeData || isLoadingCities,
                 }}
               />
             </div>

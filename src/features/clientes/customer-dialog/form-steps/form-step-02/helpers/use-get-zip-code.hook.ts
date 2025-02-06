@@ -23,17 +23,17 @@ export function useGetZipCode({
     useLazyViaCepApiLocalidadeDetalhes()
 
   const getZipCode = async (zipCode: string) => {
-    const { isDirty } = getFieldState('cep')
+    const { isDirty } = getFieldState('endereco.cep')
     if (!isDirty) return
 
     const data = await fetchZipCodeData({ cep: zipCode })
 
-    resetField('cep', { defaultValue: inputMask.cep(zipCode) })
-    setValue('uf', data?.uf ?? null)
-    setValue('cidadeId', data?.ibge ?? null)
-    setValue('bairro', data?.bairro ?? '')
-    setValue('logradouro', data?.logradouro ?? '')
-    setValue('complemento', data?.complemento)
+    resetField('endereco.cep', { defaultValue: inputMask.cep(zipCode) })
+    setValue('endereco.uf', data?.uf ?? null)
+    setValue('endereco.cidade', data?.ibge ?? '')
+    setValue('endereco.bairro', data?.bairro ?? '')
+    setValue('endereco.logradouro', data?.logradouro ?? '')
+    setValue('endereco.complemento', data?.complemento ?? null)
   }
 
   return {

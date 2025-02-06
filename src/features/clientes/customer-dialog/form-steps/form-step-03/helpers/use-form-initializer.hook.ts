@@ -1,7 +1,7 @@
 import { produce } from 'immer'
 
 import {
-  CustomerPayload,
+  CustomerFormStatePayload,
   useHandleCustomerFormState,
 } from '../../../helpers/use-customer-form-state'
 import { formDefaultValues } from '../constants'
@@ -16,44 +16,25 @@ export function useFormStep03Initializer() {
   return formInitialValues
 }
 
-function getFormValues(data: CustomerPayload | null) {
+function getFormValues(data: CustomerFormStatePayload | null) {
   const handler = produce((draft) => {
     if (!data) return formDefaultValues
 
-    if (data.crt != null) {
-      draft.crt = data.crt
+    if (data.pessoaJuridica?.regimeTributario != null) {
+      draft.pessoaJuridica.regimeTributario =
+        data.pessoaJuridica.regimeTributario
     }
 
-    if (data.isProdutorRural != null) {
-      draft.isProdutorRural = data.isProdutorRural ? '1' : '0'
+    if (data.pessoaJuridica?.regimeEspecial != null) {
+      draft.pessoaJuridica.regimeEspecial = data.pessoaJuridica.regimeEspecial
     }
 
-    if (data.regimeEspecialId != null) {
-      draft.regimeEspecialId = data.regimeEspecialId
-    }
-
-    if (data.emiteCte != null) {
-      draft.emiteCte = data.emiteCte
-    }
-
-    if (data.emiteCteos != null) {
-      draft.emiteCteos = data.emiteCteos
-    }
-
-    if (data.emiteMdfe != null) {
-      draft.emiteMdfe = data.emiteMdfe
-    }
-
-    if (data.emiteNfce != null) {
-      draft.emiteNfce = data.emiteNfce
-    }
-
-    if (data.emiteNfe != null) {
-      draft.emiteNfe = data.emiteNfe
-    }
-
-    if (data.emiteNfse != null) {
-      draft.emiteNfse = data.emiteNfse
+    draft.modulosEmissor = {
+      nfe: Boolean(data.modulosEmissor?.nfe),
+      nfce: Boolean(data.modulosEmissor?.nfce),
+      nfse: Boolean(data.modulosEmissor?.nfse),
+      cte: Boolean(data.modulosEmissor?.cte),
+      mdfe: Boolean(data.modulosEmissor?.mdfe),
     }
   }, formDefaultValues)
 

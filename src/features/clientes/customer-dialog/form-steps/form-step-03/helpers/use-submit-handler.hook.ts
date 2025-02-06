@@ -1,4 +1,4 @@
-import { AccountantCustomerUpdatePayload } from '@/@types/accountant/accountant-customer'
+import { patchDeep } from '@/utils/patch-deep'
 import sleep from '@/utils/sleep'
 import {
   SubmitErrorHandler,
@@ -8,7 +8,10 @@ import {
 
 import { useToast } from '@/components/hooks/use-toast'
 
-import { useHandleCustomerFormState } from '../../../helpers/use-customer-form-state'
+import {
+  CustomerFormStatePayload,
+  useHandleCustomerFormState,
+} from '../../../helpers/use-customer-form-state'
 import {
   CustomerFormStep03Input,
   CustomerFormStep03Output,
@@ -17,9 +20,7 @@ import {
 export type UseFormStep01SubmitHandler = {
   handleSubmit: UseFormHandleSubmit<CustomerFormStep03Input>
   handleSaveCustomer: (
-    customerPayload: Partial<
-      DeepNullable<AccountantCustomerUpdatePayload>
-    > | null
+    customerPayload: CustomerFormStatePayload
   ) => Promise<void>
 }
 
@@ -31,13 +32,14 @@ export function useFormStep03SubmitHandler({
   const { updateCustomerPayload, customerPayload } =
     useHandleCustomerFormState()
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onValid: SubmitHandler<any> = async (
     data: CustomerFormStep03Output
   ) => {
     updateCustomerPayload(data)
 
     await sleep(100)
-    await handleSaveCustomer({ ...customerPayload, ...data })
+    await handleSaveCustomer(patchDeep(customerPayload, data))
   }
 
   const onInvalid: SubmitErrorHandler<CustomerFormStep03Input> = (error) => {

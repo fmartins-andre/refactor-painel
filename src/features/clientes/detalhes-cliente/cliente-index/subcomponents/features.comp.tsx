@@ -1,7 +1,7 @@
 import { ComponentProps, forwardRef, PropsWithChildren } from 'react'
 import { StatusDasMeiModelEnum } from '@/services/api/accountant-panel-api/endpoints/das-mei'
 import { TipoPessoaModelEnum } from '@/services/api/accountant-panel-api/schemas'
-import { RegimeTributarioClienteModelEnum } from '@/services/api/accountant-panel-api/schemas/cliente-view-model'
+import { RegimeTributarioClienteModelEnum } from '@/services/api/accountant-panel-api/schemas/cliente-models'
 import { createLink, useLocation, useParams } from '@tanstack/react-router'
 import { FileBadgeIcon, FileBarChartIcon, FileDownIcon } from 'lucide-react'
 

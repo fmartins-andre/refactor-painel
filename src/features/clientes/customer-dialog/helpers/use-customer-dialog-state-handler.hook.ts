@@ -1,44 +1,39 @@
-import { useState } from 'react'
-import { AccountantCustomerUpdatePayload } from '@/@types/accountant/accountant-customer'
+import { ClienteViewModel } from '@/services/api/accountant-panel-api/schemas/cliente-models'
 
 import { useToast } from '@/components/hooks/use-toast'
 
+import { initialCustomerPayload } from '../constants'
 import { useHandleCustomerFormState } from './use-customer-form-state'
 
 export function useCustomerDialogStateHandler() {
   const { toast } = useToast()
   const { setDialogState, setCustomerPayload } = useHandleCustomerFormState()
-  // const getCustomerDetails = useLazyGetCustomerDetails()
 
-  const [isFetchingCustomerData, setIsFetchingCustomerData] =
-    useState<boolean>(false)
-  const toggle = () => setIsFetchingCustomerData((prev) => !prev)
-
-  const handleOpenDialog = async (
-    customer?: Pick<
-      AccountantCustomerUpdatePayload,
-      'empresaId' | 'inscricaoId'
-    >
-  ) => {
+  const handleOpenDialog = async (customer?: ClienteViewModel) => {
     setDialogState(true)
 
     if (customer) {
       try {
-        toggle()
-        // const data = await getCustomerDetails(customer)
+        const {
+          certificadoDigital: _, // remove certificado
+          ...rest
+        } = customer
 
-        // if (!data?.cnpjCpf) throw new Error('NOT_FOUND')
+        if (!customer.id) throw new Error('NOT_FOUND')
 
-        // setCustomerPayload(data)
+        setCustomerPayload({
+          ...initialCustomerPayload,
+          ...rest,
+        })
       } catch (error) {
+        console.error('error open customer dialog: ', error)
+
         toast({
           title: 'Não foi possível abrir o cliente para edição!',
           description:
             'Houve um problem ao carregar as informações necessárias. Tente mais tarde.',
           variant: 'destructive',
         })
-      } finally {
-        toggle()
       }
     }
   }
@@ -48,6 +43,5 @@ export function useCustomerDialogStateHandler() {
   return {
     handleOpenDialog,
     handleCloseDialog,
-    isFetchingCustomerData,
   }
 }

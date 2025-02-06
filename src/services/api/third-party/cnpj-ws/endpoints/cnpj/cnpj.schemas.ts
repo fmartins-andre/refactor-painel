@@ -1,3 +1,4 @@
+import { UfBrasilEnum } from '@/@types/system-wide-enums'
 import { validateCNPJ } from 'validations-br'
 
 import { z } from '@/lib/translated-zod'
@@ -42,7 +43,7 @@ type pais = {
 type estado = {
   id: string
   nome: string
-  sigla: string
+  sigla: UfBrasilEnum
   ibge_id: number
 }
 

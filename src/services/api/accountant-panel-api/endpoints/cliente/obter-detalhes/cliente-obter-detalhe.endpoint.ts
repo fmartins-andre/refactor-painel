@@ -3,7 +3,7 @@ import { accountantPanelApiHttpClientInstance } from '../../../http-client/http-
 import {
   ClienteViewModel,
   clienteViewModelSchema,
-} from '../../../schemas/cliente-view-model'
+} from '../../../schemas/cliente-models'
 import {
   ClienteObterDetalheRequestPayload,
   clienteObterDetalheRequestPayloadSchema,

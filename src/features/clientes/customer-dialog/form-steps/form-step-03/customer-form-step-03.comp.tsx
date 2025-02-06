@@ -1,5 +1,8 @@
 import { DetailedHTMLProps, HTMLAttributes } from 'react'
-import { AccountantCustomerUpdatePayload } from '@/@types/accountant/accountant-customer'
+import {
+  clienteRegimeEspecialOptions,
+  clienteRegimeTributarioOptions,
+} from '@/features/clientes/constants'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
@@ -9,9 +12,10 @@ import { Form } from '@/components/ui/form'
 import { RenderField } from '@/components/form/RenderField'
 
 import { switchBooleanOptions } from '../../constants'
-import { crtOptions } from '../../constants/crt-options'
-import { regimeEspecialIdOptions } from '../../constants/regime-especial-options'
-import { useHandleCustomerFormState } from '../../helpers/use-customer-form-state'
+import {
+  CustomerFormStatePayload,
+  useHandleCustomerFormState,
+} from '../../helpers/use-customer-form-state'
 import {
   CustomerFormStep03Input,
   CustomerFormStep03Output,
@@ -25,9 +29,7 @@ type CustomerFormStep03Props = Omit<
   'children'
 > & {
   handleSaveCustomer: (
-    customerPayload: Partial<
-      DeepNullable<AccountantCustomerUpdatePayload>
-    > | null
+    customerPayload: CustomerFormStatePayload
   ) => Promise<void>
 }
 
@@ -46,7 +48,7 @@ export function CustomerFormStep03({
 
   const { setPreviousStep } = useHandleCustomerFormState()
   const isUpdate = useHandleCustomerFormState((state) =>
-    Boolean(state.customerPayload?.empresaId)
+    Boolean(state.customerPayload?.id)
   )
 
   const { submitHandler } = useFormStep03SubmitHandler({
@@ -67,26 +69,11 @@ export function CustomerFormStep03({
               <RenderField<CustomerFormStep03Input, CustomerFormStep03Output>
                 form={form}
                 slot={{
-                  name: 'isProdutorRural',
-                  label: 'Produtor Rural',
-                  className: 'col-span-2',
-                  type: 'select',
-                  options: [
-                    { value: '0', label: 'Não' },
-                    { value: '1', label: 'Sim' },
-                  ],
-                  translateKey: 'Produtor Rural',
-                }}
-              />
-
-              <RenderField<CustomerFormStep03Input, CustomerFormStep03Output>
-                form={form}
-                slot={{
-                  name: 'crt',
+                  name: 'pessoaJuridica.regimeTributario',
                   label: 'CRT',
                   className: 'col-span-3',
                   type: 'select',
-                  options: crtOptions,
+                  options: clienteRegimeTributarioOptions,
                   translateKey: 'CRT',
                 }}
               />
@@ -94,11 +81,11 @@ export function CustomerFormStep03({
               <RenderField<CustomerFormStep03Input, CustomerFormStep03Output>
                 form={form}
                 slot={{
-                  name: 'regimeEspecialId',
+                  name: 'pessoaJuridica.regimeEspecial',
                   label: 'Regime Especial',
                   className: 'col-span-7',
                   type: 'select',
-                  options: regimeEspecialIdOptions,
+                  options: clienteRegimeEspecialOptions,
                   translateKey: 'Regime Especial',
                 }}
               />
@@ -108,7 +95,7 @@ export function CustomerFormStep03({
               <RenderField<CustomerFormStep03Input, CustomerFormStep03Output>
                 form={form}
                 slot={{
-                  name: 'emiteNfe',
+                  name: 'modulosEmissor.nfe',
                   label: 'Emite NF-e',
                   className: 'col-span-2 ml-1',
                   type: 'switch',
@@ -119,7 +106,7 @@ export function CustomerFormStep03({
               <RenderField<CustomerFormStep03Input, CustomerFormStep03Output>
                 form={form}
                 slot={{
-                  name: 'emiteNfce',
+                  name: 'modulosEmissor.nfce',
                   label: 'Emite NFC-e',
                   className: 'col-span-2',
                   type: 'switch',
@@ -130,7 +117,7 @@ export function CustomerFormStep03({
               <RenderField<CustomerFormStep03Input, CustomerFormStep03Output>
                 form={form}
                 slot={{
-                  name: 'emiteNfse',
+                  name: 'modulosEmissor.nfse',
                   label: 'Emite NFS-e',
                   className: 'col-span-2',
                   type: 'switch',
@@ -141,7 +128,7 @@ export function CustomerFormStep03({
               <RenderField<CustomerFormStep03Input, CustomerFormStep03Output>
                 form={form}
                 slot={{
-                  name: 'emiteMdfe',
+                  name: 'modulosEmissor.mdfe',
                   label: 'Emite MDF-e',
                   className: 'col-span-2',
                   type: 'switch',
@@ -152,7 +139,7 @@ export function CustomerFormStep03({
               <RenderField<CustomerFormStep03Input, CustomerFormStep03Output>
                 form={form}
                 slot={{
-                  name: 'emiteCte',
+                  name: 'modulosEmissor.cte',
                   label: 'Emite CT-e',
                   className: 'col-span-2',
                   type: 'switch',

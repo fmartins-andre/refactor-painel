@@ -1,8 +1,8 @@
 import { z } from '@/lib/translated-zod'
 import { zodTransformFromIsoToDate } from '@/lib/zod-transforms'
 
-import { certificadoDigitalViewModelSchema } from '../certificado-digital-view-model'
-import { enderecoViewModelSchema } from '../endereco-view-model'
+import { certificadoDigitalViewModelSchema } from '../certificado-digital-models'
+import { enderecoViewModelSchema } from '../endereco-models'
 import { StatusIntegracaoModelEnum, TipoPessoaModelEnum } from '../shared'
 import { clientePessoaJuridicaViewModelSchema } from './cliente-pessoa-juridica-view-model.schema'
 import { StatusClienteModelEnum } from './cliente-view-model.enum'

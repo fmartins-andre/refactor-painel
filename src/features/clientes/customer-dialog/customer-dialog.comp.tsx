@@ -1,8 +1,9 @@
-import { forwardRef, useImperativeHandle } from 'react'
+import { forwardRef, useImperativeHandle, useLayoutEffect } from 'react'
 import { Check, Info, MapPin } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import Loading from '@/components/loading'
 
 import { CustomerDialogProps, CustomerDialogRef } from './customer-dialog.types'
 import { CustomerFormStep01 } from './form-steps/form-step-01/customer-form-step-01.comp'
@@ -31,15 +32,19 @@ export const CustomerDialog = forwardRef<
   CustomerDialogRef,
   CustomerDialogProps
 >(({ onSuccessCreatedCallback, skipLastStep }, ref) => {
-  const { setDialogState } = useHandleCustomerFormState()
+  const { setDialogState, customerPayload } = useHandleCustomerFormState()
+
+  useLayoutEffect(() => {
+    console.log('customerPayload: ', customerPayload)
+  }, [customerPayload])
 
   const open = useHandleCustomerFormState((state) => state.dialogState)
   const activeStep = useHandleCustomerFormState((state) => state.activeStep)
 
-  const { handleOpenDialog, handleCloseDialog, isFetchingCustomerData } =
+  const { handleOpenDialog, handleCloseDialog } =
     useCustomerDialogStateHandler()
 
-  const { handleSaveCustomer } = useSaveCustomerHandler({
+  const { handleSaveCustomer, isPending } = useSaveCustomerHandler({
     onSuccessCreatedCallback,
   })
 
@@ -71,25 +76,21 @@ export const CustomerDialog = forwardRef<
         </DialogTitle>
 
         <div className="flex grow">
-          {!isFetchingCustomerData && activeStep === 0 && (
-            <CustomerFormStep01 />
-          )}
+          {activeStep === 0 && <CustomerFormStep01 />}
 
-          {!isFetchingCustomerData && activeStep === 1 && (
+          {activeStep === 1 && (
             <CustomerFormStep02
               handleSaveCustomer={skipLastStep ? handleSaveCustomer : undefined}
             />
           )}
 
-          {!skipLastStep && !isFetchingCustomerData && activeStep === 2 && (
+          {!skipLastStep && activeStep === 2 && (
             <CustomerFormStep03 handleSaveCustomer={handleSaveCustomer} />
-          )}
-
-          {isFetchingCustomerData && (
-            <div className="min-h-[380px]" data-part="placeholder" />
           )}
         </div>
       </DialogContent>
+
+      {isPending && <Loading />}
     </Dialog>
   )
 })

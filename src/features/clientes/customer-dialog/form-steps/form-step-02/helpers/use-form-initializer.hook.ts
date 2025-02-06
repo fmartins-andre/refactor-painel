@@ -2,7 +2,7 @@ import { inputMask } from '@/utils/input-mask'
 import { produce } from 'immer'
 
 import {
-  CustomerPayload,
+  CustomerFormStatePayload,
   useHandleCustomerFormState,
 } from '../../../helpers/use-customer-form-state'
 import { formDefaultValues } from '../constants'
@@ -17,40 +17,36 @@ export function useFormStep02Initializer() {
   return formInitialValues
 }
 
-function getFormValues(data: CustomerPayload | null) {
+function getFormValues(data: CustomerFormStatePayload | null) {
   const handler = produce((draft) => {
     if (!data) return formDefaultValues
 
-    if (data.cep != null) {
-      draft.cep = inputMask.cep(data.cep ?? '')
+    if (data.endereco?.cep != null) {
+      draft.endereco.cep = inputMask.cep(data.endereco.cep ?? '')
     }
 
-    if (data.uf != null) {
-      draft.uf = data.uf
+    if (data.endereco?.uf != null) {
+      draft.endereco.uf = data.endereco.uf
     }
 
-    if (data.cidadeId != null) {
-      draft.cidadeId = data.cidadeId
+    if (data.endereco?.cidade != null) {
+      draft.endereco.cidade = data.endereco.cidade
     }
 
-    if (data.bairro != null) {
-      draft.bairro = data.bairro
+    if (data.endereco?.bairro != null) {
+      draft.endereco.bairro = data.endereco.bairro
     }
 
-    if (data.logradouro != null) {
-      draft.logradouro = data.logradouro
+    if (data.endereco?.logradouro != null) {
+      draft.endereco.logradouro = data.endereco.logradouro
     }
 
-    if (data.numero != null) {
-      draft.numero = data.numero
+    if (data.endereco?.numero != null) {
+      draft.endereco.numero = data.endereco.numero
     }
 
-    if (data.complemento != null) {
-      draft.complemento = data.complemento
-    }
-
-    if (data.paisId != null) {
-      draft.pais = data.paisId
+    if (data.endereco?.complemento != null) {
+      draft.endereco.complemento = data.endereco.complemento
     }
   }, formDefaultValues)
 

@@ -1,9 +1,9 @@
 import { z } from '@/lib/translated-zod'
 
-import { certificadoDigitalViewModelSchema } from '../certificado-digital-view-model'
-import { enderecoViewModelSchema } from '../endereco-view-model'
-import { gestaoEstoqueViewModelSchema } from '../gestao-estoque-view-model '
-import { planoContadorViewModelSchema } from '../plano-view-model'
+import { certificadoDigitalInputModelSchema } from '../certificado-digital-models'
+import { enderecoViewModelSchema } from '../endereco-models'
+import { gestaoEstoqueViewModelSchema } from '../gestao-estoque-models'
+import { planoContadorViewModelSchema } from '../plano-models'
 import { TipoPessoaModelEnum } from '../shared'
 import { contadorConfiguracaoViewModelSchema } from './contador-configuracao-view-model.schema'
 import { StatusContadorModelEnum } from './contador-view-model.enum'
@@ -19,7 +19,7 @@ export const contadorViewModelSchema = z.object({
   telefone: z.custom<string>().nullable(),
   email: z.custom<string>().nullable(),
   endereco: enderecoViewModelSchema.nullable(),
-  certificadoDigital: certificadoDigitalViewModelSchema.nullable(),
+  certificadoDigital: certificadoDigitalInputModelSchema.nullable(),
   plano: planoContadorViewModelSchema.nullable(),
   configuracao: contadorConfiguracaoViewModelSchema.nullable(),
   gestaoEstoque: gestaoEstoqueViewModelSchema.nullable(),

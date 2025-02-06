@@ -1,3 +1,5 @@
 export * from './listar'
 export * from './totalizar-listagem'
 export * from './obter-detalhes'
+export * from './inserir'
+export * from './atualizar'

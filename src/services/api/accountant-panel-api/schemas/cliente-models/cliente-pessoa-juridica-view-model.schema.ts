@@ -20,6 +20,7 @@ export const clientePessoaJuridicaViewModelSchema = z.object({
   dataAbertura: z
     .custom<string>()
     .transform(zodTransformFromIsoToDate)
+    .transform<Date | null>((arg) => arg ?? null)
     .nullable(),
   monitorarDas: z.coerce.boolean(),
 })

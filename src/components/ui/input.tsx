@@ -8,7 +8,7 @@ export interface InputProps
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, icon, ...props }, ref) => {
+  ({ className, type, icon, value, ...props }, ref) => {
     return icon ? (
       <div
         className={cn(
@@ -17,6 +17,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
       >
         <input
+          value={value ?? ''}
           type={type}
           ref={ref}
           className="h-9 w-full pl-1 focus:border-none focus:outline-none focus-visible:outline-none focus-visible:ring-0"
@@ -26,6 +27,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       </div>
     ) : (
       <input
+        value={value ?? ''}
         type={type}
         className={cn(
           'dark:border-input placeholder:text-muted-foreground focus-visible:ring-ring dark:bg-gray900 flex h-9 w-full rounded-md border border-[#F1F5F9] bg-[#F1F5F9] px-3 py-1 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50',

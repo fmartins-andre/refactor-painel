@@ -1,4 +1,4 @@
-import { AccountantCustomerUpdatePayload } from '@/@types/accountant/accountant-customer'
+import { patchDeep } from '@/utils/patch-deep'
 import sleep from '@/utils/sleep'
 import {
   SubmitErrorHandler,
@@ -8,7 +8,10 @@ import {
 
 import { useToast } from '@/components/hooks/use-toast'
 
-import { useHandleCustomerFormState } from '../../../helpers/use-customer-form-state'
+import {
+  CustomerFormStatePayload,
+  useHandleCustomerFormState,
+} from '../../../helpers/use-customer-form-state'
 import {
   CustomerFormStep02Input,
   CustomerFormStep02Output,
@@ -17,9 +20,7 @@ import {
 export type UseFormStep01SubmitHandler = {
   handleSubmit: UseFormHandleSubmit<CustomerFormStep02Input>
   handleSaveCustomer?: (
-    customerPayload: Partial<
-      DeepNullable<AccountantCustomerUpdatePayload>
-    > | null
+    customerPayload: CustomerFormStatePayload
   ) => Promise<void>
 }
 
@@ -31,6 +32,7 @@ export function useFormStep02SubmitHandler({
   const { setNextStep, updateCustomerPayload, customerPayload } =
     useHandleCustomerFormState()
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onValid: SubmitHandler<any> = async (
     data: CustomerFormStep02Output
   ) => {
@@ -38,7 +40,7 @@ export function useFormStep02SubmitHandler({
 
     if (handleSaveCustomer) {
       await sleep(100)
-      await handleSaveCustomer({ ...customerPayload, ...data })
+      await handleSaveCustomer(patchDeep(customerPayload, data))
     } else {
       setNextStep()
     }

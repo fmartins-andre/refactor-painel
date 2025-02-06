@@ -1,4 +1,4 @@
-import { StatusClienteModelEnum } from '@/services/api/accountant-panel-api/schemas/cliente-view-model'
+import { StatusClienteModelEnum } from '@/services/api/accountant-panel-api/schemas/cliente-models'
 import { SelectProps } from '@radix-ui/react-select'
 import { Loader2Icon } from 'lucide-react'
 

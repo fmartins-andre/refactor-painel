@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react'
 import { GenericOptionField } from '@/@types/options-field'
 import { clienteRegimeTributarioOptions } from '@/features/clientes/constants'
-import { RegimeTributarioClienteModelEnum } from '@/services/api/accountant-panel-api/schemas/cliente-view-model'
+import { RegimeTributarioClienteModelEnum } from '@/services/api/accountant-panel-api/schemas/cliente-models'
 import { inputMask } from '@/utils/input-mask'
 import {
   BuildingIcon,

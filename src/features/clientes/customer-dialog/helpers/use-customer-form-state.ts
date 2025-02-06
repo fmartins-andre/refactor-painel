@@ -1,9 +1,15 @@
-import { AccountantCustomerUpdatePayload } from '@/@types/accountant/accountant-customer'
+import {
+  ClienteInputModel,
+  ClienteViewModel,
+} from '@/services/api/accountant-panel-api/schemas/cliente-models'
+import { patchDeep } from '@/utils/patch-deep'
 import { create } from 'zustand'
 
-export type CustomerPayload = Partial<
-  DeepNullable<AccountantCustomerUpdatePayload>
->
+import { initialCustomerPayload } from '../constants'
+
+export type CustomerFormStatePayload = DeepNullable<ClienteInputModel> & {
+  id: ClienteViewModel['id'] | null
+}
 
 interface UseHandleCustomerFormState {
   activeStep: number
@@ -15,9 +21,9 @@ interface UseHandleCustomerFormState {
   setDialogState: (value: boolean) => void
   toggleDialogState: () => void
 
-  customerPayload: CustomerPayload | null
-  setCustomerPayload: (data: CustomerPayload | null) => void
-  updateCustomerPayload: (data: CustomerPayload | null) => void
+  customerPayload: CustomerFormStatePayload
+  setCustomerPayload: (data: CustomerFormStatePayload) => void
+  updateCustomerPayload: (data: DeepPartial<CustomerFormStatePayload>) => void
 }
 
 export const useHandleCustomerFormState = create<UseHandleCustomerFormState>(
@@ -39,10 +45,9 @@ export const useHandleCustomerFormState = create<UseHandleCustomerFormState>(
               dialogState: true,
             }
           : {
-              isLoading: false,
-              activeStep: 0,
               dialogState: false,
-              customerPayload: null,
+              activeStep: 0,
+              customerPayload: initialCustomerPayload,
             }),
       })
     },
@@ -53,18 +58,18 @@ export const useHandleCustomerFormState = create<UseHandleCustomerFormState>(
               dialogState: true,
             }
           : {
-              isLoading: false,
-              activeStep: 0,
               dialogState: false,
-              customerPayload: null,
+              activeStep: 0,
+              customerPayload: initialCustomerPayload,
             }),
       })),
 
-    customerPayload: null,
+    customerPayload: initialCustomerPayload,
     setCustomerPayload: (data) => set({ customerPayload: data }),
     updateCustomerPayload: (data) =>
-      set((prev) => ({
-        customerPayload: { ...prev.customerPayload, ...data },
+      set((state) => ({
+        ...state,
+        customerPayload: patchDeep(state.customerPayload, data),
       })),
   })
 )

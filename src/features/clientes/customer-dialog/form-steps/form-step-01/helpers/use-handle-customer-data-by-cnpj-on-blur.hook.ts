@@ -26,40 +26,47 @@ export function useFormStep01HandleCustomerDataByCnpj({
     useLazyCnpjWsDadosEmpresa()
 
   const getCustomerDataHandler = async (cnpj: string) => {
-    const { isDirty } = getFieldState('cnpjCpf')
+    const { isDirty } = getFieldState('documento')
     if (!isDirty) return
 
-    resetField('cnpjCpf', { defaultValue: inputMask.cpfCnpj(cnpj) })
+    resetField('documento', { defaultValue: inputMask.cpfCnpj(cnpj) })
 
     const data = await fetchCnpjData({ cnpj })
 
     if (data) {
-      setValue('razaoSocial', data.razao_social ?? '')
+      setValue('nomeRazaoSocial', data.razao_social ?? '')
       setValue('email', data.estabelecimento.email ?? '')
       setValue(
-        'telefoneWhatsapp',
+        'telefone',
         inputMask.phone(
           data.estabelecimento.ddd1.concat(data.estabelecimento.telefone1)
         )
       )
-      setValue('isMei', data.simples.mei.toLowerCase() === 'sim')
-      setValue('meiDataAbertura', data.simples.data_opcao_mei ?? null)
+      setValue('pessoaJuridica.isMei', data.simples.mei.toLowerCase() === 'sim')
       setValue(
-        'inscricaoEstadual',
+        'pessoaJuridica.dataAbertura',
+        data.simples.data_opcao_mei ?? null
+      )
+      setValue(
+        'pessoaJuridica.inscricaoEstadual',
         data.estabelecimento.inscricoes_estaduais.find(
           (ie) => ie.estado.sigla === data.estabelecimento.estado.sigla
         )?.inscricao_estadual ?? null
       )
 
       updateCustomerPayload({
-        cep: inputMask.cep(data.estabelecimento.cep ?? ''),
-        numero: data.estabelecimento.numero ?? '',
-        logradouro: data.estabelecimento.logradouro.replace(/\s{2,}/g, ' '),
-        complemento: data.estabelecimento.complemento?.replace(/\s{2,}/g, ' '),
-        cidadeId: String(data.estabelecimento.cidade.ibge_id),
-        bairro: data.estabelecimento.bairro.replace(/\s{2,}/g, ' '),
-        uf: data.estabelecimento.estado.sigla,
-        paisId: data.estabelecimento.pais.nome,
+        endereco: {
+          cep: inputMask.cep(data.estabelecimento.cep ?? ''),
+          numero: data.estabelecimento.numero ?? '',
+          logradouro: data.estabelecimento.logradouro.replace(/\s{2,}/g, ' '),
+          complemento: data.estabelecimento.complemento?.replace(
+            /\s{2,}/g,
+            ' '
+          ),
+          cidade: String(data.estabelecimento.cidade.ibge_id),
+          bairro: data.estabelecimento.bairro.replace(/\s{2,}/g, ' '),
+          uf: data.estabelecimento.estado.sigla,
+        },
       })
     }
   }

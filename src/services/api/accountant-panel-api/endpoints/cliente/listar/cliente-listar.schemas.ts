@@ -11,7 +11,7 @@ import {
   RegimeTributarioClienteModelEnum,
   StatusClienteModelEnum,
   TipoRegimeSubstituicaoModelEnum,
-} from '../../../schemas/cliente-view-model'
+} from '../../../schemas/cliente-models'
 
 export const clienteListarRequestPayloadSchema = z.object({
   clienteId: z

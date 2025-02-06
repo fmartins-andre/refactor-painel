@@ -1,7 +1,10 @@
+import { UfBrasilEnum } from '@/@types/system-wide-enums'
 import {
-  AccountantCustomerTypeEnum,
-  AccountantCustomerUpdatePayload,
-} from '@/@types/accountant/accountant-customer'
+  useClienteAtualizar,
+  useClienteInserir,
+} from '@/services/api/accountant-panel-api/endpoints/cliente'
+import { TipoPessoaModelEnum } from '@/services/api/accountant-panel-api/schemas'
+import { ClienteInputModel } from '@/services/api/accountant-panel-api/schemas/cliente-models'
 import { produce } from 'immer'
 
 import { useToast } from '@/components/hooks/use-toast'
@@ -11,7 +14,7 @@ import { useHandleCustomerFormState } from './use-customer-form-state'
 export type UseSaveCustomerHandler = {
   onSuccessCreatedCallback?: (
     response: unknown,
-    payload: AccountantCustomerUpdatePayload
+    payload: ClienteInputModel
   ) => void
 }
 
@@ -21,33 +24,31 @@ export function useSaveCustomerHandler({
   const { toast } = useToast()
   const { setDialogState } = useHandleCustomerFormState()
 
-  function onSuccess(data: unknown, variables: any) {
-    const wasUpdate = 'empresaId' in variables && variables.empresaId
+  const { mutate: update, isPending: isUpdating } = useClienteAtualizar({
+    onSuccess: () => {
+      toast({
+        title: 'Cliente atualizado com sucesso!',
+        variant: 'success',
+      })
+      setDialogState(false)
+    },
+  })
 
-    toast({
-      title: `Cliente ${wasUpdate ? 'atualizado' : 'criado'} com sucesso!`,
-      variant: 'success',
-    })
+  const { mutate: create, isPending: isCreating } = useClienteInserir({
+    onSuccess: (data, variables) => {
+      toast({
+        title: 'Cliente inserido com sucesso!',
+        variant: 'success',
+      })
+      onSuccessCreatedCallback?.(data, variables)
+      setDialogState(false)
+    },
+  })
 
-    if (!wasUpdate) onSuccessCreatedCallback?.(data, variables)
-
-    setDialogState(false)
-  }
-
-  // const { mutate: update, isPending: isUpdating } = useUpdateAccountantCustomer(
-  //   { onSuccess }
-  // )
-
-  // const { mutate: create, isPending: isCreating } = useCreateAccountantCustomer(
-  //   { onSuccess }
-  // )
-
-  // const isPending = isUpdating || isCreating
+  const isPending = isUpdating || isCreating
 
   const handleSaveCustomer = async (
-    customerPayload: Partial<
-      DeepNullable<AccountantCustomerUpdatePayload>
-    > | null
+    customerPayload: Partial<DeepNullable<ClienteInputModel>> | null
   ) => {
     if (!customerPayload || !Object.values(customerPayload).length) return
 
@@ -57,55 +58,46 @@ export function useSaveCustomerHandler({
           draft[key as keyof typeof draft] = value as never
         }
       })
-
-      draft.telefoneFinanceiro =
-        customerPayload.telefoneFinanceiro ??
-        customerPayload.telefoneWhatsapp ??
-        ''
-    }, accountantCustomerInitialValues)
+    }, customerTemplateData)
 
     const payload = getPayload()
 
-    if (payload.empresaId && payload.inscricaoId) {
-      // update(payload)
+    if (payload.tipoPessoa && payload.documento) {
+      create(payload)
     } else {
-      // create(payload)
+      update({ clienteId: '', payload })
     }
   }
 
-  const isPending = false
   return { handleSaveCustomer, isPending }
 }
 
-const accountantCustomerInitialValues: AccountantCustomerUpdatePayload = {
-  empresaId: 0,
-  inscricaoId: 0,
-  tipoPessoa: AccountantCustomerTypeEnum.PJ,
-  cnpjCpf: '',
-  razaoSocial: '',
-  nomeFantasia: '',
-  isProdutorRural: false,
-  telefoneWhatsapp: '',
-  telefoneFinanceiro: '',
-  inscricaoEstadual: '',
-  inscricaoMunicipal: '',
-  cep: '',
-  logradouro: '',
-  numero: '',
-  bairro: '',
-  complemento: null,
-  cidadeId: '',
-  uf: '',
-  paisId: '1058',
-  crt: '0',
+const customerTemplateData: ClienteInputModel = {
+  tipoPessoa: TipoPessoaModelEnum.FISICA,
+  documento: '',
+  nomeRazaoSocial: '',
+  nomeFantasia: null,
+  telefone: '',
   email: '',
-  isMei: false,
-  meiDataAbertura: '',
-  regimeEspecialId: '0',
-  emiteNfe: false,
-  emiteNfce: false,
-  emiteNfse: false,
-  emiteMdfe: false,
-  emiteCte: false,
-  emiteCteos: false,
+  endereco: {
+    logradouro: '',
+    numero: null,
+    bairro: '',
+    complemento: null,
+    cidade: '',
+    uf: UfBrasilEnum.ACRE,
+    cep: '',
+  },
+  pessoaJuridica: null,
+  certificadoDigital: null,
+  sincronizarNfseTomado: false,
+  usuarioLoginNfse: null,
+  senhaLoginNfse: null,
+  utilizaRadarxml: false,
+  utilizaValidadorTributario: false,
+  integracaoGdfe: false,
+  integracaoDominio: false,
+  tokenIntegracaoDominio: null,
+  utilizaEmissor: false,
+  modulosEmissor: null,
 }

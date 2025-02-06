@@ -22,6 +22,7 @@ export function useFormStep01SubmitHandler({
   const { toast } = useToast()
   const { setNextStep, updateCustomerPayload } = useHandleCustomerFormState()
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onValid: SubmitHandler<any> = (data: CustomerFormStep01Output) => {
     updateCustomerPayload(data)
     setNextStep()

@@ -1,6 +1,6 @@
 import { z } from '@/lib/translated-zod'
 
-import { contadorViewModelSchema } from '../contador-view-model'
+import { contadorViewModelSchema } from '../contador-models'
 import { usuarioPermissaoViewModelSchema } from './usuario-permissao-view-model.schema'
 import {
   StatusUsuarioModelEnum,

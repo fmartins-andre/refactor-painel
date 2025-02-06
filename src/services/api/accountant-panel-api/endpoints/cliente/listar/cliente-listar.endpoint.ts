@@ -3,7 +3,7 @@ import { accountantPanelApiHttpClientInstance } from '../../../http-client/http-
 import {
   ClienteListagemViewModel,
   clienteListagemViewModelSchema,
-} from '../../../schemas/cliente-view-model'
+} from '../../../schemas/cliente-models'
 import {
   ListaPaginada,
   listaPaginadaSchema,

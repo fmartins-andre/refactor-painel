@@ -1,6 +1,6 @@
 import { z } from '@/lib/translated-zod'
 
-import { certificadoDigitalViewModelSchema } from '../certificado-digital-view-model'
+import { certificadoDigitalViewModelSchema } from '../certificado-digital-models'
 import { clientePessoaJuridicaViewModelSchema } from './cliente-pessoa-juridica-view-model.schema'
 import { clienteViewModelSchema } from './cliente-view-model.schema'
 

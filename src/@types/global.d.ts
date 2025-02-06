@@ -13,3 +13,7 @@ declare type NonUndefined<T> = T extends undefined ? never : T
 declare type DeepNullable<T> = {
   [K in keyof T]: DeepNullable<T[K]> | null
 }
+
+declare type DeepPartial<T> = {
+  [K in keyof T]?: DeepPartial<T[K]> | undefined
+}

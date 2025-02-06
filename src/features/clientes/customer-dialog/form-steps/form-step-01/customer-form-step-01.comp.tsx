@@ -1,5 +1,6 @@
 import { DetailedHTMLProps, HTMLAttributes, useEffect } from 'react'
-import { AccountantCustomerTypeEnum } from '@/@types/accountant/accountant-customer'
+import { tipoPessoaOptions } from '@/features/clientes/constants'
+import { TipoPessoaModelEnum } from '@/services/api/accountant-panel-api/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -11,7 +12,6 @@ import { Form } from '@/components/ui/form'
 import { RenderField } from '@/components/form/RenderField'
 
 import { switchBooleanOptions } from '../../constants'
-import { customerTypeOptions } from './constants'
 import {
   CustomerFormStep01Input,
   CustomerFormStep01Output,
@@ -39,8 +39,8 @@ export function CustomerFormStep01({
 
   const { watch, handleSubmit, resetField, setValue, getFieldState } = form
 
-  const isPJ = watch('tipoPessoa') === AccountantCustomerTypeEnum.PJ
-  const isMei = watch('isMei')
+  const isPJ = watch('tipoPessoa') === TipoPessoaModelEnum.JURIDICA
+  const isMei = watch('pessoaJuridica.isMei')
 
   const { submitHandler } = useFormStep01SubmitHandler({ handleSubmit })
 
@@ -52,7 +52,7 @@ export function CustomerFormStep01({
     })
 
   useEffect(() => {
-    if (!isMei) setValue('meiDataAbertura', null)
+    if (!isMei) setValue('pessoaJuridica.dataAbertura', null)
   }, [isMei, setValue])
 
   return (
@@ -70,7 +70,7 @@ export function CustomerFormStep01({
                   label: 'Tipo pessoa',
                   className: 'col-span-4',
                   type: 'select',
-                  options: customerTypeOptions,
+                  options: tipoPessoaOptions,
                   translateKey: 'Tipo pessoa',
                 }}
               />
@@ -78,7 +78,7 @@ export function CustomerFormStep01({
               <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
                 form={form}
                 slot={{
-                  name: 'cnpjCpf',
+                  name: 'documento',
                   isLoading: isFetchingCnpjData,
                   required: true,
                   translateKey: `${isPJ ? 'CNPJ' : 'CPF'}`,
@@ -94,7 +94,7 @@ export function CustomerFormStep01({
               <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
                 form={form}
                 slot={{
-                  name: 'razaoSocial',
+                  name: 'nomeRazaoSocial',
                   isLoading: isFetchingCnpjData,
                   required: true,
                   translateKey: `${isPJ ? 'Razão social' : 'Nome'}`,
@@ -107,7 +107,7 @@ export function CustomerFormStep01({
               <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
                 form={form}
                 slot={{
-                  name: 'inscricaoEstadual',
+                  name: 'pessoaJuridica.inscricaoEstadual',
                   isLoading: isFetchingCnpjData,
                   optional: true,
                   translateKey: 'Inscrição Estadual',
@@ -120,7 +120,7 @@ export function CustomerFormStep01({
               <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
                 form={form}
                 slot={{
-                  name: 'inscricaoMunicipal',
+                  name: 'pessoaJuridica.inscricaoMunicipal',
                   isLoading: isFetchingCnpjData,
                   optional: true,
                   translateKey: 'Inscrição Municipal',
@@ -148,7 +148,7 @@ export function CustomerFormStep01({
               <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
                 form={form}
                 slot={{
-                  name: 'telefoneWhatsapp',
+                  name: 'telefone',
                   isLoading: isFetchingCnpjData,
                   required: true,
                   translateKey: 'Telefone',
@@ -162,7 +162,7 @@ export function CustomerFormStep01({
                 <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
                   form={form}
                   slot={{
-                    name: 'isMei',
+                    name: 'pessoaJuridica.isMei',
                     label: 'MEI',
                     type: 'switch',
                     className: 'pl-2 pt-4',
@@ -173,7 +173,7 @@ export function CustomerFormStep01({
                 <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
                   form={form}
                   slot={{
-                    name: 'meiDataAbertura',
+                    name: 'pessoaJuridica.dataAbertura',
                     required: isMei,
                     translateKey: 'Data de abertura',
                     type: 'date',
