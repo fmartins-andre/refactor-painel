@@ -13,6 +13,8 @@ import { ClienteObterDetalheRequestPayload } from './cliente-obter-detalhe.schem
 
 const MAIN_QUERY_KEY = 'cliente-obter-detalhe'
 
+const SECOND = 1000
+
 // query options
 export const clienteObterDetalheClientOptions = (
   params: ClienteObterDetalheRequestPayload
@@ -20,6 +22,7 @@ export const clienteObterDetalheClientOptions = (
   return tanstackQueryOptions({
     queryKey: [MAIN_QUERY_KEY, params].filter(Boolean),
     queryFn: async ({ signal }) => await clienteObterDetalhe(params, signal),
+    staleTime: 10 * SECOND,
   })
 }
 
