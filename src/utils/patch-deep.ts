@@ -13,7 +13,7 @@ export function patchDeep<
   TSource extends Record<string, unknown>,
   TPatch extends DeepPartial<TSource>,
 >(source: TSource, patch: TPatch): TSource {
-  if (!isObject(patch) || !isObject(source)) {
+  if (!isObject(source)) {
     return source
   }
 
