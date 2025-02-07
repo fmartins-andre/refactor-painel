@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-export const brasilApiHttpClientInstance = axios.create({
-  baseURL: 'https://brasilapi.com.br/api',
+export const ibgeGovApiHttpClientInstance = axios.create({
+  baseURL: 'https://servicodados.ibge.gov.br/api',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',

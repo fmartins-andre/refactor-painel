@@ -1,4 +1,4 @@
-export interface CommonBrasilApiError {
+export interface CommonIbgeGovApiError {
   name: string
   message: string
   type: string

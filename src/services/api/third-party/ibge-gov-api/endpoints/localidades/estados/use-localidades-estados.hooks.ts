@@ -6,45 +6,46 @@ import {
 } from '@tanstack/react-query'
 
 import {
-  brasilApiIbgeEstadosListar,
-  BrasilApiIbgeEstadosListarResponse,
-} from './ibge-estados.endpoint'
+  ibgeGovApiLocalidadesEstadosListar,
+  IbgeGovApiLocalidadesEstadosListarResponse,
+} from './localidades-estados.endpoint'
 
 const MINUTE = 1000 * 60
 
 // query options
-export const brasilApiIbgeEstadosListarClientOptions = () => {
+export const ibgeGovApiLocalidadesEstadosListarClientOptions = () => {
   return tanstackQueryOptions({
     queryKey: ['ibge-uf'],
     queryFn: async ({ signal }) =>
-      await brasilApiIbgeEstadosListar(undefined, signal),
+      await ibgeGovApiLocalidadesEstadosListar(undefined, signal),
     staleTime: 60 * MINUTE,
   })
 }
 
 // normal hook
-export function useBrasilApiIbgeEstadosListar() {
-  return useQuery(brasilApiIbgeEstadosListarClientOptions())
+export function useIbgeGovApiLocalidadesEstadosListar() {
+  return useQuery(ibgeGovApiLocalidadesEstadosListarClientOptions())
 }
 
 // lazy hook
-export function useLazyBrasilApiIbgeEstadosListar(): UseLazyBrasilApiIbgeEstadosListarReturn {
+export function useLazyIbgeGovApiLocalidadesEstadosListar(): UseLazyIbgeGovApiLocalidadesEstadosListarReturn {
   const queryClient = useQueryClient()
 
   const [state, setState] = useState<UseLazyQueryState>({
     isFetching: false,
   })
 
-  const data: BrasilApiIbgeEstadosListarResponse = queryClient.getQueryData(
-    brasilApiIbgeEstadosListarClientOptions().queryKey
-  )
+  const data: IbgeGovApiLocalidadesEstadosListarResponse =
+    queryClient.getQueryData(
+      ibgeGovApiLocalidadesEstadosListarClientOptions().queryKey
+    )
 
   const trigger = useCallback(async () => {
     try {
       setState({ isFetching: true })
 
       const response = await queryClient.fetchQuery(
-        brasilApiIbgeEstadosListarClientOptions()
+        ibgeGovApiLocalidadesEstadosListarClientOptions()
       )
 
       return response
@@ -72,10 +73,10 @@ type UseLazyQueryState = {
   isFetching: boolean
 }
 
-type UseLazyBrasilApiIbgeEstadosListarReturn = [
-  () => Promise<BrasilApiIbgeEstadosListarResponse>,
+type UseLazyIbgeGovApiLocalidadesEstadosListarReturn = [
+  () => Promise<IbgeGovApiLocalidadesEstadosListarResponse>,
   {
-    data: BrasilApiIbgeEstadosListarResponse
+    data: IbgeGovApiLocalidadesEstadosListarResponse
     isFetching: boolean
     isLoading: boolean
   },

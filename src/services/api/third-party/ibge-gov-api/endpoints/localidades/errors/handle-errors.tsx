@@ -3,10 +3,10 @@ import { ZodError } from 'zod'
 
 import { toast } from '@/components/hooks/use-toast'
 
-import { CommonBrasilApiIbge404Error } from './common-error.types'
+import { CommonIbgeGovApiIbge404Error } from './common-error.types'
 
-export function handleCommonBrasilApiIbgeErrors(error: unknown) {
-  console.error('error brasil api:\n', error)
+export function handleCommonIbgeGovApiLocalidadesErrors(error: unknown) {
+  console.error('error ibge gov api:\n', error)
 
   if (isAxiosError(error) && error.code === 'ERR_CANCELED') {
     // do nothing
@@ -17,7 +17,7 @@ export function handleCommonBrasilApiIbgeErrors(error: unknown) {
     isAxiosError(error) &&
     error.response?.status === HttpStatusCode.NotFound
   ) {
-    const axiosError = error as AxiosError<CommonBrasilApiIbge404Error>
+    const axiosError = error as AxiosError<CommonIbgeGovApiIbge404Error>
     toast({
       title: axiosError.response?.data?.message ?? 'UF não encontrada.',
       variant: 'destructive',

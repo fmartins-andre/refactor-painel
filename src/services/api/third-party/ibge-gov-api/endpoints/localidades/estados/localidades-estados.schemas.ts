@@ -8,11 +8,13 @@ const regiaoSchema = z.object({
   nome: z.custom<string>(),
 })
 
-export const brasilApiIbgeUfSchema = z.object({
+export const ibgeGovApiLocalidadesUfSchema = z.object({
   id: z.coerce.number(),
   sigla: z.custom<UfBrasilEnum>(),
   nome: z.custom<string>(),
   regiao: regiaoSchema.nullable(),
 })
 
-export type BrasilApiIbgeUf = z.output<typeof brasilApiIbgeUfSchema>
+export type IbgeGovApiLocalidadesUf = z.output<
+  typeof ibgeGovApiLocalidadesUfSchema
+>
