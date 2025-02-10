@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
 import {
-  useBrasilApiIbgeEstadosListar,
-  useBrasilApiIbgeMunicipios,
-} from '@/services/api/third-party/brasil-api/endpoints/ibge'
+  useIbgeGovApiLocalidadesEstadosListar,
+  useIbgeGovApiLocalidadesMunicipios,
+} from '@/services/api/third-party/ibge-gov-api/endpoints/localidades'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { BuildingIcon, MapPinIcon, PlusIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -50,9 +50,11 @@ export function ModalCreateInscricaoEstadual() {
     handleCloseDialog: () => handleToggleDialog(false),
   })
 
-  const { data: brazilianStates } = useBrasilApiIbgeEstadosListar()
+  const { data: brazilianStates } = useIbgeGovApiLocalidadesEstadosListar()
 
-  const { data: brazilianCitiesByState } = useBrasilApiIbgeMunicipios({ uf })
+  const { data: brazilianCitiesByState } = useIbgeGovApiLocalidadesMunicipios({
+    uf,
+  })
 
   const brazilianStatesOptions = useMemo(
     () =>
@@ -69,7 +71,7 @@ export function ModalCreateInscricaoEstadual() {
     () =>
       brazilianCitiesByState
         ?.map((state) => ({
-          value: state.codigo_ibge,
+          value: state.id,
           label: state.nome,
         }))
         .sort((a, b) => (a.label > b.label ? 1 : -1)) ?? [],

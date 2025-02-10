@@ -1,8 +1,8 @@
 import { DetailedHTMLProps, HTMLAttributes, useMemo } from 'react'
 import {
-  useBrasilApiIbgeEstadosListar,
-  useBrasilApiIbgeMunicipios,
-} from '@/services/api/third-party/brasil-api/endpoints/ibge'
+  useIbgeGovApiLocalidadesEstadosListar,
+  useIbgeGovApiLocalidadesMunicipios,
+} from '@/services/api/third-party/ibge-gov-api/endpoints/localidades'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -65,10 +65,10 @@ export function CustomerFormStep02({
   }
 
   const { data: brazilianStates, isLoading: isLoadingStates } =
-    useBrasilApiIbgeEstadosListar()
+    useIbgeGovApiLocalidadesEstadosListar()
 
   const { data: brazilianCitiesByState, isLoading: isLoadingCities } =
-    useBrasilApiIbgeMunicipios({ uf })
+    useIbgeGovApiLocalidadesMunicipios({ uf })
 
   const brazilianStatesOptions = useMemo(
     () =>
@@ -85,7 +85,7 @@ export function CustomerFormStep02({
     () =>
       brazilianCitiesByState
         ?.map((state) => ({
-          value: state.codigo_ibge,
+          value: state.id,
           label: state.nome,
         }))
         .sort((a, b) => (a.label > b.label ? 1 : -1)) ?? [],
