@@ -7,5 +7,7 @@ export function useGetCurrentCustomerData() {
     select: ({ clienteId }) => clienteId,
   })
 
-  return useClienteObterDetalhe({ clienteId })
+  const query = useClienteObterDetalhe({ clienteId })
+
+  return { ...query, clienteId }
 }

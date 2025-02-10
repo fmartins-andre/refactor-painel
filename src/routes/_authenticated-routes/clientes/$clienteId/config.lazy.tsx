@@ -1,3 +1,4 @@
+import { CustomerDetailsConfig } from '@/features/clientes/detalhes-cliente/cliente-config'
 import { createLazyFileRoute } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute(
@@ -7,5 +8,5 @@ export const Route = createLazyFileRoute(
 })
 
 function RouteComponent() {
-  return <div>Hello "/_authenticated-routes/clientes/$clienteId/config"!</div>
+  return <CustomerDetailsConfig />
 }

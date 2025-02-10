@@ -8,6 +8,8 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
@@ -27,8 +29,13 @@ import { Route as AuthenticatedRoutesClientesClienteIdXmlImport } from './routes
 import { Route as AuthenticatedRoutesClientesClienteIdNotasFiscaisImport } from './routes/_authenticated-routes/clientes/$clienteId/notas-fiscais'
 import { Route as AuthenticatedRoutesClientesClienteIdInfoImport } from './routes/_authenticated-routes/clientes/$clienteId/info'
 import { Route as AuthenticatedRoutesClientesClienteIdDasMeiImport } from './routes/_authenticated-routes/clientes/$clienteId/das-mei'
-import { Route as AuthenticatedRoutesClientesClienteIdConfigImport } from './routes/_authenticated-routes/clientes/$clienteId/config'
 import { Route as AuthenticatedRoutesClientesClienteIdCertificadoDigitalImport } from './routes/_authenticated-routes/clientes/$clienteId/certificado-digital'
+
+// Create Virtual Routes
+
+const AuthenticatedRoutesClientesClienteIdConfigLazyImport = createFileRoute(
+  '/_authenticated-routes/clientes/$clienteId/config',
+)()
 
 // Create/Update Routes
 
@@ -134,6 +141,17 @@ const AuthenticatedRoutesClientesClienteIdIndexRoute =
     getParentRoute: () => AuthenticatedRoutesClientesClienteIdRouteRoute,
   } as any)
 
+const AuthenticatedRoutesClientesClienteIdConfigLazyRoute =
+  AuthenticatedRoutesClientesClienteIdConfigLazyImport.update({
+    id: '/config',
+    path: '/config',
+    getParentRoute: () => AuthenticatedRoutesClientesClienteIdRouteRoute,
+  } as any).lazy(() =>
+    import(
+      './routes/_authenticated-routes/clientes/$clienteId/config.lazy'
+    ).then((d) => d.Route),
+  )
+
 const AuthenticatedRoutesClientesClienteIdXmlRoute =
   AuthenticatedRoutesClientesClienteIdXmlImport.update({
     id: '/xml',
@@ -175,17 +193,6 @@ const AuthenticatedRoutesClientesClienteIdDasMeiRoute =
   } as any).lazy(() =>
     import(
       './routes/_authenticated-routes/clientes/$clienteId/das-mei.lazy'
-    ).then((d) => d.Route),
-  )
-
-const AuthenticatedRoutesClientesClienteIdConfigRoute =
-  AuthenticatedRoutesClientesClienteIdConfigImport.update({
-    id: '/config',
-    path: '/config',
-    getParentRoute: () => AuthenticatedRoutesClientesClienteIdRouteRoute,
-  } as any).lazy(() =>
-    import(
-      './routes/_authenticated-routes/clientes/$clienteId/config.lazy'
     ).then((d) => d.Route),
   )
 
@@ -288,13 +295,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRoutesClientesClienteIdCertificadoDigitalImport
       parentRoute: typeof AuthenticatedRoutesClientesClienteIdRouteImport
     }
-    '/_authenticated-routes/clientes/$clienteId/config': {
-      id: '/_authenticated-routes/clientes/$clienteId/config'
-      path: '/config'
-      fullPath: '/clientes/$clienteId/config'
-      preLoaderRoute: typeof AuthenticatedRoutesClientesClienteIdConfigImport
-      parentRoute: typeof AuthenticatedRoutesClientesClienteIdRouteImport
-    }
     '/_authenticated-routes/clientes/$clienteId/das-mei': {
       id: '/_authenticated-routes/clientes/$clienteId/das-mei'
       path: '/das-mei'
@@ -323,6 +323,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRoutesClientesClienteIdXmlImport
       parentRoute: typeof AuthenticatedRoutesClientesClienteIdRouteImport
     }
+    '/_authenticated-routes/clientes/$clienteId/config': {
+      id: '/_authenticated-routes/clientes/$clienteId/config'
+      path: '/config'
+      fullPath: '/clientes/$clienteId/config'
+      preLoaderRoute: typeof AuthenticatedRoutesClientesClienteIdConfigLazyImport
+      parentRoute: typeof AuthenticatedRoutesClientesClienteIdRouteImport
+    }
     '/_authenticated-routes/clientes/$clienteId/': {
       id: '/_authenticated-routes/clientes/$clienteId/'
       path: '/'
@@ -337,11 +344,11 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRoutesClientesClienteIdRouteRouteChildren {
   AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute: typeof AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute
-  AuthenticatedRoutesClientesClienteIdConfigRoute: typeof AuthenticatedRoutesClientesClienteIdConfigRoute
   AuthenticatedRoutesClientesClienteIdDasMeiRoute: typeof AuthenticatedRoutesClientesClienteIdDasMeiRoute
   AuthenticatedRoutesClientesClienteIdInfoRoute: typeof AuthenticatedRoutesClientesClienteIdInfoRoute
   AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute: typeof AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute
   AuthenticatedRoutesClientesClienteIdXmlRoute: typeof AuthenticatedRoutesClientesClienteIdXmlRoute
+  AuthenticatedRoutesClientesClienteIdConfigLazyRoute: typeof AuthenticatedRoutesClientesClienteIdConfigLazyRoute
   AuthenticatedRoutesClientesClienteIdIndexRoute: typeof AuthenticatedRoutesClientesClienteIdIndexRoute
 }
 
@@ -349,8 +356,6 @@ const AuthenticatedRoutesClientesClienteIdRouteRouteChildren: AuthenticatedRoute
   {
     AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute:
       AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute,
-    AuthenticatedRoutesClientesClienteIdConfigRoute:
-      AuthenticatedRoutesClientesClienteIdConfigRoute,
     AuthenticatedRoutesClientesClienteIdDasMeiRoute:
       AuthenticatedRoutesClientesClienteIdDasMeiRoute,
     AuthenticatedRoutesClientesClienteIdInfoRoute:
@@ -359,6 +364,8 @@ const AuthenticatedRoutesClientesClienteIdRouteRouteChildren: AuthenticatedRoute
       AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute,
     AuthenticatedRoutesClientesClienteIdXmlRoute:
       AuthenticatedRoutesClientesClienteIdXmlRoute,
+    AuthenticatedRoutesClientesClienteIdConfigLazyRoute:
+      AuthenticatedRoutesClientesClienteIdConfigLazyRoute,
     AuthenticatedRoutesClientesClienteIdIndexRoute:
       AuthenticatedRoutesClientesClienteIdIndexRoute,
   }
@@ -428,11 +435,11 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedRoutesDashboardIndexRoute
   '/notas-avulsas': typeof AuthenticatedRoutesNotasAvulsasIndexRoute
   '/clientes/$clienteId/certificado-digital': typeof AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute
-  '/clientes/$clienteId/config': typeof AuthenticatedRoutesClientesClienteIdConfigRoute
   '/clientes/$clienteId/das-mei': typeof AuthenticatedRoutesClientesClienteIdDasMeiRoute
   '/clientes/$clienteId/info': typeof AuthenticatedRoutesClientesClienteIdInfoRoute
   '/clientes/$clienteId/notas-fiscais': typeof AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute
   '/clientes/$clienteId/xml': typeof AuthenticatedRoutesClientesClienteIdXmlRoute
+  '/clientes/$clienteId/config': typeof AuthenticatedRoutesClientesClienteIdConfigLazyRoute
   '/clientes/$clienteId/': typeof AuthenticatedRoutesClientesClienteIdIndexRoute
 }
 
@@ -447,11 +454,11 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedRoutesDashboardIndexRoute
   '/notas-avulsas': typeof AuthenticatedRoutesNotasAvulsasIndexRoute
   '/clientes/$clienteId/certificado-digital': typeof AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute
-  '/clientes/$clienteId/config': typeof AuthenticatedRoutesClientesClienteIdConfigRoute
   '/clientes/$clienteId/das-mei': typeof AuthenticatedRoutesClientesClienteIdDasMeiRoute
   '/clientes/$clienteId/info': typeof AuthenticatedRoutesClientesClienteIdInfoRoute
   '/clientes/$clienteId/notas-fiscais': typeof AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute
   '/clientes/$clienteId/xml': typeof AuthenticatedRoutesClientesClienteIdXmlRoute
+  '/clientes/$clienteId/config': typeof AuthenticatedRoutesClientesClienteIdConfigLazyRoute
   '/clientes/$clienteId': typeof AuthenticatedRoutesClientesClienteIdIndexRoute
 }
 
@@ -469,11 +476,11 @@ export interface FileRoutesById {
   '/_authenticated-routes/dashboard/': typeof AuthenticatedRoutesDashboardIndexRoute
   '/_authenticated-routes/notas-avulsas/': typeof AuthenticatedRoutesNotasAvulsasIndexRoute
   '/_authenticated-routes/clientes/$clienteId/certificado-digital': typeof AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute
-  '/_authenticated-routes/clientes/$clienteId/config': typeof AuthenticatedRoutesClientesClienteIdConfigRoute
   '/_authenticated-routes/clientes/$clienteId/das-mei': typeof AuthenticatedRoutesClientesClienteIdDasMeiRoute
   '/_authenticated-routes/clientes/$clienteId/info': typeof AuthenticatedRoutesClientesClienteIdInfoRoute
   '/_authenticated-routes/clientes/$clienteId/notas-fiscais': typeof AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute
   '/_authenticated-routes/clientes/$clienteId/xml': typeof AuthenticatedRoutesClientesClienteIdXmlRoute
+  '/_authenticated-routes/clientes/$clienteId/config': typeof AuthenticatedRoutesClientesClienteIdConfigLazyRoute
   '/_authenticated-routes/clientes/$clienteId/': typeof AuthenticatedRoutesClientesClienteIdIndexRoute
 }
 
@@ -491,11 +498,11 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/notas-avulsas'
     | '/clientes/$clienteId/certificado-digital'
-    | '/clientes/$clienteId/config'
     | '/clientes/$clienteId/das-mei'
     | '/clientes/$clienteId/info'
     | '/clientes/$clienteId/notas-fiscais'
     | '/clientes/$clienteId/xml'
+    | '/clientes/$clienteId/config'
     | '/clientes/$clienteId/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -509,11 +516,11 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/notas-avulsas'
     | '/clientes/$clienteId/certificado-digital'
-    | '/clientes/$clienteId/config'
     | '/clientes/$clienteId/das-mei'
     | '/clientes/$clienteId/info'
     | '/clientes/$clienteId/notas-fiscais'
     | '/clientes/$clienteId/xml'
+    | '/clientes/$clienteId/config'
     | '/clientes/$clienteId'
   id:
     | '__root__'
@@ -529,11 +536,11 @@ export interface FileRouteTypes {
     | '/_authenticated-routes/dashboard/'
     | '/_authenticated-routes/notas-avulsas/'
     | '/_authenticated-routes/clientes/$clienteId/certificado-digital'
-    | '/_authenticated-routes/clientes/$clienteId/config'
     | '/_authenticated-routes/clientes/$clienteId/das-mei'
     | '/_authenticated-routes/clientes/$clienteId/info'
     | '/_authenticated-routes/clientes/$clienteId/notas-fiscais'
     | '/_authenticated-routes/clientes/$clienteId/xml'
+    | '/_authenticated-routes/clientes/$clienteId/config'
     | '/_authenticated-routes/clientes/$clienteId/'
   fileRoutesById: FileRoutesById
 }
@@ -591,11 +598,11 @@ export const routeTree = rootRoute
       "parent": "/_authenticated-routes",
       "children": [
         "/_authenticated-routes/clientes/$clienteId/certificado-digital",
-        "/_authenticated-routes/clientes/$clienteId/config",
         "/_authenticated-routes/clientes/$clienteId/das-mei",
         "/_authenticated-routes/clientes/$clienteId/info",
         "/_authenticated-routes/clientes/$clienteId/notas-fiscais",
         "/_authenticated-routes/clientes/$clienteId/xml",
+        "/_authenticated-routes/clientes/$clienteId/config",
         "/_authenticated-routes/clientes/$clienteId/"
       ]
     },
@@ -631,10 +638,6 @@ export const routeTree = rootRoute
       "filePath": "_authenticated-routes/clientes/$clienteId/certificado-digital.tsx",
       "parent": "/_authenticated-routes/clientes/$clienteId"
     },
-    "/_authenticated-routes/clientes/$clienteId/config": {
-      "filePath": "_authenticated-routes/clientes/$clienteId/config.tsx",
-      "parent": "/_authenticated-routes/clientes/$clienteId"
-    },
     "/_authenticated-routes/clientes/$clienteId/das-mei": {
       "filePath": "_authenticated-routes/clientes/$clienteId/das-mei.tsx",
       "parent": "/_authenticated-routes/clientes/$clienteId"
@@ -649,6 +652,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated-routes/clientes/$clienteId/xml": {
       "filePath": "_authenticated-routes/clientes/$clienteId/xml.tsx",
+      "parent": "/_authenticated-routes/clientes/$clienteId"
+    },
+    "/_authenticated-routes/clientes/$clienteId/config": {
+      "filePath": "_authenticated-routes/clientes/$clienteId/config.lazy.tsx",
       "parent": "/_authenticated-routes/clientes/$clienteId"
     },
     "/_authenticated-routes/clientes/$clienteId/": {
