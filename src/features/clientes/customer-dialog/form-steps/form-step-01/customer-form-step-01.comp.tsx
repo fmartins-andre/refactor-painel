@@ -1,5 +1,8 @@
 import { DetailedHTMLProps, HTMLAttributes, useEffect } from 'react'
-import { tipoPessoaOptions } from '@/features/clientes/constants'
+import {
+  switchBooleanOptions,
+  tipoPessoaOptions,
+} from '@/features/clientes/constants'
 import { TipoPessoaModelEnum } from '@/services/api/accountant-panel-api/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
@@ -11,7 +14,6 @@ import { DialogClose } from '@/components/ui/dialog'
 import { Form } from '@/components/ui/form'
 import { RenderField } from '@/components/form/RenderField'
 
-import { switchBooleanOptions } from '../../constants'
 import {
   CustomerFormStep01Input,
   CustomerFormStep01Output,

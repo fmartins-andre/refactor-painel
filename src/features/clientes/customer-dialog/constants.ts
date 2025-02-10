@@ -10,11 +10,6 @@ import { CustomerFormStatePayload } from './helpers/use-customer-form-state'
 
 export const REQUIRED_FIELD_MESSAGE = 'Obrigatório'
 
-export const switchBooleanOptions = [
-  { value: '0', translateKey: 'Não' },
-  { value: '1', translateKey: 'Sim' },
-]
-
 export const initialCustomerPayload: DeepNullable<CustomerFormStatePayload> = {
   id: null,
   tipoPessoa: null,

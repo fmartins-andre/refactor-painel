@@ -74,3 +74,8 @@ export const tipoPessoaOptions: GenericOptionField<TipoPessoaModelEnum>[] = [
     value: TipoPessoaModelEnum.JURIDICA,
   },
 ]
+
+export const switchBooleanOptions = [
+  { value: '0', translateKey: 'Não' },
+  { value: '1', translateKey: 'Sim' },
+]

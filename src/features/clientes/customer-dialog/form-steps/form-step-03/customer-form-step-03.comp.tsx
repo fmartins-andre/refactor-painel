@@ -2,6 +2,7 @@ import { DetailedHTMLProps, HTMLAttributes } from 'react'
 import {
   clienteRegimeEspecialOptions,
   clienteRegimeTributarioOptions,
+  switchBooleanOptions,
 } from '@/features/clientes/constants'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -11,7 +12,6 @@ import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { RenderField } from '@/components/form/RenderField'
 
-import { switchBooleanOptions } from '../../constants'
 import {
   CustomerFormStatePayload,
   useHandleCustomerFormState,
