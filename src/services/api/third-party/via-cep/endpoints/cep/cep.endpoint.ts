@@ -1,3 +1,5 @@
+import { AxiosError, HttpStatusCode } from 'axios'
+
 import { handleCommonCnpjWsApiErrors } from '../../errors/handle-errors'
 import { viaCepHttpClientInstance } from '../../http-client/http-client'
 import {
@@ -23,6 +25,18 @@ export async function viaCepApiLocalidadeDetalhes(
       await viaCepHttpClientInstance.get<ViaCepApiLocalidadeDetalhesResponse>(
         `/${validParams.cep}/json/`,
         { signal }
+      )
+
+    if (response.data && 'erro' in response.data)
+      throw new AxiosError(
+        'CEP não encontrado.',
+        'BAD_REQUEST',
+        response.config,
+        response.request,
+        {
+          ...response,
+          status: HttpStatusCode.BadRequest,
+        }
       )
 
     const validatedResponse = viaCepApiLocalidadeDetalhesSchema.parse(
