@@ -6,7 +6,7 @@ export const Route = createFileRoute(
   beforeLoad: () => {
     throw redirect({
       from: '/clientes/$clienteId',
-      to: '/clientes/$clienteId/notas-fiscais',
+      to: '/clientes/$clienteId/info',
     })
   },
 })

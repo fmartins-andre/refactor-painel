@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
 
-import { CustomerDetailsFeatures } from './subcomponents/features.comp'
+import { CustomerDetailsContent } from './subcomponents/content.comp'
 import { CustomerDetailsHeader } from './subcomponents/header'
 import { CustomerDetailsSidebarMenu } from './subcomponents/sidebar-menu'
 
@@ -15,7 +15,7 @@ export function CustomerDetails({ children }: PropsWithChildren) {
         </aside>
 
         <main>
-          <CustomerDetailsFeatures>{children}</CustomerDetailsFeatures>
+          <CustomerDetailsContent>{children}</CustomerDetailsContent>
         </main>
       </div>
     </div>

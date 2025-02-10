@@ -3,7 +3,13 @@ import { StatusDasMeiModelEnum } from '@/services/api/accountant-panel-api/endpo
 import { TipoPessoaModelEnum } from '@/services/api/accountant-panel-api/schemas'
 import { RegimeTributarioClienteModelEnum } from '@/services/api/accountant-panel-api/schemas/cliente-models'
 import { LinkProps, useMatchRoute, useParams } from '@tanstack/react-router'
-import { BuildingIcon, FileBadgeIcon, FileBoxIcon } from 'lucide-react'
+import {
+  BuildingIcon,
+  FileBadgeIcon,
+  FileBarChartIcon,
+  FileBoxIcon,
+  FileCode2Icon,
+} from 'lucide-react'
 
 import { useGetCurrentCustomerData } from '../../../helpers/use-get-current-customer-data.hook'
 
@@ -36,7 +42,7 @@ export function useMenusConfig(): UseMenusConfig {
   const customerRelatedMenus = (
     [
       {
-        icon: <FileBadgeIcon />,
+        icon: <FileBarChartIcon />,
         label: 'Notas Fiscais',
         linkProps: {
           active: Boolean(
@@ -47,7 +53,7 @@ export function useMenusConfig(): UseMenusConfig {
         },
       },
       {
-        icon: <FileBadgeIcon />,
+        icon: <FileCode2Icon />,
         label: 'Todos XML',
         linkProps: {
           active: Boolean(matchRoute({ to: '/clientes/$clienteId/xml' })),
@@ -79,17 +85,17 @@ export function useMenusConfig(): UseMenusConfig {
       icon: <BuildingIcon />,
       label: 'Informações do Cliente',
       linkProps: {
-        active: Boolean(matchRoute({ to: '/clientes/$clienteId' })),
-        to: '/clientes/$clienteId',
+        active: Boolean(matchRoute({ to: '/clientes/$clienteId/info' })),
+        to: '/clientes/$clienteId/info',
         params: { clienteId },
       },
     },
     {
       icon: <FileBoxIcon />,
-      label: 'Módulos ativos',
+      label: 'Configurações do Cliente',
       linkProps: {
-        active: Boolean(matchRoute({ to: '/clientes/$clienteId' })),
-        to: '/clientes/$clienteId',
+        active: Boolean(matchRoute({ to: '/clientes/$clienteId/config' })),
+        to: '/clientes/$clienteId/config',
         params: { clienteId },
       },
     },
@@ -97,8 +103,10 @@ export function useMenusConfig(): UseMenusConfig {
       icon: <FileBadgeIcon />,
       label: 'Certificado Digital',
       linkProps: {
-        active: Boolean(matchRoute({ to: '/clientes/$clienteId' })),
-        to: '/clientes/$clienteId',
+        active: Boolean(
+          matchRoute({ to: '/clientes/$clienteId/certificado-digital' })
+        ),
+        to: '/clientes/$clienteId/certificado-digital',
         params: { clienteId },
       },
     },

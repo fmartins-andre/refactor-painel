@@ -25,7 +25,10 @@ import { Route as AuthenticatedRoutesClientesClienteIdRouteImport } from './rout
 import { Route as AuthenticatedRoutesClientesClienteIdIndexImport } from './routes/_authenticated-routes/clientes/$clienteId/index'
 import { Route as AuthenticatedRoutesClientesClienteIdXmlImport } from './routes/_authenticated-routes/clientes/$clienteId/xml'
 import { Route as AuthenticatedRoutesClientesClienteIdNotasFiscaisImport } from './routes/_authenticated-routes/clientes/$clienteId/notas-fiscais'
+import { Route as AuthenticatedRoutesClientesClienteIdInfoImport } from './routes/_authenticated-routes/clientes/$clienteId/info'
 import { Route as AuthenticatedRoutesClientesClienteIdDasMeiImport } from './routes/_authenticated-routes/clientes/$clienteId/das-mei'
+import { Route as AuthenticatedRoutesClientesClienteIdConfigImport } from './routes/_authenticated-routes/clientes/$clienteId/config'
+import { Route as AuthenticatedRoutesClientesClienteIdCertificadoDigitalImport } from './routes/_authenticated-routes/clientes/$clienteId/certificado-digital'
 
 // Create/Update Routes
 
@@ -153,6 +156,17 @@ const AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute =
     ).then((d) => d.Route),
   )
 
+const AuthenticatedRoutesClientesClienteIdInfoRoute =
+  AuthenticatedRoutesClientesClienteIdInfoImport.update({
+    id: '/info',
+    path: '/info',
+    getParentRoute: () => AuthenticatedRoutesClientesClienteIdRouteRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated-routes/clientes/$clienteId/info.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const AuthenticatedRoutesClientesClienteIdDasMeiRoute =
   AuthenticatedRoutesClientesClienteIdDasMeiImport.update({
     id: '/das-mei',
@@ -161,6 +175,28 @@ const AuthenticatedRoutesClientesClienteIdDasMeiRoute =
   } as any).lazy(() =>
     import(
       './routes/_authenticated-routes/clientes/$clienteId/das-mei.lazy'
+    ).then((d) => d.Route),
+  )
+
+const AuthenticatedRoutesClientesClienteIdConfigRoute =
+  AuthenticatedRoutesClientesClienteIdConfigImport.update({
+    id: '/config',
+    path: '/config',
+    getParentRoute: () => AuthenticatedRoutesClientesClienteIdRouteRoute,
+  } as any).lazy(() =>
+    import(
+      './routes/_authenticated-routes/clientes/$clienteId/config.lazy'
+    ).then((d) => d.Route),
+  )
+
+const AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute =
+  AuthenticatedRoutesClientesClienteIdCertificadoDigitalImport.update({
+    id: '/certificado-digital',
+    path: '/certificado-digital',
+    getParentRoute: () => AuthenticatedRoutesClientesClienteIdRouteRoute,
+  } as any).lazy(() =>
+    import(
+      './routes/_authenticated-routes/clientes/$clienteId/certificado-digital.lazy'
     ).then((d) => d.Route),
   )
 
@@ -245,11 +281,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRoutesNotasAvulsasIndexImport
       parentRoute: typeof AuthenticatedRoutesRouteImport
     }
+    '/_authenticated-routes/clientes/$clienteId/certificado-digital': {
+      id: '/_authenticated-routes/clientes/$clienteId/certificado-digital'
+      path: '/certificado-digital'
+      fullPath: '/clientes/$clienteId/certificado-digital'
+      preLoaderRoute: typeof AuthenticatedRoutesClientesClienteIdCertificadoDigitalImport
+      parentRoute: typeof AuthenticatedRoutesClientesClienteIdRouteImport
+    }
+    '/_authenticated-routes/clientes/$clienteId/config': {
+      id: '/_authenticated-routes/clientes/$clienteId/config'
+      path: '/config'
+      fullPath: '/clientes/$clienteId/config'
+      preLoaderRoute: typeof AuthenticatedRoutesClientesClienteIdConfigImport
+      parentRoute: typeof AuthenticatedRoutesClientesClienteIdRouteImport
+    }
     '/_authenticated-routes/clientes/$clienteId/das-mei': {
       id: '/_authenticated-routes/clientes/$clienteId/das-mei'
       path: '/das-mei'
       fullPath: '/clientes/$clienteId/das-mei'
       preLoaderRoute: typeof AuthenticatedRoutesClientesClienteIdDasMeiImport
+      parentRoute: typeof AuthenticatedRoutesClientesClienteIdRouteImport
+    }
+    '/_authenticated-routes/clientes/$clienteId/info': {
+      id: '/_authenticated-routes/clientes/$clienteId/info'
+      path: '/info'
+      fullPath: '/clientes/$clienteId/info'
+      preLoaderRoute: typeof AuthenticatedRoutesClientesClienteIdInfoImport
       parentRoute: typeof AuthenticatedRoutesClientesClienteIdRouteImport
     }
     '/_authenticated-routes/clientes/$clienteId/notas-fiscais': {
@@ -279,7 +336,10 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AuthenticatedRoutesClientesClienteIdRouteRouteChildren {
+  AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute: typeof AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute
+  AuthenticatedRoutesClientesClienteIdConfigRoute: typeof AuthenticatedRoutesClientesClienteIdConfigRoute
   AuthenticatedRoutesClientesClienteIdDasMeiRoute: typeof AuthenticatedRoutesClientesClienteIdDasMeiRoute
+  AuthenticatedRoutesClientesClienteIdInfoRoute: typeof AuthenticatedRoutesClientesClienteIdInfoRoute
   AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute: typeof AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute
   AuthenticatedRoutesClientesClienteIdXmlRoute: typeof AuthenticatedRoutesClientesClienteIdXmlRoute
   AuthenticatedRoutesClientesClienteIdIndexRoute: typeof AuthenticatedRoutesClientesClienteIdIndexRoute
@@ -287,8 +347,14 @@ interface AuthenticatedRoutesClientesClienteIdRouteRouteChildren {
 
 const AuthenticatedRoutesClientesClienteIdRouteRouteChildren: AuthenticatedRoutesClientesClienteIdRouteRouteChildren =
   {
+    AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute:
+      AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute,
+    AuthenticatedRoutesClientesClienteIdConfigRoute:
+      AuthenticatedRoutesClientesClienteIdConfigRoute,
     AuthenticatedRoutesClientesClienteIdDasMeiRoute:
       AuthenticatedRoutesClientesClienteIdDasMeiRoute,
+    AuthenticatedRoutesClientesClienteIdInfoRoute:
+      AuthenticatedRoutesClientesClienteIdInfoRoute,
     AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute:
       AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute,
     AuthenticatedRoutesClientesClienteIdXmlRoute:
@@ -361,7 +427,10 @@ export interface FileRoutesByFullPath {
   '/clientes': typeof AuthenticatedRoutesClientesIndexRoute
   '/dashboard': typeof AuthenticatedRoutesDashboardIndexRoute
   '/notas-avulsas': typeof AuthenticatedRoutesNotasAvulsasIndexRoute
+  '/clientes/$clienteId/certificado-digital': typeof AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute
+  '/clientes/$clienteId/config': typeof AuthenticatedRoutesClientesClienteIdConfigRoute
   '/clientes/$clienteId/das-mei': typeof AuthenticatedRoutesClientesClienteIdDasMeiRoute
+  '/clientes/$clienteId/info': typeof AuthenticatedRoutesClientesClienteIdInfoRoute
   '/clientes/$clienteId/notas-fiscais': typeof AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute
   '/clientes/$clienteId/xml': typeof AuthenticatedRoutesClientesClienteIdXmlRoute
   '/clientes/$clienteId/': typeof AuthenticatedRoutesClientesClienteIdIndexRoute
@@ -377,7 +446,10 @@ export interface FileRoutesByTo {
   '/clientes': typeof AuthenticatedRoutesClientesIndexRoute
   '/dashboard': typeof AuthenticatedRoutesDashboardIndexRoute
   '/notas-avulsas': typeof AuthenticatedRoutesNotasAvulsasIndexRoute
+  '/clientes/$clienteId/certificado-digital': typeof AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute
+  '/clientes/$clienteId/config': typeof AuthenticatedRoutesClientesClienteIdConfigRoute
   '/clientes/$clienteId/das-mei': typeof AuthenticatedRoutesClientesClienteIdDasMeiRoute
+  '/clientes/$clienteId/info': typeof AuthenticatedRoutesClientesClienteIdInfoRoute
   '/clientes/$clienteId/notas-fiscais': typeof AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute
   '/clientes/$clienteId/xml': typeof AuthenticatedRoutesClientesClienteIdXmlRoute
   '/clientes/$clienteId': typeof AuthenticatedRoutesClientesClienteIdIndexRoute
@@ -396,7 +468,10 @@ export interface FileRoutesById {
   '/_authenticated-routes/clientes/': typeof AuthenticatedRoutesClientesIndexRoute
   '/_authenticated-routes/dashboard/': typeof AuthenticatedRoutesDashboardIndexRoute
   '/_authenticated-routes/notas-avulsas/': typeof AuthenticatedRoutesNotasAvulsasIndexRoute
+  '/_authenticated-routes/clientes/$clienteId/certificado-digital': typeof AuthenticatedRoutesClientesClienteIdCertificadoDigitalRoute
+  '/_authenticated-routes/clientes/$clienteId/config': typeof AuthenticatedRoutesClientesClienteIdConfigRoute
   '/_authenticated-routes/clientes/$clienteId/das-mei': typeof AuthenticatedRoutesClientesClienteIdDasMeiRoute
+  '/_authenticated-routes/clientes/$clienteId/info': typeof AuthenticatedRoutesClientesClienteIdInfoRoute
   '/_authenticated-routes/clientes/$clienteId/notas-fiscais': typeof AuthenticatedRoutesClientesClienteIdNotasFiscaisRoute
   '/_authenticated-routes/clientes/$clienteId/xml': typeof AuthenticatedRoutesClientesClienteIdXmlRoute
   '/_authenticated-routes/clientes/$clienteId/': typeof AuthenticatedRoutesClientesClienteIdIndexRoute
@@ -415,7 +490,10 @@ export interface FileRouteTypes {
     | '/clientes'
     | '/dashboard'
     | '/notas-avulsas'
+    | '/clientes/$clienteId/certificado-digital'
+    | '/clientes/$clienteId/config'
     | '/clientes/$clienteId/das-mei'
+    | '/clientes/$clienteId/info'
     | '/clientes/$clienteId/notas-fiscais'
     | '/clientes/$clienteId/xml'
     | '/clientes/$clienteId/'
@@ -430,7 +508,10 @@ export interface FileRouteTypes {
     | '/clientes'
     | '/dashboard'
     | '/notas-avulsas'
+    | '/clientes/$clienteId/certificado-digital'
+    | '/clientes/$clienteId/config'
     | '/clientes/$clienteId/das-mei'
+    | '/clientes/$clienteId/info'
     | '/clientes/$clienteId/notas-fiscais'
     | '/clientes/$clienteId/xml'
     | '/clientes/$clienteId'
@@ -447,7 +528,10 @@ export interface FileRouteTypes {
     | '/_authenticated-routes/clientes/'
     | '/_authenticated-routes/dashboard/'
     | '/_authenticated-routes/notas-avulsas/'
+    | '/_authenticated-routes/clientes/$clienteId/certificado-digital'
+    | '/_authenticated-routes/clientes/$clienteId/config'
     | '/_authenticated-routes/clientes/$clienteId/das-mei'
+    | '/_authenticated-routes/clientes/$clienteId/info'
     | '/_authenticated-routes/clientes/$clienteId/notas-fiscais'
     | '/_authenticated-routes/clientes/$clienteId/xml'
     | '/_authenticated-routes/clientes/$clienteId/'
@@ -506,7 +590,10 @@ export const routeTree = rootRoute
       "filePath": "_authenticated-routes/clientes/$clienteId/route.tsx",
       "parent": "/_authenticated-routes",
       "children": [
+        "/_authenticated-routes/clientes/$clienteId/certificado-digital",
+        "/_authenticated-routes/clientes/$clienteId/config",
         "/_authenticated-routes/clientes/$clienteId/das-mei",
+        "/_authenticated-routes/clientes/$clienteId/info",
         "/_authenticated-routes/clientes/$clienteId/notas-fiscais",
         "/_authenticated-routes/clientes/$clienteId/xml",
         "/_authenticated-routes/clientes/$clienteId/"
@@ -540,8 +627,20 @@ export const routeTree = rootRoute
       "filePath": "_authenticated-routes/notas-avulsas/index.tsx",
       "parent": "/_authenticated-routes"
     },
+    "/_authenticated-routes/clientes/$clienteId/certificado-digital": {
+      "filePath": "_authenticated-routes/clientes/$clienteId/certificado-digital.tsx",
+      "parent": "/_authenticated-routes/clientes/$clienteId"
+    },
+    "/_authenticated-routes/clientes/$clienteId/config": {
+      "filePath": "_authenticated-routes/clientes/$clienteId/config.tsx",
+      "parent": "/_authenticated-routes/clientes/$clienteId"
+    },
     "/_authenticated-routes/clientes/$clienteId/das-mei": {
       "filePath": "_authenticated-routes/clientes/$clienteId/das-mei.tsx",
+      "parent": "/_authenticated-routes/clientes/$clienteId"
+    },
+    "/_authenticated-routes/clientes/$clienteId/info": {
+      "filePath": "_authenticated-routes/clientes/$clienteId/info.tsx",
       "parent": "/_authenticated-routes/clientes/$clienteId"
     },
     "/_authenticated-routes/clientes/$clienteId/notas-fiscais": {
