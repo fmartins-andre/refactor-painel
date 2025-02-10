@@ -18,11 +18,15 @@ export const clientePessoaJuridicaInputModelSchema = z.object({
   inscricaoEstadual: z
     .string()
     .nullable()
-    .transform((value) => value?.toUpperCase().replace(/[^\dA-Z]/g, '')),
+    .transform<string | null>(
+      (value) => value?.toUpperCase().replace(/[^\dA-Z]/g, '') ?? null
+    ),
   inscricaoMunicipal: z
     .string()
     .nullable()
-    .transform((value) => value?.toUpperCase().replace(/[^\dA-Z]/g, '')),
+    .transform<string | null>(
+      (value) => value?.toUpperCase().replace(/[^\dA-Z]/g, '') ?? null
+    ),
   dataAbertura: z
     .date()
     .transform(zodTransformFromDateToIso)

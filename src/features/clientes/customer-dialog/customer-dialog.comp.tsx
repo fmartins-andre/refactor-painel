@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useLayoutEffect } from 'react'
+import { forwardRef, useImperativeHandle } from 'react'
 import { Check, Info, MapPin } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -32,11 +32,7 @@ export const CustomerDialog = forwardRef<
   CustomerDialogRef,
   CustomerDialogProps
 >(({ onSuccessCreatedCallback, skipLastStep }, ref) => {
-  const { setDialogState, customerPayload } = useHandleCustomerFormState()
-
-  useLayoutEffect(() => {
-    console.log('customerPayload: ', customerPayload)
-  }, [customerPayload])
+  const { setDialogState } = useHandleCustomerFormState()
 
   const open = useHandleCustomerFormState((state) => state.dialogState)
   const activeStep = useHandleCustomerFormState((state) => state.activeStep)

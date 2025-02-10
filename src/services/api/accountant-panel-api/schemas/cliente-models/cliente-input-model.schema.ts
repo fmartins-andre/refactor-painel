@@ -46,21 +46,21 @@ export const clienteInputModelSchema = z.object({
   email: z.string().email().nonempty(),
 
   endereco: enderecoInputModelSchema,
-  pessoaJuridica: clientePessoaJuridicaInputModelSchema.nullable(),
-  certificadoDigital: certificadoDigitalInputModelSchema.nullable(),
+  pessoaJuridica: clientePessoaJuridicaInputModelSchema.nullish(),
+  certificadoDigital: certificadoDigitalInputModelSchema.nullish(),
 
-  sincronizarNfseTomado: z.boolean(),
-  usuarioLoginNfse: z.string().nullable(),
-  senhaLoginNfse: z.string().nullable(),
+  sincronizarNfseTomado: z.boolean().optional(),
+  usuarioLoginNfse: z.string().nullish(),
+  senhaLoginNfse: z.string().nullish(),
 
-  utilizaRadarxml: z.boolean(),
-  utilizaValidadorTributario: z.boolean(),
-  integracaoGdfe: z.boolean(),
-  integracaoDominio: z.boolean(),
-  tokenIntegracaoDominio: z.string().nullable(),
-  utilizaEmissor: z.boolean(),
+  utilizaRadarxml: z.boolean().optional(),
+  utilizaValidadorTributario: z.boolean().optional(),
+  integracaoGdfe: z.boolean().optional(),
+  integracaoDominio: z.boolean().optional(),
+  tokenIntegracaoDominio: z.string().nullish(),
+  utilizaEmissor: z.boolean().optional(),
 
-  modulosEmissor: modulosEmissorInputModelSchema.nullable(),
+  modulosEmissor: modulosEmissorInputModelSchema.nullish(),
 })
 
 export type ClienteInputModel = z.input<typeof clienteInputModelSchema>

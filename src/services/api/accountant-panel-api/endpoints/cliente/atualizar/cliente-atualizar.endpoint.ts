@@ -14,7 +14,7 @@ export async function clienteAtualizar(
     const { clienteId, payload } =
       clienteAtualizarRequestParamsSchema.parse(params)
 
-    await accountantPanelApiHttpClientInstance.post<ClienteAtualizarResponse>(
+    await accountantPanelApiHttpClientInstance.put<ClienteAtualizarResponse>(
       `/v1/Cliente/${clienteId}/Atualizar`,
       payload
     )
