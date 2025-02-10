@@ -1,12 +1,10 @@
 import { ClienteViewModel } from '@/services/api/accountant-panel-api/schemas/cliente-models'
-
-import { useToast } from '@/components/hooks/use-toast'
+import { toast } from 'sonner'
 
 import { initialCustomerPayload } from '../constants'
 import { useHandleCustomerFormState } from './use-customer-form-state'
 
 export function useCustomerDialogStateHandler() {
-  const { toast } = useToast()
   const { setDialogState, setCustomerPayload } = useHandleCustomerFormState()
 
   const handleOpenDialog = async (customer?: ClienteViewModel) => {
@@ -28,11 +26,9 @@ export function useCustomerDialogStateHandler() {
       } catch (error) {
         console.error('error open customer dialog: ', error)
 
-        toast({
-          title: 'Não foi possível abrir o cliente para edição!',
+        toast.error('Não foi possível abrir o cliente para edição!', {
           description:
             'Houve um problem ao carregar as informações necessárias. Tente mais tarde.',
-          variant: 'destructive',
         })
       }
     }

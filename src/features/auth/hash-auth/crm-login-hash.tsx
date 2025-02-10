@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { AxiosError } from 'axios'
-
-import { useToast } from '@/components/hooks/use-toast'
+import { toast } from 'sonner'
 
 export type AuthHashLoginProps = {
   hashCode: string
@@ -9,7 +8,6 @@ export type AuthHashLoginProps = {
 
 export function AuthHashLogin({ hashCode }: AuthHashLoginProps) {
   const [loading, setLoading] = useState(false)
-  const { toast } = useToast()
 
   const loginWithHashCode = async () => {
     if (!hashCode) return
@@ -51,10 +49,8 @@ export function AuthHashLogin({ hashCode }: AuthHashLoginProps) {
 
       setLoading(false)
 
-      toast({
-        title: 'Erro ao realizar login',
+      toast.error('Erro ao realizar login', {
         description: 'message' in error ? error.message : 'Erro desconhecido',
-        variant: 'destructive',
       })
     }
   }

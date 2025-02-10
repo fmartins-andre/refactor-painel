@@ -1,7 +1,6 @@
 import { AxiosError, HttpStatusCode, isAxiosError } from 'axios'
+import { toast } from 'sonner'
 import { ZodError } from 'zod'
-
-import { toast } from '@/components/hooks/use-toast'
 
 import { CommonIbgeGovApiIbge404Error } from './common-error.types'
 
@@ -18,10 +17,7 @@ export function handleCommonIbgeGovApiLocalidadesErrors(error: unknown) {
     error.response?.status === HttpStatusCode.NotFound
   ) {
     const axiosError = error as AxiosError<CommonIbgeGovApiIbge404Error>
-    toast({
-      title: axiosError.response?.data?.message ?? 'UF não encontrada.',
-      variant: 'destructive',
-    })
+    toast.error(axiosError.response?.data?.message ?? 'UF não encontrada.')
 
     return
   }
@@ -29,8 +25,7 @@ export function handleCommonIbgeGovApiLocalidadesErrors(error: unknown) {
   if (error instanceof ZodError) {
     const messages = error.issues.map((err) => err.message)
 
-    toast({
-      title: 'Erro de validação de dados',
+    toast.error('Erro de validação de dados', {
       description: (
         <>
           {messages.map((message, index) => (
@@ -41,16 +36,13 @@ export function handleCommonIbgeGovApiLocalidadesErrors(error: unknown) {
           </p>
         </>
       ),
-      variant: 'destructive',
     })
 
     return
   }
 
   const _error = error as Error
-  toast({
-    title: 'Erro inesperado...',
+  toast.error('Erro inesperado...', {
     description: _error.message || 'Tente novamente mais tarde!',
-    variant: 'destructive',
   })
 }

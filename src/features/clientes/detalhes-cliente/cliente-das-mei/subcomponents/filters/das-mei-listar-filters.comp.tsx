@@ -1,9 +1,9 @@
 import { ComponentProps, useEffect, useMemo } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import { Form } from '@/components/ui/form'
-import { useToast } from '@/components/hooks/use-toast'
 
 import { dasMeiStatusOptions } from '../../constants'
 import { useHandleDasMeiListarFilters } from '../../helpers/use-handle-das-mei-listar-filter-params.hook'
@@ -26,8 +26,6 @@ export function DasMeiListarFiltersFormProvider(
       ),
     [filters.status]
   )
-
-  const { toast } = useToast()
 
   const form = useForm<
     DasMeiListarFiltersFormInput,
@@ -57,10 +55,8 @@ export function DasMeiListarFiltersFormProvider(
   ) => {
     console.error('Erro no form de filtro de listagem DAS MEI:\n', error)
 
-    toast({
-      title: 'Há erros no formulário!',
+    toast.error('Há erros no formulário!', {
       description: 'Por favor, corrija para prosseguir.',
-      variant: 'destructive',
     })
   }
 

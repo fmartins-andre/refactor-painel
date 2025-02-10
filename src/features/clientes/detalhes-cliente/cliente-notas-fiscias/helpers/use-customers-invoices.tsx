@@ -3,8 +3,9 @@ import type { DataTableAppliedFilters } from '@/@types/data-table-applied-filter
 import { inputMask } from '@/utils/input-mask'
 import { DotsVerticalIcon, DownloadIcon } from '@radix-ui/react-icons'
 import { ColumnDef } from '@tanstack/react-table'
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import { Download } from 'lucide-react'
+import { toast } from 'sonner'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -18,7 +19,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header'
-import { useToast } from '@/components/hooks/use-toast'
 
 import { CustomerInvoices } from '../customer-invoices.schema'
 
@@ -91,7 +91,6 @@ const statusOptions = {
 
 export function useCustomerInvoices() {
   const searchParams = new URLSearchParams(window.location.search)
-  const { toast } = useToast()
   const [isDownloading, setIsDownloading] = useState(false)
 
   async function handleDownloadPdf({ id, invoiceType }: DownloadInvoices) {
@@ -103,10 +102,8 @@ export function useCustomerInvoices() {
       )
       downloadWithType(id, data)
     } catch (error: any) {
-      toast({
-        title: 'Erro ao baixar PDF',
+      toast.error('Erro ao baixar PDF', {
         description: error.response.data.error,
-        variant: 'destructive',
       })
       setIsDownloading(false)
     } finally {

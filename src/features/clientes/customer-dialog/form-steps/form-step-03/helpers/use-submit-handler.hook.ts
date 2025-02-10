@@ -5,8 +5,7 @@ import {
   SubmitHandler,
   UseFormHandleSubmit,
 } from 'react-hook-form'
-
-import { useToast } from '@/components/hooks/use-toast'
+import { toast } from 'sonner'
 
 import {
   CustomerFormStatePayload,
@@ -28,7 +27,6 @@ export function useFormStep03SubmitHandler({
   handleSubmit,
   handleSaveCustomer,
 }: UseFormStep01SubmitHandler) {
-  const { toast } = useToast()
   const { updateCustomerPayload, customerPayload } =
     useHandleCustomerFormState()
 
@@ -44,10 +42,8 @@ export function useFormStep03SubmitHandler({
 
   const onInvalid: SubmitErrorHandler<CustomerFormStep03Input> = (error) => {
     console.error('new customer form | step 3 | errors: ', error)
-    toast({
-      title: 'Erro ao validar dados',
+    toast.error('Erro ao validar dados', {
       description: 'Por favor, corrija as informações prestadas no formulário.',
-      variant: 'destructive',
     })
   }
 

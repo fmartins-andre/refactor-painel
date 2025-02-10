@@ -1,7 +1,6 @@
 import { AxiosError, HttpStatusCode, isAxiosError } from 'axios'
+import { toast } from 'sonner'
 import { ZodError } from 'zod'
-
-import { toast } from '@/components/hooks/use-toast'
 
 import { CommonCnpjWsApiError } from './common-error.types'
 
@@ -27,23 +26,25 @@ export function handleCommonCnpjWsApiErrors<
       ? undefined
       : axiosError.response?.data?.validacao
 
-    toast({
-      title: isNotFound
+    toast.error(
+      isNotFound
         ? 'CNPJ não encontrado!'
         : (axiosError.response?.data.titulo ??
-          fallbackErrorMessage ??
-          'Erro na solicitação ao servidor.'),
-      description: (
-        <>
-          {Boolean(description?.length) && (
-            <p className="font-semibold underline">{description}</p>
-          )}
+            fallbackErrorMessage ??
+            'Erro na solicitação ao servidor.'),
 
-          {validations?.map((message, index) => <p key={index}>{message}</p>)}
-        </>
-      ),
-      variant: 'destructive',
-    })
+      {
+        description: (
+          <>
+            {Boolean(description?.length) && (
+              <p className="font-semibold underline">{description}</p>
+            )}
+
+            {validations?.map((message, index) => <p key={index}>{message}</p>)}
+          </>
+        ),
+      }
+    )
 
     return
   }
@@ -51,8 +52,7 @@ export function handleCommonCnpjWsApiErrors<
   if (error instanceof ZodError) {
     const messages = error.issues.map((err) => err.message)
 
-    toast({
-      title: 'Erro de validação de dados',
+    toast.error('Erro de validação de dados', {
       description: (
         <>
           {messages.map((message, index) => (
@@ -63,16 +63,13 @@ export function handleCommonCnpjWsApiErrors<
           </p>
         </>
       ),
-      variant: 'destructive',
     })
 
     return
   }
 
   const _error = error as Error
-  toast({
-    title: 'Erro inesperado...',
+  toast.error('Erro inesperado...', {
     description: _error.message || 'Tente novamente mais tarde!',
-    variant: 'destructive',
   })
 }

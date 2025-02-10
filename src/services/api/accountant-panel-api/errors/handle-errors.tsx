@@ -1,7 +1,6 @@
 import { AxiosError, HttpStatusCode, isAxiosError } from 'axios'
+import { toast } from 'sonner'
 import { ZodError } from 'zod'
-
-import { toast } from '@/components/hooks/use-toast'
 
 import { CommonAccountantPanelApiError } from './common-error.types'
 
@@ -27,14 +26,15 @@ export function handleCommonAccountantPanelApiErrors<
   ) {
     const axiosError = error as AxiosError<TError>
 
-    toast({
-      title:
-        axiosError.response?.data?.title ??
+    toast.error(
+      axiosError.response?.data?.title ??
         fallbackErrorMessage ??
         'Erro na solicitação ao servidor.',
-      description: axiosError.response?.data?.detail,
-      variant: 'destructive',
-    })
+
+      {
+        description: axiosError.response?.data?.detail,
+      }
+    )
 
     return
   }
@@ -42,8 +42,7 @@ export function handleCommonAccountantPanelApiErrors<
   if (error instanceof ZodError) {
     const messages = error.issues.map((err) => err.message)
 
-    toast({
-      title: 'Erro de validação de dados',
+    toast.error('Erro de validação de dados', {
       description: (
         <>
           {messages.map((message, index) => (
@@ -54,16 +53,13 @@ export function handleCommonAccountantPanelApiErrors<
           </p>
         </>
       ),
-      variant: 'destructive',
     })
 
     return
   }
 
   const _error = error as Error
-  toast({
-    title: 'Erro inesperado...',
+  toast.error('Erro inesperado...', {
     description: _error.message || 'Tente novamente mais tarde!',
-    variant: 'destructive',
   })
 }

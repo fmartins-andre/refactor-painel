@@ -1,32 +1,26 @@
 import { ChevronRightIcon, Loader } from 'lucide-react'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader } from '@/components/ui/card'
-import { useToast } from '@/components/hooks/use-toast'
 import { TextSkeleton } from '@/components/text-skeleton'
 
 import { useGetCurrentCustomerData } from '../../../helpers/use-get-current-customer-data.hook'
 import { CustomerDetailsHeaderStatusSelect } from './header-status-select.comp'
 
 export function CustomerDetailsHeader() {
-  const { toast } = useToast()
-
   const { data: customer, isLoading: isLoadingCustomer } =
     useGetCurrentCustomerData()
 
   async function handleAccessEmitter() {
-    toast({
-      title: 'Erro ao acessar emissor',
+    toast.error('Erro ao acessar emissor', {
       description: 'Não implementado ainda... informar o dev',
-      variant: 'destructive',
     })
   }
 
   async function handleCustomerStatusChange() {
-    toast({
-      title: 'Erro ao alterar o status do cliente',
+    toast.error('Erro ao alterar o status do cliente', {
       description: 'Não implementado ainda... informar o dev',
-      variant: 'destructive',
     })
   }
 

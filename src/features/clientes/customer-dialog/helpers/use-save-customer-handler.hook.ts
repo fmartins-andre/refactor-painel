@@ -6,8 +6,7 @@ import {
 import { TipoPessoaModelEnum } from '@/services/api/accountant-panel-api/schemas'
 import { ClienteInputModel } from '@/services/api/accountant-panel-api/schemas/cliente-models'
 import { produce } from 'immer'
-
-import { useToast } from '@/components/hooks/use-toast'
+import { toast } from 'sonner'
 
 import { useHandleCustomerFormState } from './use-customer-form-state'
 
@@ -21,25 +20,18 @@ export type UseSaveCustomerHandler = {
 export function useSaveCustomerHandler({
   onSuccessCreatedCallback,
 }: UseSaveCustomerHandler) {
-  const { toast } = useToast()
   const { setDialogState } = useHandleCustomerFormState()
 
   const { mutate: update, isPending: isUpdating } = useClienteAtualizar({
     onSuccess: () => {
-      toast({
-        title: 'Cliente atualizado com sucesso!',
-        variant: 'success',
-      })
+      toast.success('Cliente atualizado com sucesso!')
       setDialogState(false)
     },
   })
 
   const { mutate: create, isPending: isCreating } = useClienteInserir({
     onSuccess: (data, variables) => {
-      toast({
-        title: 'Cliente inserido com sucesso!',
-        variant: 'success',
-      })
+      toast.success('Cliente inserido com sucesso!')
       onSuccessCreatedCallback?.(data, variables)
       setDialogState(false)
     },

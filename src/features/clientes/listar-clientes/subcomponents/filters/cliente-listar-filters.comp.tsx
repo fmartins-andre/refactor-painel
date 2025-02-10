@@ -1,9 +1,9 @@
 import { ComponentProps, useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import { Form } from '@/components/ui/form'
-import { useToast } from '@/components/hooks/use-toast'
 
 import { useHandleClientesListarFilters } from '../../helpers/use-handle-clientes-listar-filter-params.hook'
 import {
@@ -17,7 +17,6 @@ export function ClientesListarFiltersFormProvider(
   props: Omit<ComponentProps<'form'>, 'onSubmit' | 'id'>
 ) {
   const { filters, setFilters } = useHandleClientesListarFilters()
-  const { toast } = useToast()
 
   const form = useForm<
     ClientesListarFiltersFormInput,
@@ -45,10 +44,8 @@ export function ClientesListarFiltersFormProvider(
   ) => {
     console.error('Erro no form de filtro de listagem de clientes:\n', error)
 
-    toast({
-      title: 'Há erros no formulário!',
+    toast.error('Há erros no formulário!', {
       description: 'Por favor, corrija para prosseguir.',
-      variant: 'destructive',
     })
   }
 

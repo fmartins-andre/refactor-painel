@@ -6,8 +6,7 @@ import {
   SubmitHandler,
   UseFormHandleSubmit,
 } from 'react-hook-form'
-
-import { useToast } from '@/components/hooks/use-toast'
+import { toast } from 'sonner'
 
 import { LocalLoginFormSchema } from '../local-login.schema'
 
@@ -18,7 +17,6 @@ export type UseHandleLocalLogion = {
 export function useSubmitHandler({ handleSubmit }: UseHandleLocalLogion) {
   const navigate = useNavigate()
   const { login } = useAuth()
-  const { toast } = useToast()
 
   const { mutate, isPending } = useAutenticacaoObterToken({
     onSuccess: async (data) => {
@@ -33,10 +31,7 @@ export function useSubmitHandler({ handleSubmit }: UseHandleLocalLogion) {
 
   const onInvalid: SubmitErrorHandler<LocalLoginFormSchema> = (error) => {
     console.error(error)
-    toast({
-      title: 'Credenciais inválidas',
-      variant: 'destructive',
-    })
+    toast.error('Credenciais inválidas')
   }
 
   const submitHandler = handleSubmit(onValid, onInvalid)

@@ -1,7 +1,7 @@
 import { lazy, PropsWithChildren, Suspense } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Toaster } from 'sonner'
 
-import { Toaster } from '@/components/ui/toaster'
 import { TooltipProvider } from '@/components/ui/tooltip'
 
 import { AuthProvider } from './auth-provider'
@@ -41,7 +41,16 @@ export function DefaultAppProvider({ children }: PropsWithChildren) {
           </Suspense>
         </QueryClientProvider>
       </TooltipProvider>
-      <Toaster />
+      <Toaster
+        richColors
+        position="top-right"
+        toastOptions={{
+          classNames: {
+            title: 'text-base font-semibold',
+            description: 'text-base',
+          },
+        }}
+      />
     </>
   )
 }
