@@ -1,5 +1,5 @@
-import { patchDeep } from '@/utils/patch-deep'
 import sleep from '@/utils/sleep'
+import { merge } from 'lodash'
 import {
   SubmitErrorHandler,
   SubmitHandler,
@@ -37,7 +37,7 @@ export function useFormStep03SubmitHandler({
     updateCustomerPayload(data)
 
     await sleep(100)
-    await handleSaveCustomer(patchDeep(customerPayload, data))
+    await handleSaveCustomer(merge(customerPayload, data))
   }
 
   const onInvalid: SubmitErrorHandler<CustomerFormStep03Input> = (error) => {

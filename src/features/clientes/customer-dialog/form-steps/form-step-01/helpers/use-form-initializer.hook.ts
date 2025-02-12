@@ -1,4 +1,3 @@
-import { RegimeTributarioClienteModelEnum } from '@/services/api/accountant-panel-api/schemas/cliente-models'
 import { inputMask } from '@/utils/input-mask'
 import { produce } from 'immer'
 
@@ -42,28 +41,8 @@ function getFormValues(data: CustomerFormStatePayload | null) {
       draft.telefone = inputMask.phone(data.telefone)
     }
 
-    if (data.pessoaJuridica) {
-      if (data.pessoaJuridica.inscricaoEstadual != null) {
-        draft.pessoaJuridica.inscricaoEstadual =
-          data.pessoaJuridica.inscricaoEstadual
-      }
-
-      if (data.pessoaJuridica.inscricaoMunicipal != null) {
-        draft.pessoaJuridica.inscricaoMunicipal =
-          data.pessoaJuridica.inscricaoMunicipal
-      }
-
-      if (
-        data.pessoaJuridica.regimeTributario ===
-        RegimeTributarioClienteModelEnum.MEI
-      ) {
-        draft.pessoaJuridica.isMei = true
-      }
-
-      if (data.pessoaJuridica.dataAbertura != null) {
-        draft.pessoaJuridica.dataAbertura = data.pessoaJuridica
-          .dataAbertura as Date | null
-      }
+    if (data.inscricaoMunicipal != null) {
+      draft.inscricaoMunicipal = data.inscricaoMunicipal
     }
   }, formDefaultValues)
 

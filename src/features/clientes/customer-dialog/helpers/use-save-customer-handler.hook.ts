@@ -4,7 +4,14 @@ import {
   useClienteInserir,
 } from '@/services/api/accountant-panel-api/endpoints/cliente'
 import { TipoPessoaModelEnum } from '@/services/api/accountant-panel-api/schemas'
-import { ClienteInputModel } from '@/services/api/accountant-panel-api/schemas/cliente-models'
+import {
+  ClienteInputModel,
+  EstabelecimentoModelEnum,
+  IndicadorAtividadeModelEnum,
+  RegimeEspecialModelEnum,
+  RegimeTributarioClienteModelEnum,
+  TipoRegimeSubstituicaoModelEnum,
+} from '@/services/api/accountant-panel-api/schemas/cliente-models'
 import { produce } from 'immer'
 import { toast } from 'sonner'
 
@@ -80,7 +87,6 @@ const customerTemplateData: ClienteInputModel = {
     uf: UfBrasilEnum.ACRE,
     cep: '',
   },
-  pessoaJuridica: null,
   certificadoDigital: null,
   sincronizarNfseTomado: false,
   usuarioLoginNfse: null,
@@ -92,4 +98,11 @@ const customerTemplateData: ClienteInputModel = {
   tokenIntegracaoDominio: null,
   utilizaEmissor: false,
   modulosEmissor: null,
+  regimeTributario: RegimeTributarioClienteModelEnum.NENHUM,
+  regimeSubstituicao: TipoRegimeSubstituicaoModelEnum.AMBOS,
+  indicadorAtividade: IndicadorAtividadeModelEnum.OUTROS,
+  estabelecimento: EstabelecimentoModelEnum.COMERCIOVAREJISTA,
+  regimeEspecial: RegimeEspecialModelEnum.SEM_REGIME_ESPECIAL,
+  inscricaoMunicipal: null,
+  monitorarDas: false,
 }

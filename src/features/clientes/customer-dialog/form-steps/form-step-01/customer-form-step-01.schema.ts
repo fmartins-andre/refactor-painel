@@ -1,7 +1,4 @@
-import {
-  clienteInputModelSchema,
-  clientePessoaJuridicaInputModelSchema,
-} from '@/services/api/accountant-panel-api/schemas/cliente-models'
+import { clienteInputModelSchema } from '@/services/api/accountant-panel-api/schemas/cliente-models'
 
 import { z } from '@/lib/translated-zod'
 
@@ -10,34 +7,13 @@ export const customerFormStep01Schema = clienteInputModelSchema
     tipoPessoa: true,
     documento: true,
     nomeRazaoSocial: true,
+    nomeFantasia: true,
     telefone: true,
     email: true,
-    pessoaJuridica: true,
+    inscricaoMunicipal: true,
   })
   .extend({
-    pessoaJuridica: clientePessoaJuridicaInputModelSchema
-      .pick({
-        inscricaoEstadual: true,
-        inscricaoMunicipal: true,
-        dataAbertura: true,
-      })
-      .extend({
-        isMei: z.boolean(),
-        dataAbertura: z.date().nullable(),
-      }),
-  })
-  .transform((arg, ctx) => {
-    if (arg.pessoaJuridica.isMei && !arg.pessoaJuridica.dataAbertura) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Obrigatório',
-        path: ['pessoaJuridica.dataAbertura'],
-      })
-
-      return z.NEVER
-    }
-
-    return arg
+    inscricaoEstadual: z.string().max(14).nullable(),
   })
 
 export type CustomerFormStep01Input = z.input<typeof customerFormStep01Schema>

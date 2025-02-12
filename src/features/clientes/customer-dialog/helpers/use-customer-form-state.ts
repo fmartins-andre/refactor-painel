@@ -2,7 +2,7 @@ import {
   ClienteInputModel,
   ClienteViewModel,
 } from '@/services/api/accountant-panel-api/schemas/cliente-models'
-import { patchDeep } from '@/utils/patch-deep'
+import { merge } from 'lodash'
 import { create } from 'zustand'
 
 import { initialCustomerPayload } from '../constants'
@@ -69,7 +69,7 @@ export const useHandleCustomerFormState = create<UseHandleCustomerFormState>(
     updateCustomerPayload: (data) =>
       set((state) => ({
         ...state,
-        customerPayload: patchDeep(state.customerPayload, data),
+        customerPayload: merge(state.customerPayload, data),
       })),
   })
 )

@@ -64,14 +64,18 @@ export function CustomerFormStep03({
     <div className={cn('grid w-full', className)} {...props}>
       <Form {...form}>
         <form className="flex grow flex-col gap-4" onSubmit={submitHandler}>
-          <div className="flex min-h-[320px] flex-col gap-4">
-            <div className="grid w-full grid-cols-12 gap-4">
+          <div className="flex min-h-[320px] flex-col gap-12">
+            <div className="grid w-full grid-cols-12 gap-4 @container">
+              <h2 className="text-muted-foreground @[0px]:col-span-full">
+                Tributação
+              </h2>
+
               <RenderField<CustomerFormStep03Input, CustomerFormStep03Output>
                 form={form}
                 slot={{
-                  name: 'pessoaJuridica.regimeTributario',
+                  name: 'regimeTributario',
                   label: 'CRT',
-                  className: 'col-span-3',
+                  className: '@[0px]:col-span-full @xl:col-span-5',
                   type: 'select',
                   options: clienteRegimeTributarioOptions,
                   translateKey: 'CRT',
@@ -81,9 +85,9 @@ export function CustomerFormStep03({
               <RenderField<CustomerFormStep03Input, CustomerFormStep03Output>
                 form={form}
                 slot={{
-                  name: 'pessoaJuridica.regimeEspecial',
+                  name: 'regimeEspecial',
                   label: 'Regime Especial',
-                  className: 'col-span-7',
+                  className: '@[0px]:col-span-full @xl:col-span-7',
                   type: 'select',
                   options: clienteRegimeEspecialOptions,
                   translateKey: 'Regime Especial',
@@ -91,13 +95,18 @@ export function CustomerFormStep03({
               />
             </div>
 
-            <div className="grid w-full grid-cols-12 gap-4">
+            <div className="grid w-full grid-cols-12 gap-4 @container">
+              <h2 className="text-muted-foreground @[0px]:col-span-full">
+                Módulos do Emissor
+              </h2>
+
               <RenderField<CustomerFormStep03Input, CustomerFormStep03Output>
                 form={form}
                 slot={{
                   name: 'modulosEmissor.nfe',
                   label: 'Emite NF-e',
-                  className: 'col-span-2 ml-1',
+                  className:
+                    '@[0px]:col-span-full @md:col-span-6 @xl:col-span-4 @3xl:col-span-3',
                   type: 'switch',
                   options: switchBooleanOptions,
                 }}
@@ -108,7 +117,8 @@ export function CustomerFormStep03({
                 slot={{
                   name: 'modulosEmissor.nfce',
                   label: 'Emite NFC-e',
-                  className: 'col-span-2',
+                  className:
+                    '@[0px]:col-span-full @md:col-span-6 @xl:col-span-4 @3xl:col-span-3',
                   type: 'switch',
                   options: switchBooleanOptions,
                 }}
@@ -119,7 +129,8 @@ export function CustomerFormStep03({
                 slot={{
                   name: 'modulosEmissor.nfse',
                   label: 'Emite NFS-e',
-                  className: 'col-span-2',
+                  className:
+                    '@[0px]:col-span-full @md:col-span-6 @xl:col-span-4 @3xl:col-span-3',
                   type: 'switch',
                   options: switchBooleanOptions,
                 }}
@@ -130,7 +141,8 @@ export function CustomerFormStep03({
                 slot={{
                   name: 'modulosEmissor.mdfe',
                   label: 'Emite MDF-e',
-                  className: 'col-span-2',
+                  className:
+                    '@[0px]:col-span-full @md:col-span-6 @xl:col-span-4 @3xl:col-span-3',
                   type: 'switch',
                   options: switchBooleanOptions,
                 }}
@@ -141,7 +153,8 @@ export function CustomerFormStep03({
                 slot={{
                   name: 'modulosEmissor.cte',
                   label: 'Emite CT-e',
-                  className: 'col-span-2',
+                  className:
+                    '@[0px]:col-span-full @md:col-span-6 @xl:col-span-4 @3xl:col-span-3',
                   type: 'switch',
                   options: switchBooleanOptions,
                 }}

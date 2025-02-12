@@ -1,6 +1,6 @@
 import { z } from '@/lib/translated-zod'
 
-import { certificadoDigitalInputModelSchema } from '../certificado-digital-models'
+import { certificadoDigitalViewModelSchema } from '../certificado-digital-models'
 import { enderecoViewModelSchema } from '../endereco-models'
 import { gestaoEstoqueViewModelSchema } from '../gestao-estoque-models'
 import { planoContadorViewModelSchema } from '../plano-models'
@@ -19,7 +19,7 @@ export const contadorViewModelSchema = z.object({
   telefone: z.custom<string>().nullable(),
   email: z.custom<string>().nullable(),
   endereco: enderecoViewModelSchema.nullable(),
-  certificadoDigital: certificadoDigitalInputModelSchema.nullable(),
+  certificadoDigital: certificadoDigitalViewModelSchema.nullable(),
   plano: planoContadorViewModelSchema.nullable(),
   configuracao: contadorConfiguracaoViewModelSchema.nullable(),
   gestaoEstoque: gestaoEstoqueViewModelSchema.nullable(),

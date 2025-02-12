@@ -53,6 +53,10 @@ export const clientesListarPageSearchParamsSchema = z.object({
     undefined
   ),
 
+  utilizaRadarxml: fallback(z.coerce.boolean().optional(), undefined),
+
+  utilizaEmissor: fallback(z.coerce.boolean().optional(), undefined),
+
   page: fallback(z.number().positive().optional(), 1).default(1),
 
   perPage: fallback(z.number().positive().optional(), 10).default(10),

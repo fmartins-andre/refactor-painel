@@ -6,10 +6,9 @@ import {
 import { CustomerFormStep03Input } from './customer-form-step-03.schema'
 
 export const formDefaultValues: CustomerFormStep03Input = {
-  pessoaJuridica: {
-    regimeTributario: RegimeTributarioClienteModelEnum.NENHUM,
-    regimeEspecial: RegimeEspecialModelEnum.SEM_REGIME_ESPECIAL,
-  },
+  regimeTributario: RegimeTributarioClienteModelEnum.NENHUM,
+  regimeEspecial: RegimeEspecialModelEnum.SEM_REGIME_ESPECIAL,
+
   modulosEmissor: {
     nfe: false,
     nfce: false,

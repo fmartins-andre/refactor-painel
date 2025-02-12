@@ -8,10 +8,7 @@ export const formDefaultValues: CustomerFormStep01Input = {
   telefone: '',
   nomeRazaoSocial: '',
   email: '',
-  pessoaJuridica: {
-    inscricaoEstadual: null,
-    inscricaoMunicipal: null,
-    dataAbertura: null,
-    isMei: false,
-  },
+  inscricaoMunicipal: null,
+  nomeFantasia: null,
+  inscricaoEstadual: '',
 }

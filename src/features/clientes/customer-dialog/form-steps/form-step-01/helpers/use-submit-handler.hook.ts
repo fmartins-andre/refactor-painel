@@ -21,8 +21,26 @@ export function useFormStep01SubmitHandler({
   const { setNextStep, updateCustomerPayload } = useHandleCustomerFormState()
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onValid: SubmitHandler<any> = (data: CustomerFormStep01Output) => {
-    updateCustomerPayload(data)
+  const onValid: SubmitHandler<any> = ({
+    inscricaoEstadual,
+    ...rest
+  }: CustomerFormStep01Output) => {
+    console.log('inscricaoEstadual: ', inscricaoEstadual)
+    console.log('rest: ', rest)
+
+    updateCustomerPayload({
+      ...rest,
+      ...(inscricaoEstadual?.length
+        ? {
+            inscricoesEstaduais: [
+              {
+                ie: inscricaoEstadual,
+                nomeFantasia: rest.nomeFantasia,
+              },
+            ],
+          }
+        : {}),
+    })
     setNextStep()
   }
 

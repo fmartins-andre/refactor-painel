@@ -27,18 +27,24 @@ export const initialCustomerPayload: DeepNullable<CustomerFormStatePayload> = {
     uf: null,
     cep: '',
   },
-  pessoaJuridica: {
-    regimeTributario: RegimeTributarioClienteModelEnum.NENHUM,
-    regimeEspecial: RegimeEspecialModelEnum.SEM_REGIME_ESPECIAL,
-    inscricaoEstadual: null,
-    inscricaoMunicipal: null,
-    dataAbertura: null,
-    // campos fora do formulário
-    regimeSubstituicao: TipoRegimeSubstituicaoModelEnum.AMBOS,
-    indicadorAtividade: IndicadorAtividadeModelEnum.OUTROS,
-    estabelecimento: EstabelecimentoModelEnum.COMERCIOVAREJISTA,
-    monitorarDas: false,
-  },
+
+  inscricoesEstaduais: [
+    {
+      ie: null,
+      endereco: null,
+      nomeFantasia: null,
+    },
+  ],
+
+  regimeTributario: RegimeTributarioClienteModelEnum.NENHUM,
+  regimeEspecial: RegimeEspecialModelEnum.SEM_REGIME_ESPECIAL,
+  inscricaoMunicipal: null,
+  // campos fora do formulário
+  regimeSubstituicao: TipoRegimeSubstituicaoModelEnum.AMBOS,
+  indicadorAtividade: IndicadorAtividadeModelEnum.OUTROS,
+  estabelecimento: EstabelecimentoModelEnum.COMERCIOVAREJISTA,
+  monitorarDas: false,
+
   certificadoDigital: null,
   sincronizarNfseTomado: false,
   usuarioLoginNfse: null,

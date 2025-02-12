@@ -23,7 +23,7 @@ export function CustomerDetailsInfoFormTaxationSection({ isLoading }: Props) {
         <RenderField<CustomerFormInput, CustomerFormOutput>
           form={form}
           slot={{
-            name: 'pessoaJuridica.regimeTributario',
+            name: 'regimeTributario',
             translateKey: 'Regime Tributário',
             label: 'Regime Tributário',
             placeholderKey: 'Regime Tributário',
@@ -37,7 +37,7 @@ export function CustomerDetailsInfoFormTaxationSection({ isLoading }: Props) {
         <RenderField<CustomerFormInput, CustomerFormOutput>
           form={form}
           slot={{
-            name: 'pessoaJuridica.regimeEspecial',
+            name: 'regimeEspecial',
             label: 'Regime Especial',
             translateKey: 'Regime Tributário',
             placeholderKey: 'Regime Tributário',

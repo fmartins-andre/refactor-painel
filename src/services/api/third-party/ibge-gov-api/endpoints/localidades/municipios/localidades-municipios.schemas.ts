@@ -17,7 +17,7 @@ export type IbgeGovApiLocalidadesMunicipiosListarRequestParams = z.input<
 >
 
 interface base {
-  id: string
+  id: number
   nome: string
 }
 
@@ -42,7 +42,7 @@ interface regiaoImediata extends base {
 }
 
 export const ibgeGovApiLocalidadesMunicipioSchema = z.object({
-  id: z.custom<string>(),
+  id: z.coerce.number(),
   nome: z.custom<string>(),
   microrregiao: z.custom<microrregiao>(),
   'regiao-imediata': z.custom<regiaoImediata>(),

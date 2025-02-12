@@ -1,3 +1,4 @@
+import { CustomerDetailsDigitalCert } from '@/features/clientes/detalhes-cliente/cliente-certificado-digital'
 import { createLazyFileRoute } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute(
@@ -7,9 +8,5 @@ export const Route = createLazyFileRoute(
 })
 
 function RouteComponent() {
-  return (
-    <div>
-      Hello "/_authenticated-routes/clientes/$clienteId/certificado-digital"!
-    </div>
-  )
+  return <CustomerDetailsDigitalCert />
 }

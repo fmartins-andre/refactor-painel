@@ -35,8 +35,7 @@ export function useMenusConfig(): UseMenusConfig {
 
   const showDasMei = Boolean(
     customer?.tipoPessoa === TipoPessoaModelEnum.JURIDICA &&
-      customer.pessoaJuridica?.regimeTributario ===
-        RegimeTributarioClienteModelEnum.MEI
+      customer?.regimeTributario === RegimeTributarioClienteModelEnum.MEI
   )
 
   const customerRelatedMenus = (

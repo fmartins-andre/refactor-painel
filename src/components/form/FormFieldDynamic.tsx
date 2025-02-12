@@ -328,15 +328,6 @@ export function FormFieldDynamic<TFieldValues extends FieldValues>({
         </div>
       )
     default:
-      return (
-        <Input
-          className="h-10 dark:bg-black"
-          disabled={slot.disabled}
-          onChange={(e) => field.onChange(e.target.value.normalize('NFKC'))}
-          placeholder={slot.placeholderKey}
-          value={field.value}
-          width="full"
-        />
-      )
+      return <></>
   }
 }

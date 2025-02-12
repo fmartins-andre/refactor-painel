@@ -20,13 +20,12 @@ function getFormValues(data: CustomerFormStatePayload | null) {
   const handler = produce((draft) => {
     if (!data) return formDefaultValues
 
-    if (data.pessoaJuridica?.regimeTributario != null) {
-      draft.pessoaJuridica.regimeTributario =
-        data.pessoaJuridica.regimeTributario
+    if (data.regimeTributario != null) {
+      draft.regimeTributario = data.regimeTributario
     }
 
-    if (data.pessoaJuridica?.regimeEspecial != null) {
-      draft.pessoaJuridica.regimeEspecial = data.pessoaJuridica.regimeEspecial
+    if (data.regimeEspecial != null) {
+      draft.regimeEspecial = data.regimeEspecial
     }
 
     draft.modulosEmissor = {

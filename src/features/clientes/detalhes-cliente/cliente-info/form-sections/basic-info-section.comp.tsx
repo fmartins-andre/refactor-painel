@@ -1,6 +1,5 @@
 import { tipoPessoaOptions } from '@/features/clientes/constants'
 import { TipoPessoaModelEnum } from '@/services/api/accountant-panel-api/schemas'
-import { RegimeTributarioClienteModelEnum } from '@/services/api/accountant-panel-api/schemas/cliente-models'
 import { useFormContext } from 'react-hook-form'
 
 import { cn } from '@/lib/utils'
@@ -16,9 +15,6 @@ export function CustomerDetailsInfoFormBasicInfoSection({ isLoading }: Props) {
   const form = useFormContext<CustomerFormInput, CustomerFormOutput>()
 
   const isPJ = form.watch('tipoPessoa') === TipoPessoaModelEnum.JURIDICA
-  const isMei =
-    form.watch('pessoaJuridica.regimeTributario') ===
-    RegimeTributarioClienteModelEnum.MEI
 
   return (
     <section className="flex flex-col gap-4">
@@ -36,7 +32,7 @@ export function CustomerDetailsInfoFormBasicInfoSection({ isLoading }: Props) {
             type: 'select',
             options: tipoPessoaOptions,
             translateKey: 'Tipo pessoa',
-            className: '@[0px]:col-span-full @xl:col-span-4 @4xl:col-span-3',
+            className: '@[0px]:col-span-full @md:col-span-6 @2xl:col-span-4',
           }}
         />
 
@@ -50,33 +46,20 @@ export function CustomerDetailsInfoFormBasicInfoSection({ isLoading }: Props) {
             translateKey: `${isPJ ? 'CNPJ' : 'CPF'}`,
             placeholderKey: `${isPJ ? 'Ex: 00.000.000/0000-00' : 'Ex: 000.000.000-00'}`,
             type: `${isPJ ? 'cnpj' : 'cpf'}`,
-            className: '@[0px]:col-span-full @xl:col-span-8 @4xl:col-span-3',
+            className: '@[0px]:col-span-full @md:col-span-6 @2xl:col-span-4',
           }}
         />
 
         <RenderField<CustomerFormInput, CustomerFormOutput>
           form={form}
           slot={{
-            name: 'pessoaJuridica.inscricaoEstadual',
-            isLoading: isLoading,
-            optional: true,
-            translateKey: 'Inscrição Estadual',
-            placeholderKey: 'Ex: 00000000',
-            type: 'text',
-            className: '@[0px]:col-span-full @xl:col-span-6 @4xl:col-span-3',
-          }}
-        />
-
-        <RenderField<CustomerFormInput, CustomerFormOutput>
-          form={form}
-          slot={{
-            name: 'pessoaJuridica.inscricaoMunicipal',
+            name: 'inscricaoMunicipal',
             isLoading: isLoading,
             optional: true,
             translateKey: 'Inscrição Municipal',
             placeholderKey: 'Ex: 00000',
             type: 'text',
-            className: '@[0px]:col-span-full @xl:col-span-6 @4xl:col-span-3',
+            className: '@[0px]:col-span-full  @2xl:col-span-4',
           }}
         />
 
@@ -131,22 +114,6 @@ export function CustomerDetailsInfoFormBasicInfoSection({ isLoading }: Props) {
             placeholderKey: 'Ex: 62 99999-9999',
             type: 'tel',
             className: '@[0px]:col-span-full @xl:col-span-5 @3xl:col-span-3',
-          }}
-        />
-
-        <RenderField<CustomerFormInput, CustomerFormOutput>
-          form={form}
-          slot={{
-            name: 'pessoaJuridica.dataAbertura',
-            isLoading: isLoading,
-            required: isMei,
-            translateKey: 'Data de abertura',
-            type: 'date',
-            placeholderKey: 'Ex: 01/01/2024',
-            className: cn(
-              '@[0px]:col-span-full @xl:col-span-4 @3xl:col-span-3',
-              !isPJ && 'hidden'
-            ),
           }}
         />
       </div>

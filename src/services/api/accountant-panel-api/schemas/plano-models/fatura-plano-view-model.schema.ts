@@ -11,6 +11,7 @@ export const faturaPlanoViewModelSchema = z.object({
   totalParcelas: z.coerce.number(),
   descricao: z.custom<string>(),
   statusCobranca: z.custom<StatusCobrancaFaturaPlanoModelEnum>(),
+  faturaId: z.custom<string>(),
   vencimentoCobranca: z.custom<string>().transform(zodTransformFromIsoToDate),
   ultimoStatusCobranca: z.custom<string>().transform(zodTransformFromIsoToDate),
   statusTributacao: z.custom<StatusTributacaoFaturaPlanoModelEnum>(),

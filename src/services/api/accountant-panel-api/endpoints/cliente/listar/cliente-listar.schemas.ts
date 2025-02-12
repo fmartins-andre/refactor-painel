@@ -79,6 +79,10 @@ export const clienteListarRequestPayloadSchema = z.object({
       zodTransformNullToUndefined(['falsy'])
     ),
 
+  utilizaRadarxml: z.coerce.boolean().optional(),
+
+  utilizaEmissor: z.coerce.boolean().optional(),
+
   page: z.number().positive().optional().default(1),
 
   perPage: z.number().positive().optional().default(10),

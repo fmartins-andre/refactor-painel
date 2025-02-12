@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { ClienteObterDetalheResponse } from '@/services/api/accountant-panel-api/endpoints/cliente'
 import { inputMask } from '@/utils/input-mask'
-import { patchDeep } from '@/utils/patch-deep'
 import { produce } from 'immer'
+import { merge } from 'lodash'
 import { UseFormReset } from 'react-hook-form'
 
 import { useGetCurrentCustomerData } from '../../helpers/use-get-current-customer-data.hook'
@@ -22,14 +22,13 @@ export function useFormInitializer(reset: UseFormReset<CustomerFormInput>) {
 function getFormValues(data: ClienteObterDetalheResponse): CustomerFormInput {
   if (!data) return formDefaultValues
 
-  const { telefone, email, endereco, pessoaJuridica, ...rest } = data
+  const { telefone, email, endereco, ...rest } = data
 
-  const patchedData = patchDeep(formDefaultValues, {
+  const patchedData = merge(formDefaultValues, {
     ...rest,
     telefone: telefone ?? undefined,
     email: email ?? undefined,
     endereco: endereco ?? undefined,
-    pessoaJuridica: pessoaJuridica ?? undefined,
   })
 
   const handler = produce((draft) => {

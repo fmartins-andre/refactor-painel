@@ -155,9 +155,9 @@ export const cnpjWsDadosEmpresaSchema = z.object({
   porte: z.custom<basicInfo>(),
   natureza_juridica: z.custom<basicInfo>(),
   qualificacao_do_responsavel: z.custom<basicInfo>(),
-  socios: socioSchema.array(),
-  simples: simplesSchema,
-  estabelecimento: estabelecimentoSchema,
+  socios: socioSchema.array().nullish(),
+  simples: simplesSchema.nullish(),
+  estabelecimento: estabelecimentoSchema.nullish(),
 })
 
 export type CnpjWsDadosEmpresa = z.output<typeof cnpjWsDadosEmpresaSchema>

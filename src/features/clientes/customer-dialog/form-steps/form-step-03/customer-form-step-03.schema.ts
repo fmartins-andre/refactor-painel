@@ -1,21 +1,12 @@
-import {
-  clienteInputModelSchema,
-  clientePessoaJuridicaInputModelSchema,
-} from '@/services/api/accountant-panel-api/schemas/cliente-models'
+import { clienteInputModelSchema } from '@/services/api/accountant-panel-api/schemas/cliente-models'
 
 import { z } from '@/lib/translated-zod'
 
-export const customerFormStep03Schema = clienteInputModelSchema
-  .pick({
-    modulosEmissor: true,
-    pessoaJuridica: true,
-  })
-  .extend({
-    pessoaJuridica: clientePessoaJuridicaInputModelSchema.pick({
-      regimeEspecial: true,
-      regimeTributario: true,
-    }),
-  })
+export const customerFormStep03Schema = clienteInputModelSchema.pick({
+  modulosEmissor: true,
+  regimeEspecial: true,
+  regimeTributario: true,
+})
 
 export type CustomerFormStep03Input = z.input<typeof customerFormStep03Schema>
 

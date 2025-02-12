@@ -15,6 +15,7 @@ export type VisaoGeralDasListarRequestPayload = z.input<
 >
 
 export const visaoGeralDasSchema = z.object({
+  clienteId: z.custom<string>(),
   documentoCliente: z.custom<string>(),
   nomeCliente: z.custom<string>(),
   status: z.custom<StatusListaDasMeiVisaoGeralModelEnum>(),

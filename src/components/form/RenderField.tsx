@@ -39,7 +39,8 @@ export function RenderField<
       control={form.control}
       key={slot.name as string}
       name={slot.name}
-      render={({ field }) => {
+      render={(ctx) => {
+        const { field } = ctx
         return (
           <FormItem
             className={cn(
@@ -81,6 +82,7 @@ export function RenderField<
                   )}
                 >
                   <FormFieldDynamic<TFieldValues> field={field} slot={slot} />
+                  {slot.render?.(ctx) ?? null}
                   {children}
                 </div>
               </>

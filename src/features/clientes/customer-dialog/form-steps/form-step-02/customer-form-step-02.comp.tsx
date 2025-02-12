@@ -85,7 +85,7 @@ export function CustomerFormStep02({
     () =>
       brazilianCitiesByState
         ?.map((state) => ({
-          value: state.id,
+          value: state.id.toString(),
           label: state.nome,
         }))
         .sort((a, b) => (a.label > b.label ? 1 : -1)) ?? [],
@@ -104,109 +104,109 @@ export function CustomerFormStep02({
     <div className={cn('grid w-full', className)} {...props}>
       <Form {...form}>
         <form className="flex grow flex-col gap-4" onSubmit={submitHandler}>
-          <div className="flex min-h-[320px] flex-col gap-4">
-            <div className="grid w-full grid-cols-12 gap-4">
-              <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
-                form={form}
-                slot={{
-                  name: 'endereco.cep',
-                  required: true,
-                  translateKey: 'CEP',
-                  placeholderKey: 'Ex: 00000-000',
-                  type: 'zipcode',
-                  className: 'col-span-3',
-                  onBlur: (e) => getZipCode(e.target.value),
-                  disabled: isLoading,
-                }}
-              />
+          <div className="grid w-full grid-cols-12 gap-4 @container">
+            <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
+              form={form}
+              slot={{
+                name: 'endereco.cep',
+                required: true,
+                translateKey: 'CEP',
+                placeholderKey: 'Ex: 00000-000',
+                type: 'zipcode',
+                className:
+                  '@[0px]:col-span-full @md:col-span-5 @2xl:col-span-2',
+                onBlur: (e) => getZipCode(e.target.value),
+                disabled: isLoading,
+              }}
+            />
 
-              <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
-                form={form}
-                slot={{
-                  name: 'endereco.logradouro',
-                  required: true,
-                  translateKey: 'Rua',
-                  placeholderKey: 'Ex: Rua Lorem Ipsum',
-                  type: 'text',
-                  className: 'col-span-9',
-                  isLoading: isFetchingZipCodeData,
-                }}
-              />
-            </div>
+            <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
+              form={form}
+              slot={{
+                name: 'endereco.uf',
+                required: true,
+                translateKey: 'Estado',
+                placeholderKey: 'Estado',
+                type: 'combobox-single-value',
+                options: brazilianStatesOptions,
+                className:
+                  '@[0px]:col-span-full @md:col-span-7 @2xl:col-span-4',
+                loading: isLoadingStates,
+                isLoading: isFetchingZipCodeData || isLoadingStates,
+              }}
+            />
 
-            <div className="grid w-full grid-cols-12 gap-4">
-              <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
-                form={form}
-                slot={{
-                  name: 'endereco.numero',
-                  required: true,
-                  translateKey: 'Número',
-                  placeholderKey: 'Ex: 000',
-                  type: 'text',
-                  className: 'col-span-4',
-                  isLoading: isFetchingZipCodeData,
-                }}
-              />
+            <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
+              form={form}
+              slot={{
+                name: 'endereco.cidade',
+                required: true,
+                translateKey: 'Cidade',
+                placeholderKey: 'Cidade',
+                type: 'combobox-single-value',
+                options: brazilianCitiesByStateOptions,
+                className: '@[0px]:col-span-full  @2xl:col-span-6',
+                loading: isLoadingCities,
+                disabled: !brazilianCitiesByStateOptions.length,
+                isLoading: isFetchingZipCodeData || isLoadingCities,
+              }}
+            />
 
-              <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
-                form={form}
-                slot={{
-                  name: 'endereco.complemento',
-                  optional: true,
-                  translateKey: 'Complemento',
-                  placeholderKey: 'Ex: Casa, Apartamento, etc',
-                  type: 'text',
-                  className: 'col-span-4',
-                  isLoading: isFetchingZipCodeData,
-                }}
-              />
+            <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
+              form={form}
+              slot={{
+                name: 'endereco.bairro',
+                required: true,
+                translateKey: 'Bairro',
+                placeholderKey: 'Ex: Setor central',
+                type: 'text',
+                className:
+                  '@[0px]:col-span-full @3xl:col-span-5 @4xl:col-span-4',
+                isLoading: isFetchingZipCodeData,
+              }}
+            />
 
-              <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
-                form={form}
-                slot={{
-                  name: 'endereco.bairro',
-                  required: true,
-                  translateKey: 'Bairro',
-                  placeholderKey: 'Ex: Setor central',
-                  type: 'text',
-                  className: 'col-span-4',
-                  isLoading: isFetchingZipCodeData,
-                }}
-              />
-            </div>
+            <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
+              form={form}
+              slot={{
+                name: 'endereco.logradouro',
+                required: true,
+                translateKey: 'Rua',
+                placeholderKey: 'Ex: Rua Lorem Ipsum',
+                type: 'text',
+                className:
+                  '@[0px]:col-span-full @3xl:col-span-7 @4xl:col-span-8',
+                isLoading: isFetchingZipCodeData,
+              }}
+            />
 
-            <div className="grid w-full grid-cols-12 gap-4">
-              <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
-                form={form}
-                slot={{
-                  name: 'endereco.uf',
-                  required: true,
-                  translateKey: 'Estado',
-                  placeholderKey: 'Estado',
-                  type: 'combobox-single-value',
-                  options: brazilianStatesOptions,
-                  className: 'col-span-4',
-                  loading: isLoadingStates,
-                  isLoading: isFetchingZipCodeData || isLoadingStates,
-                }}
-              />
+            <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
+              form={form}
+              slot={{
+                name: 'endereco.numero',
+                required: true,
+                translateKey: 'Número',
+                placeholderKey: 'Ex: 000',
+                type: 'text',
+                className:
+                  '@[0px]:col-span-full @md:col-span-4 @xl:col-span-3 @2xl:col-span-2',
+                isLoading: isFetchingZipCodeData,
+              }}
+            />
 
-              <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
-                form={form}
-                slot={{
-                  name: 'endereco.cidade',
-                  required: true,
-                  translateKey: 'Cidade',
-                  placeholderKey: 'Cidade',
-                  type: 'combobox-single-value',
-                  options: brazilianCitiesByStateOptions,
-                  className: 'col-span-4',
-                  loading: isLoadingCities,
-                  disabled: !brazilianCitiesByStateOptions.length,
-                  isLoading: isFetchingZipCodeData || isLoadingCities,
-                }}
-              />
-            </div>
+            <RenderField<CustomerFormStep02Input, CustomerFormStep02Output>
+              form={form}
+              slot={{
+                name: 'endereco.complemento',
+                optional: true,
+                translateKey: 'Complemento',
+                placeholderKey: 'Ex: Casa, Apartamento, etc',
+                type: 'text',
+                className:
+                  '@[0px]:col-span-full @md:col-span-8 @xl:col-span-6 @2xl:col-span-5',
+                isLoading: isFetchingZipCodeData,
+              }}
+            />
           </div>
 
           <div className="flex w-full items-center justify-end gap-4">

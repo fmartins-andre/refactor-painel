@@ -1,8 +1,5 @@
-import { DetailedHTMLProps, HTMLAttributes, useEffect } from 'react'
-import {
-  switchBooleanOptions,
-  tipoPessoaOptions,
-} from '@/features/clientes/constants'
+import { DetailedHTMLProps, HTMLAttributes } from 'react'
+import { tipoPessoaOptions } from '@/features/clientes/constants'
 import { TipoPessoaModelEnum } from '@/services/api/accountant-panel-api/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
@@ -42,7 +39,6 @@ export function CustomerFormStep01({
   const { watch, handleSubmit, resetField, setValue, getFieldState } = form
 
   const isPJ = watch('tipoPessoa') === TipoPessoaModelEnum.JURIDICA
-  const isMei = watch('pessoaJuridica.isMei')
 
   const { submitHandler } = useFormStep01SubmitHandler({ handleSubmit })
 
@@ -53,139 +49,121 @@ export function CustomerFormStep01({
       setValue,
     })
 
-  useEffect(() => {
-    if (!isMei) setValue('pessoaJuridica.dataAbertura', null)
-  }, [isMei, setValue])
-
   return (
     <div className={cn('grid w-full', className)} {...props}>
       <Form {...form}>
         <form className="flex grow flex-col gap-4" onSubmit={submitHandler}>
-          <div className="flex min-h-[320px] flex-col gap-4">
-            <div className="grid w-full grid-cols-12 gap-4">
-              <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
-                form={form}
-                slot={{
-                  name: 'tipoPessoa',
-                  disabled: isFetchingCnpjData,
-                  required: true,
-                  label: 'Tipo pessoa',
-                  className: 'col-span-4',
-                  type: 'select',
-                  options: tipoPessoaOptions,
-                  translateKey: 'Tipo pessoa',
-                }}
-              />
+          <div className="grid grid-cols-12 gap-4 w-full @container">
+            <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
+              form={form}
+              slot={{
+                name: 'tipoPessoa',
+                disabled: isFetchingCnpjData,
+                required: true,
+                label: 'Tipo pessoa',
+                type: 'select',
+                options: tipoPessoaOptions,
+                translateKey: 'Tipo pessoa',
+                className:
+                  '@[0px]:col-span-full @md:col-span-5 @4xl:col-span-3',
+              }}
+            />
 
-              <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
-                form={form}
-                slot={{
-                  name: 'documento',
-                  isLoading: isFetchingCnpjData,
-                  required: true,
-                  translateKey: `${isPJ ? 'CNPJ' : 'CPF'}`,
-                  placeholderKey: `${isPJ ? 'Ex: 00.000.000/0000-00' : 'Ex: 000.000.000-00'}`,
-                  type: `${isPJ ? 'cnpj' : 'cpf'}`,
-                  className: 'col-span-8',
-                  onBlur: (e) => getCustomerDataHandler(e.target.value),
-                }}
-              />
-            </div>
+            <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
+              form={form}
+              slot={{
+                name: 'documento',
+                isLoading: isFetchingCnpjData,
+                required: true,
+                translateKey: `${isPJ ? 'CNPJ' : 'CPF'}`,
+                placeholderKey: `${isPJ ? 'Ex: 00.000.000/0000-00' : 'Ex: 000.000.000-00'}`,
+                type: `${isPJ ? 'cnpj' : 'cpf'}`,
+                className:
+                  '@[0px]:col-span-full @md:col-span-7 @4xl:col-span-3',
+                onBlur: (e) => getCustomerDataHandler(e.target.value),
+              }}
+            />
 
-            <div className="grid w-full grid-cols-12 gap-4">
-              <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
-                form={form}
-                slot={{
-                  name: 'nomeRazaoSocial',
-                  isLoading: isFetchingCnpjData,
-                  required: true,
-                  translateKey: `${isPJ ? 'Razão social' : 'Nome'}`,
-                  placeholderKey: 'Ex: Lorem Ipsum company',
-                  type: 'text',
-                  className: 'col-span-full',
-                }}
-              />
+            <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
+              form={form}
+              slot={{
+                name: 'inscricaoEstadual',
+                isLoading: isFetchingCnpjData,
+                optional: true,
+                translateKey: 'Inscrição Estadual',
+                placeholderKey: 'Ex: 00000',
+                type: 'text',
+                className:
+                  '@[0px]:col-span-full @md:col-span-6 @4xl:col-span-3',
+              }}
+            />
 
-              <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
-                form={form}
-                slot={{
-                  name: 'pessoaJuridica.inscricaoEstadual',
-                  isLoading: isFetchingCnpjData,
-                  optional: true,
-                  translateKey: 'Inscrição Estadual',
-                  placeholderKey: 'Ex: 00000000',
-                  type: 'text',
-                  className: 'col-span-6',
-                }}
-              />
+            <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
+              form={form}
+              slot={{
+                name: 'inscricaoMunicipal',
+                isLoading: isFetchingCnpjData,
+                optional: true,
+                translateKey: 'Inscrição Municipal',
+                placeholderKey: 'Ex: 00000',
+                type: 'text',
+                className:
+                  '@[0px]:col-span-full @md:col-span-6 @4xl:col-span-3',
+              }}
+            />
 
-              <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
-                form={form}
-                slot={{
-                  name: 'pessoaJuridica.inscricaoMunicipal',
-                  isLoading: isFetchingCnpjData,
-                  optional: true,
-                  translateKey: 'Inscrição Municipal',
-                  placeholderKey: 'Ex: 00000',
-                  type: 'text',
-                  className: 'col-span-6',
-                }}
-              />
-            </div>
+            <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
+              form={form}
+              slot={{
+                name: 'nomeRazaoSocial',
+                isLoading: isFetchingCnpjData,
+                required: true,
+                translateKey: `${isPJ ? 'Razão social' : 'Nome'}`,
+                placeholderKey: 'Ex: Lorem Ipsum company',
+                type: 'text',
+                className: '@[0px]:col-span-full',
+              }}
+            />
 
-            <div className="grid w-full grid-cols-12 gap-4">
-              <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
-                form={form}
-                slot={{
-                  name: 'email',
-                  isLoading: isFetchingCnpjData,
-                  required: true,
-                  translateKey: 'Email',
-                  placeholderKey: 'Ex: lorem.ipsum@lorem-company.com',
-                  type: 'text',
-                  className: 'col-span-5',
-                }}
-              />
+            <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
+              form={form}
+              slot={{
+                name: 'nomeFantasia',
+                isLoading: isFetchingCnpjData,
+                translateKey: 'Nome Fantasia',
+                placeholderKey: 'Ex: Lorem Ipsum company',
+                type: 'text',
+                className: cn('@[0px]:col-span-full', !isPJ && 'hidden'),
+              }}
+            />
 
-              <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
-                form={form}
-                slot={{
-                  name: 'telefone',
-                  isLoading: isFetchingCnpjData,
-                  required: true,
-                  translateKey: 'Telefone',
-                  placeholderKey: 'Ex: 62 99999-9999',
-                  type: 'tel',
-                  className: 'col-span-3',
-                }}
-              />
+            <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
+              form={form}
+              slot={{
+                name: 'email',
+                isLoading: isFetchingCnpjData,
+                required: true,
+                translateKey: 'Email',
+                placeholderKey: 'Ex: lorem.ipsum@lorem-company.com',
+                type: 'text',
+                className:
+                  '@[0px]:col-span-full @md:col-span-7 @xl:col-span-8 @3xl:col-span-9',
+              }}
+            />
 
-              <div className="col-span-4 flex gap-3 ">
-                <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
-                  form={form}
-                  slot={{
-                    name: 'pessoaJuridica.isMei',
-                    label: 'MEI',
-                    type: 'switch',
-                    className: 'pl-2 pt-4',
-                    options: switchBooleanOptions,
-                  }}
-                />
-
-                <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
-                  form={form}
-                  slot={{
-                    name: 'pessoaJuridica.dataAbertura',
-                    required: isMei,
-                    translateKey: 'Data de abertura',
-                    type: 'date',
-                    className: 'w-full',
-                    placeholderKey: 'Ex: 01/01/2024',
-                    disabled: !isMei,
-                  }}
-                />
-              </div>
-            </div>
+            <RenderField<CustomerFormStep01Input, CustomerFormStep01Output>
+              form={form}
+              slot={{
+                name: 'telefone',
+                isLoading: isFetchingCnpjData,
+                required: true,
+                translateKey: 'Telefone',
+                placeholderKey: 'Ex: 62 99999-9999',
+                type: 'tel',
+                className:
+                  '@[0px]:col-span-full @md:col-span-5 @xl:col-span-4 @3xl:col-span-3',
+              }}
+            />
           </div>
 
           <div className="flex w-full items-center justify-end gap-4">

@@ -4,7 +4,7 @@ import type {
   ReactNode,
 } from 'react'
 import { Content as PopoverContent } from '@radix-ui/react-popover'
-import { FieldPath, FieldValues } from 'react-hook-form'
+import { ControllerProps, FieldPath, FieldValues } from 'react-hook-form'
 
 export type FormRadioOption = {
   value: string | number | boolean
@@ -16,7 +16,10 @@ export type SelectOptions = {
   value: string | number | boolean
 }
 
-export type FormFields<TFieldValues extends FieldValues> = {
+export type FormFields<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = {
   name: FieldPath<TFieldValues>
   disabled?: boolean
   label?: string
@@ -24,11 +27,12 @@ export type FormFields<TFieldValues extends FieldValues> = {
   message?: string
   required?: boolean
   isLoading?: boolean
+  render?: ControllerProps<TFieldValues, TName>['render']
 } & (
   | {
       translateKey: string
       className?: string
-      placeholderKey: string
+      placeholderKey?: string
       type?:
         | 'text'
         | 'tel'
@@ -44,7 +48,7 @@ export type FormFields<TFieldValues extends FieldValues> = {
   | {
       translateKey: string
       className?: string
-      placeholderKey: string
+      placeholderKey?: string
 
       type: 'currency'
       prefix?: string
@@ -53,7 +57,7 @@ export type FormFields<TFieldValues extends FieldValues> = {
   | {
       translateKey: string
       className?: string
-      placeholderKey: string
+      placeholderKey?: string
       type: 'password'
       toggleShowPassword?: () => void
       showPassword?: boolean
@@ -63,20 +67,20 @@ export type FormFields<TFieldValues extends FieldValues> = {
   | {
       translateKey: string
       className?: string
-      placeholderKey: string
+      placeholderKey?: string
       type?: 'loading'
     }
   | {
       translateKey: string
       className?: string
-      placeholderKey: string
+      placeholderKey?: string
       type?: 'checkbox'
       labelComp?: ReactNode
     }
   | {
       translateKey: string
       className?: string
-      placeholderKey: string
+      placeholderKey?: string
       type?: 'textarea'
     }
   | {
@@ -102,7 +106,7 @@ export type FormFields<TFieldValues extends FieldValues> = {
       translateKey: string
       className?: string
       type: 'combobox'
-      placeholderKey: string
+      placeholderKey?: string
       placeholder?: string
       loading?: boolean
       multiple: boolean
@@ -115,7 +119,7 @@ export type FormFields<TFieldValues extends FieldValues> = {
       translateKey?: string
       className?: string
       type: 'combobox-single-value'
-      placeholderKey: string
+      placeholderKey?: string
       placeholder?: string
       loading?: boolean
       options: SelectOptions[]
@@ -133,7 +137,7 @@ export type FormFields<TFieldValues extends FieldValues> = {
     } & Pick<ComponentPropsWithoutRef<typeof PopoverContent>, 'side' | 'align'>)
   | {
       translateKey: string
-      placeholderKey: string
+      placeholderKey?: string
       className?: string
       type: 'date-single'
       mode?: 'default' | 'multiple' | 'range' | 'single'
@@ -141,7 +145,7 @@ export type FormFields<TFieldValues extends FieldValues> = {
   | {
       translateKey: string
       className?: string
-      placeholderKey: string
+      placeholderKey?: string
       type: 'zipcode'
       onBlur?: FocusEventHandler<HTMLInputElement>
     }
@@ -150,13 +154,14 @@ export type FormFields<TFieldValues extends FieldValues> = {
       label: string
       className?: string
       type: 'title'
-      placeholderKey: string
+      placeholderKey?: string
     }
   | {
       type: 'hidden'
     }
 )
 
-export type FormFieldsConstant<TFieldValues extends FieldValues> = Array<
-  FormFields<TFieldValues> | FormFields<TFieldValues>[]
->
+export type FormFieldsConstant<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = Array<FormFields<TFieldValues, TName> | FormFields<TFieldValues, TName>[]>

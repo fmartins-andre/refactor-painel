@@ -35,37 +35,34 @@ export function useFormStep01HandleCustomerDataByCnpj({
 
     if (data) {
       setValue('nomeRazaoSocial', data.razao_social ?? '')
-      setValue('email', data.estabelecimento.email ?? '')
+      setValue('email', data.estabelecimento?.email ?? '')
       setValue(
         'telefone',
         inputMask.phone(
-          data.estabelecimento.ddd1.concat(data.estabelecimento.telefone1)
+          data.estabelecimento?.ddd1?.concat(data.estabelecimento?.telefone1) ??
+            ''
         )
       )
-      setValue('pessoaJuridica.isMei', data.simples.mei.toLowerCase() === 'sim')
+
       setValue(
-        'pessoaJuridica.dataAbertura',
-        data.simples.data_opcao_mei ?? null
-      )
-      setValue(
-        'pessoaJuridica.inscricaoEstadual',
-        data.estabelecimento.inscricoes_estaduais.find(
-          (ie) => ie.estado.sigla === data.estabelecimento.estado.sigla
+        'inscricaoEstadual',
+        data.estabelecimento?.inscricoes_estaduais.find(
+          (ie) => ie.estado.sigla === data.estabelecimento?.estado.sigla
         )?.inscricao_estadual ?? null
       )
 
       updateCustomerPayload({
         endereco: {
-          cep: inputMask.cep(data.estabelecimento.cep ?? ''),
-          numero: data.estabelecimento.numero ?? '',
-          logradouro: data.estabelecimento.logradouro.replace(/\s{2,}/g, ' '),
-          complemento: data.estabelecimento.complemento?.replace(
+          cep: inputMask.cep(data.estabelecimento?.cep ?? ''),
+          numero: data.estabelecimento?.numero ?? '',
+          logradouro: data.estabelecimento?.logradouro.replace(/\s{2,}/g, ' '),
+          complemento: data.estabelecimento?.complemento?.replace(
             /\s{2,}/g,
             ' '
           ),
-          cidade: String(data.estabelecimento.cidade.ibge_id),
-          bairro: data.estabelecimento.bairro.replace(/\s{2,}/g, ' '),
-          uf: data.estabelecimento.estado.sigla,
+          cidade: String(data.estabelecimento?.cidade.ibge_id),
+          bairro: data.estabelecimento?.bairro.replace(/\s{2,}/g, ' '),
+          uf: data.estabelecimento?.estado.sigla,
         },
       })
     }
